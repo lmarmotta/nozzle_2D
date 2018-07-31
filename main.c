@@ -5,14 +5,14 @@
 
 #include "cgnslib.h"
 
-#include "setup.h"
 #include "structs.h"
 
 /*
  * Prototypes of the functions used. */
 
 void read_mesh_cgns(t_points * pnts);
-void read_mesh_size(char * mesh_file_name, int imax, int jmax);
+void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
+void read_setup(char * setup_name, p_define * p_setup);
 
 int main(int argc, char * argv[]){
 
@@ -24,8 +24,15 @@ int main(int argc, char * argv[]){
         printf("./nozzle <mesh_file>\n"); exit(1); 
     }
 
-    /*
-     * Gather the points for our mesh. */
+    /* Read problem setup and feed the setup struct */
+
+    p_define p_setup;
+
+    char * setup_name = "input.in";
+
+    read_setup(setup_name, &p_setup);
+
+    printf("%lf\n", p_setup.T_t);
 
     /* Prompt the user with respect to the mesh file */
 
@@ -35,13 +42,17 @@ int main(int argc, char * argv[]){
 
     t_points * pnts = NULL;
 
+    /* Get the problem size */
+
+    read_mesh_size(argv[1], &p_setup.imax, &p_setup.jmax);
+
+    printf("%d %d\n",p_setup.imax,p_setup.jmax);
+
     int size = 10;
 
     pnts = (t_points*)malloc(size*sizeof(t_points));
 
     read_mesh_cgns(pnts);
-
-    printf("%lf", pnts[0].x);
 
     /* 
      * Deallocate the structs */
