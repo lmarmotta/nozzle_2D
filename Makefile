@@ -12,7 +12,7 @@ CC=gcc
 
 # 
 # Optimization or debug flags.
-CFLAGS=-O0 -g -Wall -Werror
+CFLAGS=-O0 -g -Wall
 
 #
 # CGNS include path.

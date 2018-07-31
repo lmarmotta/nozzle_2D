@@ -7,9 +7,10 @@
 #include "cgnslib.h"
 
 /*
- * This function reads the problem setup and feeds the proper struct */
+ * This function reads the problem setup and feeds the proper struct
+ */
 
-void read_setup(char * setup_name, p_define * p_setup){
+void read_setup(char * setup_name, T_DEFINE * p_setup){
 
     char buf[30];
 
@@ -21,12 +22,20 @@ void read_setup(char * setup_name, p_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->T_t) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read total pressure. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->P_t) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Close the file */
+
     fclose(fp_file);
 
 }
 
 /* 
- * This function reads the size of the problem from a *.cgns file. */
+ * This function reads the size of the problem from a *.cgns file. 
+ */
 
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
 
@@ -34,22 +43,29 @@ void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
 
     int cg_file;
 
-    if ( cg_open(  mesh_file_name, CG_MODE_READ, &cg_file ) ) cg_error_exit();
+    cg_open(mesh_file_name, CG_MODE_READ, &cg_file);
+
+    int index_base = 1;
+
+    int index_zone = 1;
+
+    char zonename[33]; cgsize_t isize[3][1];
+
+    cg_zone_read(cg_file, index_base, index_zone, zonename, isize[0]);
+
+    *imax = -1; *jmax = -2;
 
     /* Close the cgns file index */
 
     cg_close(cg_file);
-
-    /* Pass the number of maximun points to the function */
-
-    *imax = -1; *jmax = -2;
 }
 
 /*
  * This function reads the mesh from a *.cgns file and feeds the structured
- * data structures. */
+ * data structures. 
+ */
 
-void read_mesh_cgns(t_points * pnts){
+void read_mesh_cgns(T_POINTS * pnts){
 
     pnts[0].x = 1.0;
 
