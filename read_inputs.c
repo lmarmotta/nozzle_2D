@@ -101,8 +101,8 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
 
     /* The cgns procedures are not Ok with structs, set some aux arrays. */
     
-    double x_coord[irmax[0]][irmax[1]];
-    double y_coord[irmax[0]][irmax[1]];
+    double x_coord[(int)irmax[0]][(int)irmax[1]];
+    double y_coord[(int)irmax[0]][(int)irmax[1]];
 
     /* Read the coordinates. */
 
