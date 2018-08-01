@@ -58,8 +58,8 @@ void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
 
     /* Set the reference indexes */
 
-    *imax = isize[0][0];
-    *jmax = isize[0][1];
+    *imax = (int)isize[0][0];
+    *jmax = (int)isize[0][1];
 
     /* Close the cgns file index */
 
