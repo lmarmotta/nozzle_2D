@@ -87,7 +87,7 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
 
     /* Read the zone information. */
 
-    char zonename[33]; cgsize_t isize[3][3],irmin[2],irmax[2];;
+    char zonename[33]; cgsize_t isize[2][2],irmin[2],irmax[2];;
 
     cg_zone_read(cg_file,index_base,index_zone,zonename,isize[0]);
 
@@ -99,13 +99,10 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
     irmax[0]=isize[0][0];
     irmax[1]=isize[0][1];
 
-    /* The cgns procedures are not Ok with structs, allocate some usefull arrays. */
+    /* The cgns procedures are not Ok with structs, set some aux arrays. */
     
-    int i; double ** x_coord = (double**)malloc(irmax[0]*sizeof(double*));
-    for (i = 0; i<irmax[0]; i++) x_coord[i] = (double*)malloc(irmax[0]*sizeof(double)); 
-
-    int j; double ** y_coord = (double**)malloc(irmax[1]*sizeof(double*));
-    for (j = 0; j<irmax[1]; j++) y_coord[j] = (double*)malloc(irmax[1]*sizeof(double)); 
+    double x_coord[irmax[0]][irmax[1]];
+    double y_coord[irmax[0]][irmax[1]];
 
     /* Read the coordinates. */
 
@@ -113,6 +110,8 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
     cg_coord_read(cg_file,index_base,index_zone,"CoordinateY",CGNS_ENUMV(RealDouble),irmin,irmax,y_coord[0]);
 
     /* Now feed the struct. */
+
+    int i,j;
 
     for (i = 0; i<irmax[0]; i++){
         for (j = 0; j<irmax[1]; j++){
@@ -124,10 +123,5 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
     /* Close the cgns file index */
 
     cg_close(cg_file);
-
-    /* Deallocate the auxiliary array */
-
-    // for (i = 0; i<irmax[0]; i++) free(x_coord[i]); free(x_coord);
-    // for (j = 0; j<irmax[1]; j++) free(y_coord[i]); free(y_coord);
 
 }

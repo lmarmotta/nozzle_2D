@@ -58,7 +58,7 @@ int main(int argc, char * argv[]){
     int i;
 
     T_POINTS ** pnts = (T_POINTS**)malloc(p_setup.imax*sizeof(T_POINTS*));
-    for (i = 0; i<p_setup.jmax; i++)
+    for (i = 0; i<p_setup.imax; i++)
         pnts[i] = (T_POINTS*)malloc(p_setup.jmax*sizeof(T_POINTS)); 
 
     read_mesh_cgns(argv[1], pnts);

@@ -20,8 +20,8 @@ void export_fields(T_POINTS ** pnts, T_DEFINE p_setup){
     
     int i, j;
 
-    for (j = 0; j < p_setup.jmax; j++){
-        for (i = 0; i < p_setup.imax; i++){
+    for (i = 0; i < p_setup.imax; i++){
+        for (j = 0; j < p_setup.jmax; j++){
             fprintf(f_out,"%lf %lf\n",pnts[i][j].x,pnts[i][j].y);
         }
     }

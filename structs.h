@@ -24,4 +24,6 @@ typedef struct T_POINTS{
     double x; /* The x coordinate of the points. */
     double y; /* The y coordinate of the points. */
 
+    double rho;
+
 } T_POINTS;
