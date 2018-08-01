@@ -4,7 +4,6 @@
 #include <math.h>
 
 #include "cgnslib.h"
-
 #include "structs.h"
 
 /*
@@ -14,6 +13,7 @@
 void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts);
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
 void read_setup(char * setup_name, T_DEFINE * p_setup);
+void export_fields(T_POINTS ** pnts, T_DEFINE p_setup);
 
 /* 
  * Main function
@@ -65,10 +65,14 @@ int main(int argc, char * argv[]){
 
     printf("\n-Mesh read successfully.\n");
 
-    /* Deallocate the structs */
+    /* Export post-processor file. */
 
-    free(pnts);
+    export_fields(pnts,p_setup);
 
-    return 0;
+    /* Free the main struct */
+
+    for (i = 0; i<p_setup.jmax; i++) free(pnts[i]); free(pnts);
+
+    printf("\nSUCESS: Program finalized the run !\n"); return 0;
 
 }

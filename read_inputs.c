@@ -124,4 +124,10 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
     /* Close the cgns file index */
 
     cg_close(cg_file);
+
+    /* Deallocate the auxiliary array */
+
+    // for (i = 0; i<irmax[0]; i++) free(x_coord[i]); free(x_coord);
+    // for (j = 0; j<irmax[1]; j++) free(y_coord[i]); free(y_coord);
+
 }
