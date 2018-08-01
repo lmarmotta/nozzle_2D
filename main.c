@@ -11,7 +11,7 @@
  * Prototypes of the functions used.
  */
 
-void read_mesh_cgns(T_POINTS * pnts);
+void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts);
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
 void read_setup(char * setup_name, T_DEFINE * p_setup);
 
@@ -47,21 +47,23 @@ int main(int argc, char * argv[]){
 
     printf("\n-Processing mesh file: %s\n",argv[1]);
 
-    /* Set the pointer to the proper struct */
-
-    T_POINTS * pnts = NULL;
-
     /* Get the problem size */
 
     read_mesh_size(argv[1], &p_setup.imax, &p_setup.jmax);
 
-    printf("%d %d\n",p_setup.imax,p_setup.jmax);
+    printf("\n--Mesh IMAX: %d Mesh JMAX: %d\n",p_setup.imax,p_setup.jmax);
 
-    int size = 10;
+    /* Allocate the main data-structure struct. */
 
-    pnts = (T_POINTS*)malloc(size*sizeof(T_POINTS));
+    int i;
 
-    read_mesh_cgns(pnts);
+    T_POINTS ** pnts = (T_POINTS**)malloc(p_setup.imax*sizeof(T_POINTS*));
+    for (i = 0; i<p_setup.jmax; i++)
+        pnts[i] = (T_POINTS*)malloc(p_setup.jmax*sizeof(T_POINTS)); 
+
+    read_mesh_cgns(argv[1], pnts);
+
+    printf("\n-Mesh read successfully.\n");
 
     /* Deallocate the structs */
 
