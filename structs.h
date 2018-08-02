@@ -26,8 +26,6 @@ typedef struct T_POINTS{
     double x;    // The x coordinate of the points. 
     double y;    // The y coordinate of the points.
 
-    double dummy;
-
     double jm1;  // Metric Jacobian.
     double tau;  // Transformed time.
 

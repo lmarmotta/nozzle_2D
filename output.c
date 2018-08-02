@@ -22,7 +22,7 @@ void export_fields(T_POINTS ** pnts, T_DEFINE p_setup){
 
     for (j = 0; j < p_setup.jmax; j++){
         for (i = 0; i < p_setup.imax; i++){
-            fprintf(f_out,"%lf %lf %lf\n",pnts[i][j].x,pnts[i][j].y,pnts[i][j].dummy);
+            fprintf(f_out,"%lf %lf %lf\n",pnts[i][j].x,pnts[i][j].y,pnts[i][j].jm1);
         }
     }
 

@@ -46,20 +46,13 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
         }
     }
 
-    /* Wall points. */
-    
-    for (i = 1; i < imax-1; i++){
+    /* Inlet internal points. */
 
-        pnts[i][0].x_ksi = 0.5 * ( (pnts[i+1][0].x - pnts[i-1][0].x) / dksi );
-        pnts[i][0].y_ksi = 0.5 * ( (pnts[i+1][0].y - pnts[i-1][0].y) / dksi );
+    /* Symmetry internal points. */
 
-        pnts[i][0].x_eta = ( pnts[i][1].x - pnts[i][0].x ) / deta;
-        pnts[i][0].y_eta = ( pnts[i][1].y - pnts[i][0].y ) / deta;
+    /* Outlet internal points. */
 
-        pnts[i][0].jm1 = pnts[i][0].x_ksi*pnts[i][0].y_eta - pnts[i][0].x_eta*pnts[i][0].y_ksi; 
-
-    }
-
+    /* Corner points. */
 
 }
 
@@ -72,33 +65,33 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
 
 void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts){
 
-    int i, j;
+    // int i, j;
 
-    int imax = p_setup.imax;
-    int jmax = p_setup.jmax;
+    // int imax = p_setup.imax;
+    // int jmax = p_setup.jmax;
 
     /* Apply value through all nodes. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
-            pnts[i][j].dummy = 1.0;
-        }
-    }
+    // for (i = 0; i < imax; i++){
+        // for (j = 0; j < jmax; j++){
+            // pnts[i][j].dummy = 1.0;
+        // }
+    // }
 
     /* Apply value only throgh the WALL. */
 
-    for (i = 0; i < imax; i++) pnts[i][0].dummy = 100.0;
+    // for (i = 0; i < imax; i++) pnts[i][0].dummy = 100.0;
 
     /* Apply values on the INLET. */
 
-    for (j = 0; j < jmax; j++) pnts[0][j].dummy = 100.0;
+    // for (j = 0; j < jmax; j++) pnts[0][j].dummy = 100.0;
 
     /* Apply values on the upper SIDE. */
 
-    for (i = 0; i < imax; i++) pnts[i][jmax-1].dummy = 100.0;
+    // for (i = 0; i < imax; i++) pnts[i][jmax-1].dummy = 100.0;
 
     /* Apply values on the OUTLET. */
 
-    for (j = 0; j < jmax; j++) pnts[imax-1][j].dummy = 100.0;
+    // for (j = 0; j < jmax; j++) pnts[imax-1][j].dummy = 100.0;
 
 }
