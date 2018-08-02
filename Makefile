@@ -46,7 +46,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -I$(INCLUDE) -o $@ -L$(LDFLAGS) $(LIBS)
 
 clean:
-	-rm -f *.o
+	-rm -f *.o *.dat
 	-rm -f $(TARGET)
 
 

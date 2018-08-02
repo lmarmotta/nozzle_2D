@@ -101,22 +101,22 @@ void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
 
     /* The cgns procedures are not Ok with structs, set some aux arrays. */
     
-    double x_coord[(int)irmax[0]][(int)irmax[1]];
-    double y_coord[(int)irmax[0]][(int)irmax[1]];
+    double x_coord[(int)irmax[1]][(int)irmax[0]];
+    double y_coord[(int)irmax[1]][(int)irmax[0]];
 
     /* Read the coordinates. */
 
     cg_coord_read(cg_file,index_base,index_zone,"CoordinateX",CGNS_ENUMV(RealDouble),irmin,irmax,x_coord[0]);
     cg_coord_read(cg_file,index_base,index_zone,"CoordinateY",CGNS_ENUMV(RealDouble),irmin,irmax,y_coord[0]);
 
-    /* Now feed the struct. */
+    /* Feed the structs. */
 
     int i,j;
 
-    for (i = 0; i<irmax[0]; i++){
-        for (j = 0; j<irmax[1]; j++){
-            pnts[i][j].x = x_coord[i][j];
-            pnts[i][j].y = y_coord[i][j];
+    for (i = 0; i<(int)irmax[0]; i++){
+        for (j = 0; j<(int)irmax[1]; j++){
+            pnts[i][j].x = x_coord[j][i];
+            pnts[i][j].y = y_coord[j][i];
         }
     }
 

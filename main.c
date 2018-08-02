@@ -13,7 +13,9 @@
 void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts);
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
 void read_setup(char * setup_name, T_DEFINE * p_setup);
+void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts);
 void export_fields(T_POINTS ** pnts, T_DEFINE p_setup);
+void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts);
 
 /* 
  * Main function
@@ -58,12 +60,27 @@ int main(int argc, char * argv[]){
     int i;
 
     T_POINTS ** pnts = (T_POINTS**)malloc(p_setup.imax*sizeof(T_POINTS*));
-    for (i = 0; i<p_setup.imax; i++)
+
+    if (pnts == NULL){ 
+        printf("ERROR: Memory Allocation\n"); exit(1); 
+    }
+
+    for (i = 0; i<p_setup.imax; i++){
         pnts[i] = (T_POINTS*)malloc(p_setup.jmax*sizeof(T_POINTS)); 
+        if (pnts[i] == NULL){
+            printf("ERROR: Memory Allocation\n"); exit(1); 
+        }
+    }
 
     read_mesh_cgns(argv[1], pnts);
 
     printf("\n-Mesh read successfully.\n");
+
+    /* Now compute the proper spatial transformations. */
+
+    printf("\n-Computing the proper transformations.\n");
+
+    calc_metric_relations(p_setup, pnts);
 
     /* Export post-processor file. */
 
@@ -71,7 +88,7 @@ int main(int argc, char * argv[]){
 
     /* Free the main struct */
 
-    for (i = 0; i<p_setup.jmax; i++) free(pnts[i]); free(pnts);
+    for (i = 0; i<p_setup.imax; i++) free(pnts[i]); free(pnts);
 
     printf("\nSUCESS: Program finalized the run !\n"); return 0;
 

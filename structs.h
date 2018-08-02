@@ -4,7 +4,9 @@
 #include <math.h>
 
 /*
- * Problem definitions */
+ * Problem definitions. This struct is not associated with each point, but with
+ * each problem. 
+ */
 
 typedef struct T_DEFINE{
 
@@ -21,9 +23,22 @@ typedef struct T_DEFINE{
 
 typedef struct T_POINTS{
 
-    double x; /* The x coordinate of the points. */
-    double y; /* The y coordinate of the points. */
+    double x;    // The x coordinate of the points. 
+    double y;    // The y coordinate of the points.
 
-    double rho;
+    double dummy;
+
+    double jm1;  // Metric Jacobian.
+    double tau;  // Transformed time.
+
+    double t_ksi; // 
+    double x_ksi; // Metric terms in ksi direction.
+    double y_ksi; //
+
+    double t_eta; //
+    double x_eta; // Metric terms in eta direction.
+    double y_eta; //
+
+    double rho;   // Fluid density.
 
 } T_POINTS;
