@@ -99,7 +99,45 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
         pnts[i][j].y_eta = ( pnts[i][j+1].y - pnts[i][j].y ) /deta;
     }
 
-    /* Corner points. */
+    /* Lower left corner point. */
+
+    i = 0; j = 0;
+
+    pnts[i][j].x_ksi = ( pnts[i+1][j].x - pnts[i][j].x ) / dksi;
+    pnts[i][j].y_ksi = ( pnts[i+1][j].y - pnts[i][j].y ) / dksi;
+
+    pnts[i][j].x_eta = ( pnts[i][j+1].x - pnts[i][j].x ) / deta;
+    pnts[i][j].y_eta = ( pnts[i][j+1].y - pnts[i][j].y ) / deta;
+
+    /* Lower right point. */
+
+    i = imax-1; j = 0;
+
+    pnts[i][j].x_ksi = ( pnts[i][j].x - pnts[i-1][j].x ) / dksi;
+    pnts[i][j].y_ksi = ( pnts[i][j].y - pnts[i-1][j].y ) / dksi;
+
+    pnts[i][j].x_eta = ( pnts[i][j+1].x - pnts[i][j].x ) / deta;
+    pnts[i][j].y_eta = ( pnts[i][j+1].y - pnts[i][j].y ) / deta;
+
+    /* Upper right point. */
+
+    i = imax-1; j = jmax-1;
+
+    pnts[i][j].x_ksi = ( pnts[i][j].x - pnts[i-1][j].x ) / dksi;
+    pnts[i][j].y_ksi = ( pnts[i][j].y - pnts[i-1][j].y ) / dksi;
+
+    pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / deta;
+    pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / deta;
+
+    /* Upper left point. */
+
+    i = 0; j = jmax-1;
+
+    pnts[i][j].x_ksi = ( pnts[i+1][j].x - pnts[i][j].x ) / dksi;
+    pnts[i][j].y_ksi = ( pnts[i+1][j].y - pnts[i][j].y ) / dksi;
+
+    pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / deta;
+    pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / deta;
 
 }
 
