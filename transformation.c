@@ -41,16 +41,63 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
             pnts[i][j].x_eta = 0.5 * ( (pnts[i][j+1].x - pnts[i][j-1].x) / deta );
             pnts[i][j].y_eta = 0.5 * ( (pnts[i][j+1].y - pnts[i][j-1].y) / deta );
 
-            pnts[i][j].jm1 = pnts[i][j].x_ksi*pnts[i][j].y_eta - pnts[i][j].x_eta*pnts[i][j].y_ksi; 
-
         }
     }
 
     /* Inlet internal points. */
 
+    for (j = 1; j < jmax-1; j++){
+
+        i = 0;
+
+        pnts[i][j].x_ksi = ( pnts[i+1][j].x - pnts[i][j].x ) / dksi;
+        pnts[i][j].y_ksi = ( pnts[i+1][j].y - pnts[i][j].y ) / dksi;
+        
+        pnts[i][j].x_eta = 0.5 * ( (pnts[i][j+1].x - pnts[i][j-1].x) / deta );
+        pnts[i][j].y_eta = 0.5 * ( (pnts[i][j+1].y - pnts[i][j-1].y) / deta );
+
+    }
+
     /* Symmetry internal points. */
 
+    for (i = 1; i < imax-1; i++){
+
+        j = jmax-1;
+
+        pnts[i][j].x_ksi = 0.5 * ( ( pnts[i+1][j].x - pnts[i-1][j].x ) / dksi );
+        pnts[i][j].y_ksi = 0.5 * ( ( pnts[i+1][j].y - pnts[i-1][j].y ) / dksi );
+
+        pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / dksi;
+        pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / dksi;
+
+    }
+
     /* Outlet internal points. */
+
+    for (j = 1; j < jmax-1; j++){
+
+        i = imax-1;
+
+        pnts[i][j].x_ksi = ( pnts[i][j].x - pnts[i-1][j].x ) / dksi;
+        pnts[i][j].y_ksi = ( pnts[i][j].y - pnts[i-1][j].y ) / dksi;
+
+        pnts[i][j].x_eta = 0.5 * ( (pnts[i][j+1].x - pnts[i][j-1].x) / deta );
+        pnts[i][j].y_eta = 0.5 * ( (pnts[i][j+1].y - pnts[i][j-1].y) / deta );
+
+    }
+
+    /* Wall internal points. */
+
+    for (i = 1; i < imax-1; i++){
+
+        j = 0;
+
+        pnts[i][j].x_ksi = 0.5 * ( (pnts[i+1][j].x - pnts[i-1][j].x) / dksi );
+        pnts[i][j].y_ksi = 0.5 * ( (pnts[i+1][j].y - pnts[i-1][j].y) / dksi );
+
+        pnts[i][j].x_eta = ( pnts[i][j+1].x - pnts[i][j].x ) /deta;
+        pnts[i][j].y_eta = ( pnts[i][j+1].y - pnts[i][j].y ) /deta;
+    }
 
     /* Corner points. */
 
@@ -63,7 +110,7 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
  * of the field.  
  */
 
-void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts){
+// void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts){
 
     // int i, j;
 
@@ -94,4 +141,4 @@ void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts){
 
     // for (j = 0; j < jmax; j++) pnts[imax-1][j].dummy = 100.0;
 
-}
+// }

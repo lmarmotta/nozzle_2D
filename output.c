@@ -10,7 +10,15 @@ void export_fields(T_POINTS ** pnts, T_DEFINE p_setup){
 
     /* Open the setup file */
 
-    FILE * f_out = fopen("solution.dat","w");
+    FILE * f_out = NULL;
+        
+    f_out = fopen("solution.dat","w");
+
+    /* Check the condition of the pointer. */
+
+    if (f_out == NULL){
+        printf("\nERROR: Output file cannot be opened !\n"); exit(1);
+    }
 
     /* Print the header of the tecplot file. */
 
@@ -22,7 +30,7 @@ void export_fields(T_POINTS ** pnts, T_DEFINE p_setup){
 
     for (j = 0; j < p_setup.jmax; j++){
         for (i = 0; i < p_setup.imax; i++){
-            fprintf(f_out,"%lf %lf %lf\n",pnts[i][j].x,pnts[i][j].y,pnts[i][j].jm1);
+            fprintf(f_out,"%lf %lf %lf\n",pnts[i][j].x,pnts[i][j].y,pnts[i][j].x_ksi);
         }
     }
 
