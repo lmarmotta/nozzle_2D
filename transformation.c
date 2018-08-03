@@ -139,6 +139,36 @@ void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
     pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / deta;
     pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / deta;
 
+    /* Now compute the transformation matrix. */
+
+    for (i = 0; i < imax; i++){
+        for (j = 0; j < jmax; j++){
+
+            pnts[i][j].j_1   = pow( (pnts[i][j].x_ksi*pnts[i][j].y_eta 
+                                   - pnts[i][j].x_eta*pnts[i][j].y_ksi), -1.0);
+
+            pnts[i][j].jm1 =  pnts[i][j].x_ksi*pnts[i][j].y_eta 
+                            - pnts[i][j].x_eta*pnts[i][j].y_ksi;
+
+        }
+    }
+
+    /* Now, compute the proper derivatives which we need to include the
+     * formulation itself. */
+
+    for (i = 0; i < imax; i++){
+        for (j = 0; j < jmax; j++){
+
+            pnts[i][j].ksi_x =   pnts[i][j].j_1*pnts[i][j].y_eta;
+            pnts[i][j].ksi_y = - pnts[i][j].j_1*pnts[i][j].x_eta;
+
+            pnts[i][j].eta_x = - pnts[i][j].j_1*pnts[i][j].y_ksi;
+            pnts[i][j].eta_y =   pnts[i][j].j_1*pnts[i][j].x_ksi;
+
+        }
+    }
+
+
 }
 
 /* -------------------------------------------------------------------------- */

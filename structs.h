@@ -10,11 +10,11 @@
 
 typedef struct T_DEFINE{
 
-    int imax;   // Max number of points in psi.
-    int jmax;   // Max number of points in eta.
+    int imax;
+    int jmax;
 
-    double T_t; // Total temperature.
-    double P_t; // Total pressure.
+    double T_t;
+    double P_t;
 
 } T_DEFINE;
 
@@ -24,20 +24,28 @@ typedef struct T_DEFINE{
 
 typedef struct T_POINTS{
 
-    double x;     // The x coordinate of the points. 
-    double y;     // The y coordinate of the points.
+    /* Cartesian components. */
 
-    double jm1;   // Metric Jacobian.
-    double tau;   // Transformed time.
+    double x;
+    double y;
 
-    double t_ksi; // 
-    double x_ksi; // Metric terms in ksi direction.
-    double y_ksi; //
+    /* Transformation jacobians. */
 
-    double t_eta; //
-    double x_eta; // Metric terms in eta direction.
-    double y_eta; //
+    double j_1;
+    double jm1;
 
-    double rho;   // Fluid density.
+    double x_ksi;
+    double y_ksi;
+
+    double x_eta;
+    double y_eta;
+
+    /* Metric terms. */
+
+    double ksi_x;
+    double ksi_y;
+
+    double eta_x;
+    double eta_y;
 
 } T_POINTS;
