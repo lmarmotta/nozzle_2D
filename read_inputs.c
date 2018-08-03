@@ -10,7 +10,7 @@
  * This function reads the problem setup and feeds the proper struct
  */
 
-void read_setup(char * setup_name, T_DEFINE * p_setup){
+void read_setup(char * setup_name, t_define * p_setup){
 
     char buf[30];
 
@@ -71,7 +71,7 @@ void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
  * data structures. 
  */
 
-void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts){
+void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
 
     /* Open cgns file and return the id */
 

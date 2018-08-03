@@ -12,7 +12,7 @@
  * terms which are used to pass the cartesian space to the computational space. 
  */
 
-void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts){
+void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 

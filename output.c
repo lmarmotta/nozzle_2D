@@ -6,7 +6,7 @@
 #include "structs.h"
 #include "cgnslib.h"
 
-void export_fields(T_POINTS ** pnts, T_DEFINE p_setup){
+void export_fields(t_points ** pnts, t_define p_setup){
 
     /* Open the setup file */
 

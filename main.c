@@ -10,12 +10,12 @@
  * Prototypes of the functions used.
  */
 
-void read_mesh_cgns(char * mesh_file_name, T_POINTS ** pnts);
+void read_mesh_cgns(char * mesh_file_name, t_points ** pnts);
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
-void read_setup(char * setup_name, T_DEFINE * p_setup);
-void calc_metric_relations(T_DEFINE p_setup, T_POINTS ** pnts);
-void export_fields(T_POINTS ** pnts, T_DEFINE p_setup);
-void alloc_struct_matrix(T_POINTS *** pnts, int imax, int jmax);
+void read_setup(char * setup_name, t_define * p_setup);
+void calc_metric_relations(t_define p_setup, t_points ** pnts);
+void export_fields(t_points ** pnts, t_define p_setup);
+void alloc_struct_matrix(t_points *** pnts, int imax, int jmax);
 
 /* 
  * Main function
@@ -36,7 +36,7 @@ int main(int argc, char * argv[]){
 
     /* Read problem setup and feed the setup struct */
 
-    T_DEFINE p_setup;
+    t_define p_setup;
 
     char * setup_name = "input.in";
 
@@ -57,7 +57,7 @@ int main(int argc, char * argv[]){
 
     /* Allocate the main data-structure struct. */
 
-    T_POINTS ** pnts = NULL;
+    t_points ** pnts = NULL;
 
     alloc_struct_matrix(&pnts,p_setup.imax,p_setup.jmax); 
 

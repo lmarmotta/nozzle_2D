@@ -11,13 +11,13 @@
  * order to avoid valgrind errors.
  */
 
-void alloc_struct_matrix(T_POINTS *** pntss, int imax, int jmax){
+void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
     
     int i;
 
     /* Malloc the first row of the memory. */
 
-    T_POINTS ** pnts = (T_POINTS**)calloc(imax,sizeof(T_POINTS*));
+    t_points ** pnts = (t_points**)calloc(imax,sizeof(t_points*));
 
     /* Check if the allocation of the first row is successfull. */
 
@@ -31,7 +31,7 @@ void alloc_struct_matrix(T_POINTS *** pntss, int imax, int jmax){
 
         pnts[i] = NULL;
 
-        pnts[i] = (T_POINTS*)calloc(jmax,sizeof(T_POINTS)); 
+        pnts[i] = (t_points*)calloc(jmax,sizeof(t_points)); 
 
         if (pnts[i] == NULL){
             printf("ERROR: Memory Allocation\n"); exit(1); 

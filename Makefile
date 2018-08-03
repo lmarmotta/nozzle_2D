@@ -1,6 +1,6 @@
 #
 # Name of the exec file.
-TARGET=a.out
+TARGET=code
 
 #
 # Link flags abreviation.
@@ -8,7 +8,6 @@ LIBS=-lm -lcgns -lhdf5
 
 #
 # Path to hdf5 parallel compiler (needs compilation first).
-# CC=gcc
 CC=/home/leonardo/opt/hdf5/bin/h5pcc
 
 # 
@@ -17,12 +16,10 @@ CFLAGS=-O0 -g -Wall
 
 #
 # CGNS include path.
-# INCLUDE=/home/leomm/opt/cgns/include
 INCLUDE=/home/leonardo/opt/cgns/include
 
 #
 # CGNS lib path.
-# LDFLAGS=/home/leomm/opt/cgns/lib64
 LDFLAGS=/home/leonardo/opt/cgns/lib64
 
 #

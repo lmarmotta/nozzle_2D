@@ -8,7 +8,7 @@
  * each problem. 
  */
 
-typedef struct T_DEFINE{
+typedef struct t_define{
 
     int imax;
     int jmax;
@@ -16,13 +16,13 @@ typedef struct T_DEFINE{
     double T_t;
     double P_t;
 
-} T_DEFINE;
+} t_define;
 
 /*
  * This struct holds the geometrical points read from a *.cgns file.
  */
 
-typedef struct T_POINTS{
+typedef struct t_points{
 
     /* Cartesian components. */
 
@@ -48,4 +48,4 @@ typedef struct T_POINTS{
     double eta_x;
     double eta_y;
 
-} T_POINTS;
+} t_points;
