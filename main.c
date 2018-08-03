@@ -16,6 +16,7 @@ void read_setup(char * setup_name, t_define * p_setup);
 void calc_metric_relations(t_define p_setup, t_points ** pnts);
 void export_fields(t_points ** pnts, t_define p_setup);
 void alloc_struct_matrix(t_points *** pnts, int imax, int jmax);
+void build_fluxes(t_define p_setup, t_points ** pnts);
 
 /* 
  * Main function
@@ -70,6 +71,12 @@ int main(int argc, char * argv[]){
     printf("\n-Computing the proper transformations.\n");
 
     calc_metric_relations(p_setup, pnts);
+
+    /* Now, compute the basic fluxes. */
+
+    printf("\n-Computing the fluxes.\n");
+
+    build_fluxes(p_setup, pnts);
 
     /* Export post-processor file. */
 

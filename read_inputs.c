@@ -27,6 +27,11 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->P_t) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read the gamma constant. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->gamma) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
     /* Close the file */
 
     fclose(fp_file);

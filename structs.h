@@ -10,42 +10,50 @@
 
 typedef struct t_define{
 
-    int imax;
-    int jmax;
+    /* Reference dimensions of the mesh. */
 
-    double T_t;
-    double P_t;
+    int imax, jmax;
+
+    /* Properties which come from the input file. */
+
+    double T_t, P_t, gamma;
 
 } t_define;
 
 /*
- * This struct holds the geometrical points read from a *.cgns file.
+ * This struct holds the properties associated with each point of the mesh.
  */
 
 typedef struct t_points{
 
     /* Cartesian components. */
 
-    double x;
-    double y;
+    double x, y;
 
     /* Transformation jacobians. */
 
-    double j_1;
-    double jm1;
+    double j_1, jm1;
 
-    double x_ksi;
-    double y_ksi;
+    double x_ksi, y_ksi;
 
-    double x_eta;
-    double y_eta;
+    double x_eta, y_eta;
 
     /* Metric terms. */
 
-    double ksi_x;
-    double ksi_y;
+    double ksi_x, ksi_y;
 
-    double eta_x;
-    double eta_y;
+    double eta_x, eta_y;
+
+    /* Covariant velocities. */
+
+    double cov_u, cov_v;
+
+    /* Non-transformed fluxes. */
+
+    double q[4], e[4], f[4];
+
+    /* Transformed fluxes. */
+
+    double q_hat[4], e_hat[4], f_hat[4];
 
 } t_points;
