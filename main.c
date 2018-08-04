@@ -17,6 +17,7 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts);
 void export_fields(t_points ** pnts, t_define p_setup);
 void alloc_struct_matrix(t_points *** pnts, int imax, int jmax);
 void build_fluxes(t_define p_setup, t_points ** pnts);
+void free_struct_matrix(t_points ** pnts, int imax);
 
 /* 
  * Main function
@@ -84,7 +85,7 @@ int main(int argc, char * argv[]){
 
     /* Free the main struct */
 
-    int i; for (i = 0; i<p_setup.imax; i++) free(pnts[i]); free(pnts);
+    free_struct_matrix(pnts, p_setup.imax);
 
     printf("\n\n +++ SUCESS: Program finalized the run ! +++\n\n"); return 0;
 

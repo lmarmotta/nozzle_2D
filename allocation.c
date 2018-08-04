@@ -6,10 +6,7 @@
 #include "cgnslib.h"
 #include "structs.h"
 
-/* 
- * Safely allocate the main structs of the program. Needs to be done safely in
- * order to avoid valgrind errors.
- */
+/* Allocate the main struct of the code. */
 
 void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
     
@@ -39,5 +36,15 @@ void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
     }
 
     *pntss = pnts;
+}
 
+/* Free the main struct of the code. */
+
+void free_struct_matrix(t_points ** pnts, int imax){
+
+    int i;
+
+    for (i = 0; i<imax; i++) free(pnts[i]);
+        
+    free(pnts);
 }
