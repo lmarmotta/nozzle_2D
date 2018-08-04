@@ -104,10 +104,16 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
     irmax[0]=isize[0][0];
     irmax[1]=isize[0][1];
 
-    /* The cgns procedures are not Ok with structs, set some aux arrays. */
-    
-    double x_coord[(int)irmax[1]][(int)irmax[0]];
-    double y_coord[(int)irmax[1]][(int)irmax[0]];
+    /* The cgns procedure somehow do not like simple arrays allocated in
+     * classical pointer to pointer fashion. I believe the misalignment of the
+     * memory have something to do with it. Because of this limitation, a
+     * different type of allocation is used here, where an array pointer is
+     * used instead. It is only compatible with the -std=c99 as the concept of
+     * variable-length arrays is used.
+     * https://stackoverflow.com/questions/32050256/function-to-dynamically-allocate-matrix*/
+
+    double(*x_coord)[(int)irmax[0]] = malloc(sizeof(double[(int)irmax[1]][(int)irmax[0]]));
+    double(*y_coord)[(int)irmax[0]] = malloc(sizeof(double[(int)irmax[1]][(int)irmax[0]]));
 
     /* Read the coordinates. */
 
@@ -128,5 +134,10 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
     /* Close the cgns file index */
 
     cg_close(cg_file);
+
+    /* We are not free from the free though... */
+
+    free(x_coord);
+    free(y_coord);
 
 }
