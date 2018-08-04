@@ -16,7 +16,7 @@ typedef struct t_define{
 
     /* Properties which come from the input file. */
 
-    double T_t, P_t, gamma;
+    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e;
 
 } t_define;
 
@@ -48,9 +48,9 @@ typedef struct t_points{
 
     double cov_u, cov_v;
 
-    /* Non-transformed fluxes. */
+    /* Non-transformed. */
 
-    double q[4], e[4], f[4];
+    double q[4];
 
     /* Transformed fluxes. */
 

@@ -32,9 +32,40 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->gamma) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read the initial rho value. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_rho) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the initial rho*u value. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_rhou) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the initial rho*v value. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_rhov) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the initial rho*v value. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_e) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
     /* Close the file */
 
     fclose(fp_file);
+}
+
+void dump_setup(t_define p_setup){
+
+    printf("\n--- Initial T_t   : %lf\n",p_setup.T_t);
+    printf("\n--- Initial P_t   : %lf\n",p_setup.P_t);
+    printf("\n--- Initial rho   : %lf\n",p_setup.i_rho);
+    printf("\n--- Initial rho*u : %lf\n",p_setup.i_rhou);
+    printf("\n--- Initial rho*v : %lf\n",p_setup.i_rhov);
+    printf("\n--- Initial e     : %lf\n",p_setup.i_e);
+
 }
 
 /* 

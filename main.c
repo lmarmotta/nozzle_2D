@@ -18,6 +18,8 @@ void export_fields(t_points ** pnts, t_define p_setup);
 void alloc_struct_matrix(t_points *** pnts, int imax, int jmax);
 void build_fluxes(t_define p_setup, t_points ** pnts);
 void free_struct_matrix(t_points ** pnts, int imax);
+void apply_initial_condition(t_define p_setup, t_points ** pnts);
+void dump_setup(t_define p_setup);
 
 /* 
  * Main function
@@ -32,20 +34,19 @@ int main(int argc, char * argv[]){
         printf("./nozzle <mesh_file>\n"); exit(1); 
     }
 
-    /* Prompt the user about the procedure */
-
-    printf("\n-Processing input file: %s\n",argv[1]);
-
     /* Read problem setup and feed the setup struct */
 
     t_define p_setup;
 
     char * setup_name = "input.in";
 
+    /* Prompt the user about the procedure */
+
+    printf("\n-Processing input file: %s\n",setup_name);
+
     read_setup(setup_name, &p_setup);
 
-    printf("\n--Total Temperature : %lf\n", p_setup.T_t);
-    printf("\n--Total Pressure    : %lf\n", p_setup.P_t);
+    dump_setup(p_setup);
 
     /* Prompt the user with respect to the mesh file */
 
@@ -67,6 +68,12 @@ int main(int argc, char * argv[]){
 
     read_mesh_cgns(argv[1], pnts);
 
+    /* Apply the initial condition. */
+
+    printf("\n-Computing the initial condition.\n");
+
+    apply_initial_condition(p_setup, pnts);
+
     /* Now compute the proper spatial transformations. */
 
     printf("\n-Computing the proper transformations.\n");
@@ -81,9 +88,13 @@ int main(int argc, char * argv[]){
 
     /* Export post-processor file. */
 
+    printf("\n-Output solution.\n");
+
     export_fields(pnts,p_setup);
 
     /* Free the main struct */
+
+    printf("\n-Free memory.\n");
 
     free_struct_matrix(pnts, p_setup.imax);
 
