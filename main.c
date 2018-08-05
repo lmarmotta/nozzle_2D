@@ -76,6 +76,8 @@ int main(int argc, char * argv[]){
 
     printf("\n-Output solution.\n");
 
+    comp_analysis(pnts, p_setup);
+
     export_fields(pnts,p_setup);
 
     /* Free the main struct */

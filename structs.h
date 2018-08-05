@@ -56,4 +56,8 @@ typedef struct t_points{
 
     double q_hat[4], e_hat[4], f_hat[4];
 
+    /* Comprehensive variables. */
+
+    double mach, sound_speed, pressure;
+
 } t_points;
