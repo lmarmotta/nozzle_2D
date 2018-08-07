@@ -18,9 +18,11 @@ typedef struct t_define{
 
     int n_max_iter;
 
-    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, dt;
+    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv;
 
-    double BCIN_u, BCIN_v, BCIN_p, BCIN_t;
+    /* Pressure inlet variables. */
+
+    double BCIN_udir, BCIN_vdir, BCIN_pt, BCIN_tt, BCIN_p;
 
 } t_define;
 

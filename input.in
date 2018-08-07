@@ -4,8 +4,10 @@ i_rhou 18.45
 i_rhov 0.000
 i_e 16868.91
 n_max_iter 10
-dt 0.1
-BCIN_u 277.75
-BCIN_v 0.0
+CFL 0.1
+BCIN_udir 1.0
+BCIN_vdir 0.0
+BCIN_pt 8285.67
+BCIN_tt 338.4
 BCIN_p 5722.15
-BCIN_t 300.0
+F_Cv 717.50

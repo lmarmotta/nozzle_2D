@@ -77,6 +77,7 @@ int main(int argc, char * argv[]){
 
         build_fluxes(p_setup, pnts);
         compute_rhs(p_setup, pnts);
+        boundary_condition(p_setup, pnts);
 
         /* Prompt the iteration number. */
 

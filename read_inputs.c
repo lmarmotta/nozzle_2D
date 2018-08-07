@@ -49,17 +49,27 @@ void read_setup(char * setup_name, t_define * p_setup){
 
     /* Read the DT. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dt) != 2)
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->CFL) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
-    /* Read the BCIN_u. */
+    /* Read the BCIN_udir. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_u) != 2)
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_udir) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
-    /* Read the BCIN_v. */
+    /* Read the BCIN_vdir. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_v) != 2)
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_vdir) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_pt. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_pt) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_tt. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_tt) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Read the BCIN_p. */
@@ -67,9 +77,9 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_p) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
-    /* Read the BCIN_t. */
+    /* Read the F_Cv. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_p) != 2)
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->F_Cv) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Close the file */
@@ -79,11 +89,27 @@ void read_setup(char * setup_name, t_define * p_setup){
 
 void dump_setup(t_define p_setup){
 
+    printf("\n--- Initial Conditions ---\n");
+
     printf("\n--- Initial rho   : %lf\n",p_setup.i_rho);
     printf("\n--- Initial rho*u : %lf\n",p_setup.i_rhou);
     printf("\n--- Initial rho*v : %lf\n",p_setup.i_rhov);
     printf("\n--- Initial e     : %lf\n",p_setup.i_e);
 
+    printf("\n--- Boundary Conditions ---\n");
+
+    printf("\n--- BCIN_udir : %lf\n",p_setup.BCIN_udir);
+    printf("\n--- BCIN_vdir : %lf\n",p_setup.BCIN_vdir);
+    printf("\n--- BCIN_pt   : %lf\n",p_setup.BCIN_pt);
+    printf("\n--- BCIN_tt   : %lf\n",p_setup.BCIN_tt);
+    printf("\n--- BCIN_p    : %lf\n",p_setup.BCIN_p);
+
+    printf("\n--- Run setup ---\n");
+
+    printf("\n--- n_max_iter : %d\n",p_setup.n_max_iter);
+    printf("\n--- CFL        : %lf\n",p_setup.CFL);
+    printf("\n--- gamma      : %lf\n",p_setup.gamma);
+    printf("\n--- F_Cv       : %lf\n",p_setup.F_Cv);
 }
 
 /* 
