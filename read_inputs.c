@@ -82,6 +82,11 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->F_Cv) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read the F_R. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->F_R) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
     /* Close the file */
 
     fclose(fp_file);
@@ -110,6 +115,7 @@ void dump_setup(t_define p_setup){
     printf("\n--- CFL        : %lf\n",p_setup.CFL);
     printf("\n--- gamma      : %lf\n",p_setup.gamma);
     printf("\n--- F_Cv       : %lf\n",p_setup.F_Cv);
+    printf("\n--- F_R        : %lf\n",p_setup.F_R);
 }
 
 /* 

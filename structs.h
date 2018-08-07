@@ -18,7 +18,7 @@ typedef struct t_define{
 
     int n_max_iter;
 
-    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv;
+    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv, F_R;
 
     /* Pressure inlet variables. */
 
@@ -65,5 +65,9 @@ typedef struct t_points{
     /* Comprehensive variables. */
 
     double mach, sound_speed, pressure;
+
+    /* Time step specifics. */
+
+    double dt;
 
 } t_points;

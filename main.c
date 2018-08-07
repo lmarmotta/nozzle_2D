@@ -71,12 +71,19 @@ int main(int argc, char * argv[]){
 
     int iter;
 
+    /* Apply the initial boundary conditions. */
+
+    boundary_condition(p_setup, pnts);
+
+    /* Start the iterative procedure. */
+
     for (iter = 0; iter< p_setup.n_max_iter; iter++){
 
         /* Now, build the RHS_ij. */
 
         build_fluxes(p_setup, pnts);
         compute_rhs(p_setup, pnts);
+        local_time(p_setup, pnts);
         boundary_condition(p_setup, pnts);
 
         /* Prompt the iteration number. */
