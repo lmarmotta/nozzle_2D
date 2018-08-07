@@ -16,7 +16,11 @@ typedef struct t_define{
 
     /* Properties which come from the input file. */
 
-    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e;
+    int n_max_iter;
+
+    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, dt;
+
+    double BCIN_u, BCIN_v, BCIN_p, BCIN_t;
 
 } t_define;
 
@@ -54,7 +58,7 @@ typedef struct t_points{
 
     /* Transformed fluxes. */
 
-    double q_hat[4], e_hat[4], f_hat[4];
+    double q_hat[4], e_hat[4], f_hat[4], RHS[4];
 
     /* Comprehensive variables. */
 

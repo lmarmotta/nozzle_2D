@@ -1,7 +1,11 @@
-T_t 531.2
-P_t 2117.0
 gamma 1.4
 i_rho 0.066
 i_rhou 18.45
 i_rhov 0.000
 i_e 16868.91
+n_max_iter 10
+dt 0.1
+BCIN_u 277.75
+BCIN_v 0.0
+BCIN_p 5722.15
+BCIN_t 300.0

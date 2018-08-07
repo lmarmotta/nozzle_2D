@@ -18,3 +18,5 @@ void free_struct_matrix(t_points ** pnts, int imax);
 void apply_initial_condition(t_define p_setup, t_points ** pnts);
 void dump_setup(t_define p_setup);
 void comp_analysis(t_points ** pnts, t_define p_setup);
+void boundary_condition(t_define p_setup, t_points ** pnts);
+void compute_rhs(t_define p_setup, t_points ** pnts);

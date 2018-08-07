@@ -17,16 +17,6 @@ void read_setup(char * setup_name, t_define * p_setup){
     FILE * fp_file = fopen(setup_name,"r");
     if (fp_file == NULL) {printf("\n ERROR: Unable to read setup file.\n"); exit(1);}
 
-    /* Read total temperature */
-
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->T_t) != 2)
-    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
-
-    /* Read total pressure. */
-
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->P_t) != 2)
-    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
-
     /* Read the gamma constant. */
 
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->gamma) != 2)
@@ -47,9 +37,39 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_rhov) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
-    /* Read the initial rho*v value. */
+    /* Read the initial e value. */
 
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->i_e) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the max number of iterations. */
+
+    if (fscanf(fp_file,"%s %d", buf, &p_setup->n_max_iter) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the DT. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dt) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_u. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_u) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_v. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_v) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_p. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_p) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the BCIN_t. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->BCIN_p) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Close the file */
@@ -59,8 +79,6 @@ void read_setup(char * setup_name, t_define * p_setup){
 
 void dump_setup(t_define p_setup){
 
-    printf("\n--- Initial T_t   : %lf\n",p_setup.T_t);
-    printf("\n--- Initial P_t   : %lf\n",p_setup.P_t);
     printf("\n--- Initial rho   : %lf\n",p_setup.i_rho);
     printf("\n--- Initial rho*u : %lf\n",p_setup.i_rhou);
     printf("\n--- Initial rho*v : %lf\n",p_setup.i_rhov);
@@ -140,8 +158,7 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
      * memory have something to do with it. Because of this limitation, a
      * different type of allocation is used here, where an array pointer is
      * used instead. It is only compatible with the -std=c99 as the concept of
-     * variable-length arrays is used.
-     * https://stackoverflow.com/questions/32050256/function-to-dynamically-allocate-matrix*/
+     * variable-length arrays is used. */
 
     double(*x_coord)[(int)irmax[0]] = malloc(sizeof(double[(int)irmax[1]][(int)irmax[0]]));
     double(*y_coord)[(int)irmax[0]] = malloc(sizeof(double[(int)irmax[1]][(int)irmax[0]]));

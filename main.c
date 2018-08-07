@@ -66,11 +66,23 @@ int main(int argc, char * argv[]){
 
     calc_metric_relations(p_setup, pnts);
 
-    /* Now, compute the basic fluxes. */
 
-    printf("\n-Computing the fluxes.\n");
+    printf("\n-Starting iterations.\n\n");
 
-    build_fluxes(p_setup, pnts);
+    int iter;
+
+    for (iter = 0; iter< p_setup.n_max_iter; iter++){
+
+        /* Now, build the RHS_ij. */
+
+        build_fluxes(p_setup, pnts);
+        compute_rhs(p_setup, pnts);
+
+        /* Prompt the iteration number. */
+
+        printf(" -- > iter: %d | RHS[1] = \n",iter);
+    }
+    
 
     /* Export post-processor file. */
 

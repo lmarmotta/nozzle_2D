@@ -47,10 +47,12 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
     /* Build the basic fluxes without transformation. */
 
-    double rho, u, v, e, p;
-
     for (i = 0; i<imax; i++){
         for (j = 0; j<jmax; j++){
+
+            /* Limit the scope of these variables. */
+
+            double rho, u, v, e, p;
 
             /* Separate the properties we need. */
 
@@ -88,6 +90,50 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
         }
     }
+}
+
+void compute_rhs(t_define p_setup, t_points ** pnts){
+
+    /* Separate bounds of the field. */
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+    /* Compute the RHS for the internal points. */
+
+    int i, j; 
+
+    for (i = 1; i<imax-1; i++){
+        for (j = 1; j<jmax-1; j++){
+
+            double d_Eh0, d_Eh1, d_Eh2, d_Eh3;
+            double d_Fh0, d_Fh1, d_Fh2, d_Fh3;
+
+            /* Compute the E fluxes. */
+
+            d_Eh0 = ( pnts[i+1][j].e_hat[0] - pnts[i-1][j].e_hat[0] ) / 2.0;
+            d_Eh1 = ( pnts[i+1][j].e_hat[1] - pnts[i-1][j].e_hat[1] ) / 2.0;
+            d_Eh2 = ( pnts[i+1][j].e_hat[2] - pnts[i-1][j].e_hat[2] ) / 2.0;
+            d_Eh3 = ( pnts[i+1][j].e_hat[3] - pnts[i-1][j].e_hat[3] ) / 2.0;
+
+            /* Compute the F fluxes. */
+
+            d_Fh0 = ( pnts[i][j+1].f_hat[0] - pnts[i][j-1].f_hat[0] ) / 2.0; 
+            d_Fh1 = ( pnts[i][j+1].f_hat[1] - pnts[i][j-1].f_hat[1] ) / 2.0; 
+            d_Fh2 = ( pnts[i][j+1].f_hat[2] - pnts[i][j-1].f_hat[2] ) / 2.0; 
+            d_Fh3 = ( pnts[i][j+1].f_hat[3] - pnts[i][j-1].f_hat[3] ) / 2.0; 
+
+            /* Store the RHS properly. */
+
+            pnts[i][j].RHS[0] = d_Eh0 + d_Fh0;
+            pnts[i][j].RHS[1] = d_Eh1 + d_Fh1;
+            pnts[i][j].RHS[2] = d_Eh2 + d_Fh2;
+            pnts[i][j].RHS[3] = d_Eh3 + d_Fh3;
+
+        }
+    }
+
+
 
 
 }

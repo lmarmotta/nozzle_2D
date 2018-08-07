@@ -23,17 +23,19 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"Cov U\" , \"Cov V\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     int i, j;
 
     for (j = 0; j < p_setup.jmax; j++){
         for (i = 0; i < p_setup.imax; i++){
-            fprintf(f_out,"%lf %lf %lf %lf\n",pnts[i][j].x, 
-                                              pnts[i][j].y,
-                                              pnts[i][j].mach,
-                                              pnts[i][j].pressure);
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf\n",pnts[i][j].x, 
+                                                      pnts[i][j].y,
+                                                      pnts[i][j].mach,
+                                                      pnts[i][j].pressure,
+                                                      pnts[i][j].cov_u,
+                                                      pnts[i][j].cov_v);
         }
     }
 
