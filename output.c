@@ -90,11 +90,11 @@ void comp_analysis(t_points ** pnts, t_define p_setup){
     }
 }
 
-void dump_iteration(int iter, FILE ** res_output, t_define p_setup){
+void dump_iteration(int iter){
 
     /* Dump residues to the screen. */
 
-    printf(" -- iter: %d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
+    printf(" -- iter: %10d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
                                                                                                  log10(max_rhs_rho ), 
                                                                                                  log10(max_rhs_rhou), 
                                                                                                  log10(max_rhs_rhov), 
@@ -102,11 +102,15 @@ void dump_iteration(int iter, FILE ** res_output, t_define p_setup){
 
     
 
-    fprintf(*res_output,"%d %lf %lf %lf %lf\n",iter,log10(max_rhs_rho),log10(max_rhs_rhou),log10(max_rhs_rhov),log10(max_rhs_e));
+
+}
+
+void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
+
+    fprintf(*res_output,"%10d %lf %lf %lf %lf\n",iter,log10(max_rhs_rho),log10(max_rhs_rhou),log10(max_rhs_rhov),log10(max_rhs_e));
 
     if (log10(max_rhs_rho)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
-
 }

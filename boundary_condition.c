@@ -127,7 +127,7 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
         /* Separate the primitives. */
 
         double u = pnts[i][j].q[1]/pnts[i][j].q[0];
-        double v = pnts[i][j].q[0]/pnts[i][j].q[0];
+        double v = pnts[i][j].q[2]/pnts[i][j].q[0];
 
         /* Compute the exit boundary condition. Here I am considering, for now,
          * that the flow is exiting subsonic. */
@@ -148,8 +148,5 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
         pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[0]*v;
         pnts[i][j].q_hat[3] = pnts[i][j].jm1 * ( p / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q[0] * ( pow(u,2.0) + pow(v,2.0) );
 
-        /* Here the boundary condition of the exit goes. */
-
     }
-
 }

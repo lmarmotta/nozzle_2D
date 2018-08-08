@@ -48,10 +48,9 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
     /* Do the First stage of the RK scheme. */
 
-    int st;
     int n_stages = 5;
 
-    for (st = 0; st < n_stages; st ++){
+    for (int st = 0; st < n_stages; st ++){
         for (int i = 0; i < imax; i++){
             for (int j = 0; j < jmax; j++){
 

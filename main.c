@@ -81,7 +81,7 @@ int main(int argc, char * argv[]){
     int out_rate = p_setup.p_rate;
     int out_save = p_setup.n_save;
 
-    for (int iter = 0; iter<p_setup.n_max_iter; iter++){
+    for (int iter = 1; iter <= p_setup.n_max_iter; iter++){
 
         /* Now, build the fluxes. */
 
@@ -101,12 +101,14 @@ int main(int argc, char * argv[]){
 
         /* Dump quantities. */
 
-        if (iter==out_rate){
-            dump_iteration(iter, &res_output, p_setup);
+        dump_residue_file(iter, &res_output);
+
+        if (iter == out_rate){
+            dump_iteration(iter);
             out_rate += p_setup.p_rate;
         }
 
-        if (iter==out_save){
+        if (iter == out_save){
             printf("\n Outputing solution. \n\n");
             comp_analysis(pnts, p_setup);
             export_fields(pnts,p_setup);
@@ -114,6 +116,8 @@ int main(int argc, char * argv[]){
         }
     }
     
+    /* Close the residue file. */
+
     fclose(res_output);
 
     /* Export post-processor file. */

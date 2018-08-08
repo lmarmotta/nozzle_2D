@@ -22,4 +22,5 @@ void boundary_condition(t_define p_setup, t_points ** pnts);
 void compute_rhs(t_define p_setup, t_points ** pnts);
 void local_time(t_define p_setup, t_points ** pnts);
 void rungeKuttaJST(t_define p_setup, t_points ** pnts);
-void dump_iteration(int iter, FILE ** res_output, t_define p_setup);
+void dump_iteration(int iter);
+void dump_residue_file(int iter, FILE ** res_output);
