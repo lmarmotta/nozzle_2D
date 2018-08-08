@@ -83,3 +83,4 @@ void comp_analysis(t_points ** pnts, t_define p_setup){
         }
     }
 }
+

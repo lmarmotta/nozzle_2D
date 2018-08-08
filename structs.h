@@ -24,6 +24,10 @@ typedef struct t_define{
 
     double BCIN_udir, BCIN_vdir, BCIN_pt, BCIN_tt, BCIN_p;
 
+    /* Maximun residue of the equation. */
+
+    double max_RHS;
+
 } t_define;
 
 /*

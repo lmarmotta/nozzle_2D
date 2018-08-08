@@ -80,7 +80,7 @@ int main(int argc, char * argv[]){
 
     int iter;
 
-    for (iter = 0; iter< p_setup.n_max_iter; iter++){
+    for (iter = 0; iter<p_setup.n_max_iter; iter++){
 
         /* Now, build the fluxes. */
 
@@ -92,6 +92,7 @@ int main(int argc, char * argv[]){
 
         /* March in time Jameson ! */
 
+        rungeKuttaJST(p_setup, pnts);
 
         /* Update Boundary conditions. */
 
