@@ -33,38 +33,48 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
         i = 0;
 
-        /* Separate the primitives. */
+        /* Sepaate the primitives. */
 
         double u = pnts[i][j].q[1]/pnts[i][j].q[0];
         double v = pnts[i][j].q[2]/pnts[i][j].q[0];
 
-        double u_mag = sqrt( pow(u,2.0) + pow(v,2.0) );
+        /* Separate bizu boundary conditions. */
 
-        /* Separate the critical sound speed. */
+        double gamm1 = p_setup.gamma - 1.0;
 
-        double a_ssqr = 2.0 * p_setup.gamma * ( (p_setup.gamma - 1.0)/(p_setup.gamma + 1.0) ) * p_setup.F_Cv * p_setup.BCIN_tt;
+        /* Compute the velocity magnitude. */
 
-        /* Compute the pressure based on the total pressure definition. */
-        
-        double p = p_setup.BCIN_pt * ( 1.0 - ((p_setup.gamma - 1.0)/(p_setup.gamma + 1.0)) * u_mag/a_ssqr); 
+        double velf = sqrt( pow(u,2.0) + pow(v,2.0) );
 
-        /* Almost forgot ! */
+        /* Compute the squared critical speed of sound. */
 
-        p = pow(p,(p_setup.gamma/p_setup.gamma - 1.0));
+        double acrsq = 2.0*(p_setup.gamma * p_setup.F_R * p_setup.BCIN_pt)/(p_setup.gamma + 1.0);
 
-        /* Update the cartesian Q. */
+        /* Compute the static pressure. */
 
-        pnts[i][j].q[0] = pnts[i][j].q[0];
-        pnts[i][j].q[1] = pnts[i][j].q[0]*u;
-        pnts[i][j].q[2] = pnts[i][j].q[0]*v;
-        pnts[i][j].q[3] = ( p / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q[0] * ( pow(u,2.0) + pow(v,2.0) );
+        double auxcte1 = gamm1/(p_setup.gamma + 1.0);
+        double auxcte2 = p_setup.gamma/gamm1;
+
+        double aux1  = 1.0 - (auxcte1 * ( pow(velf,2.0) )/acrsq);
+        double eintf = p_setup.F_Cv * p_setup.BCIN_pt * aux1;
+        double pf    = p_setup.BCIN_pt * (pow(aux1,auxcte2));
+
+        double rhof = pf / (gamm1*eintf);
+        double ef   = rhof*( eintf + 0.5*( pow(velf,2.0) ) );
+
+        /* Update the Q. */
+
+        pnts[i][j].q[0] = rhof;
+        pnts[i][j].q[1] = rhof*u*p_setup.BCIN_udir;
+        pnts[i][j].q[2] = rhof*v*p_setup.BCIN_vdir;
+        pnts[i][j].q[3] = ef;
 
         /* Update the transformed Q_hat. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j].jm1 * pnts[i][j].q[0];
-        pnts[i][j].q_hat[1] = pnts[i][j].jm1 * pnts[i][j].q[0]*u;
-        pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[0]*v;
-        pnts[i][j].q_hat[3] = pnts[i][j].jm1 * ( p / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q[0] * ( pow(u,2.0) + pow(v,2.0) );
+        pnts[i][j].q_hat[0] = pnts[i][j].jm1 * (rhof);
+        pnts[i][j].q_hat[1] = pnts[i][j].jm1 * (rhof*u*p_setup.BCIN_udir);
+        pnts[i][j].q_hat[2] = pnts[i][j].jm1 * (rhof*v*p_setup.BCIN_vdir);
+        pnts[i][j].q_hat[3] = pnts[i][j].jm1 * (ef);
 
     }
 

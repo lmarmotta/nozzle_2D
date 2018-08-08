@@ -66,25 +66,39 @@ int main(int argc, char * argv[]){
 
     calc_metric_relations(p_setup, pnts);
 
+    /* Apply the initial boundary conditions. */
+
+    boundary_condition(p_setup, pnts);
+
+    /* Compute local time step for our mesh. */
+
+    local_time(p_setup, pnts);
+
+    /* Start the iterative procedure. */
 
     printf("\n-Starting iterations.\n\n");
 
     int iter;
 
-    /* Apply the initial boundary conditions. */
-
-    boundary_condition(p_setup, pnts);
-
-    /* Start the iterative procedure. */
-
     for (iter = 0; iter< p_setup.n_max_iter; iter++){
 
-        /* Now, build the RHS_ij. */
+        /* Now, build the fluxes. */
 
         build_fluxes(p_setup, pnts);
+
+        /* Compute the RHS. */
+
         compute_rhs(p_setup, pnts);
-        local_time(p_setup, pnts);
+
+        /* Mach in time Jameson ! */
+
+
+        /* Update Boundary conditions. */
+
         boundary_condition(p_setup, pnts);
+
+        /* Compute residue. */
+
 
         /* Prompt the iteration number. */
 
