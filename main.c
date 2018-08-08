@@ -15,32 +15,30 @@ int main(int argc, char * argv[]){
 
     /* Get the input mesh and verify if it is ok ! */
 
-    if (argc != 2){ 
+    if (argc != 3){ 
         printf("ERROR: Problem with arguments.\n");
-        printf("./nozzle <mesh_file>\n"); exit(1); 
+        printf("./nozzle <input file> <mesh_file>\n"); exit(1); 
     }
 
     /* Read problem setup and feed the setup struct */
 
     t_define p_setup;
 
-    char * setup_name = "input.in";
-
     /* Prompt the user about the procedure */
 
-    printf("\n-Processing input file: %s\n",setup_name);
+    printf("\n-Processing input file: %s\n",argv[1]);
 
-    read_setup(setup_name, &p_setup);
+    read_setup(argv[1], &p_setup);
 
     dump_setup(p_setup);
 
     /* Prompt the user with respect to the mesh file */
 
-    printf("\n-Processing mesh file: %s\n",argv[1]);
+    printf("\n-Processing mesh file: %s\n",argv[2]);
 
     /* Get the problem size */
 
-    read_mesh_size(argv[1], &p_setup.imax, &p_setup.jmax);
+    read_mesh_size(argv[2], &p_setup.imax, &p_setup.jmax);
 
     printf("\n--Mesh IMAX: %d Mesh JMAX: %d\n",p_setup.imax,p_setup.jmax);
 
@@ -52,7 +50,7 @@ int main(int argc, char * argv[]){
 
     /* Read the whole mesh and feed the structs. */
 
-    read_mesh_cgns(argv[1], pnts);
+    read_mesh_cgns(argv[2], pnts);
 
     /* Apply the initial condition. */
 
@@ -81,6 +79,7 @@ int main(int argc, char * argv[]){
     FILE * res_output = fopen("residue.dat", "w");
 
     int out_rate = p_setup.p_rate;
+    int out_save = p_setup.n_save;
 
     for (int iter = 0; iter<p_setup.n_max_iter; iter++){
 
@@ -100,13 +99,19 @@ int main(int argc, char * argv[]){
 
         boundary_condition(p_setup, pnts);
 
-        /* Compute and dump residue. */
+        /* Dump quantities. */
 
         if (iter==out_rate){
             dump_iteration(iter, &res_output, p_setup);
             out_rate += p_setup.p_rate;
         }
 
+        if (iter==out_save){
+            printf("\n Outputing solution. \n\n");
+            comp_analysis(pnts, p_setup);
+            export_fields(pnts,p_setup);
+            out_save += p_setup.n_save;
+        }
     }
     
     fclose(res_output);

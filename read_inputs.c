@@ -97,6 +97,11 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->eps_blow) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read the p_rate. */
+
+    if (fscanf(fp_file,"%s %d", buf, &p_setup->n_save) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
     /* Close the file */
 
     fclose(fp_file);

@@ -95,6 +95,9 @@ void dump_iteration(int iter, FILE ** res_output, t_define p_setup){
 
     fprintf(*res_output,"%d %lf %lf %lf %lf\n",iter,log10(max_rhs_rho),log10(max_rhs_rhou),log10(max_rhs_rhov),log10(max_rhs_e));
 
-    if (log10(max_rhs_rho)>p_setup.eps_blow) exit(1);
+    if (log10(max_rhs_rho)>p_setup.eps_blow){
+        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
+        exit(1);
+    }
 
 }
