@@ -42,14 +42,18 @@ void local_time(t_define p_setup, t_points ** pnts){
             double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
             double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
 
-            double e = pnts[i][j].q[4];
+            double e = pnts[i][j].q[3];
             double p = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
             double a =  sqrt(p_setup.gamma*p/pnts[i][j].q[0]);
 
             /* Compute the characteristic speed. */
 
-            double term_1 = abs(pnts[i][j].cov_u) + a*sqrt( pow(pnts[i][j].ksi_x,2.0) + pow(pnts[i][j].ksi_y,2.0) );
-            double term_2 = abs(pnts[i][j].cov_v) + a*sqrt( pow(pnts[i][j].eta_x,2.0) + pow(pnts[i][j].eta_y,2.0) );
+            double term_1 = fabs(pnts[i][j].cov_u) + a*sqrt( pow(pnts[i][j].ksi_x,2.0) + pow(pnts[i][j].ksi_y,2.0) );
+            double term_2 = fabs(pnts[i][j].cov_v) + a*sqrt( pow(pnts[i][j].eta_x,2.0) + pow(pnts[i][j].eta_y,2.0) );
+
+            double r = -2.0;
+
+            double qq = fabs(r);
 
             double c_ij = max(term_1, term_2);
 

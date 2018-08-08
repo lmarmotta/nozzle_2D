@@ -90,7 +90,7 @@ int main(int argc, char * argv[]){
 
         compute_rhs(p_setup, pnts);
 
-        /* Mach in time Jameson ! */
+        /* March in time Jameson ! */
 
 
         /* Update Boundary conditions. */
