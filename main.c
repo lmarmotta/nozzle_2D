@@ -78,9 +78,11 @@ int main(int argc, char * argv[]){
 
     printf("\n-Starting iterations.\n\n");
 
-    int iter;
+    FILE * res_output = fopen("residue.dat", "w");
 
-    for (iter = 0; iter<p_setup.n_max_iter; iter++){
+    int out_rate = p_setup.p_rate;
+
+    for (int iter = 0; iter<p_setup.n_max_iter; iter++){
 
         /* Now, build the fluxes. */
 
@@ -100,10 +102,14 @@ int main(int argc, char * argv[]){
 
         /* Compute and dump residue. */
 
-        dump_iteration(iter);
+        if (iter==out_rate){
+            dump_iteration(iter, &res_output, p_setup);
+            out_rate += p_setup.p_rate;
+        }
 
     }
     
+    fclose(res_output);
 
     /* Export post-processor file. */
 

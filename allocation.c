@@ -9,8 +9,6 @@
 /* Allocate the main struct of the code. */
 
 void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
-    
-    int i;
 
     /* Malloc the first row of the memory. */
 
@@ -24,7 +22,7 @@ void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
 
     /* Now, loop through pointers initializing the columns. */
 
-    for (i = 0; i<imax; i++){
+    for (int i = 0; i<imax; i++){
 
         pnts[i] = NULL;
 
@@ -42,9 +40,7 @@ void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
 
 void free_struct_matrix(t_points ** pnts, int imax){
 
-    int i;
-
-    for (i = 0; i<imax; i++) free(pnts[i]);
+    for (int i = 0; i<imax; i++) free(pnts[i]);
         
     free(pnts);
 }

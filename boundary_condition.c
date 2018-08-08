@@ -9,16 +9,14 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
     /* Separate bounds of the field. */
 
-    int i, j;
-
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
     /* Now, apply the symmetry B.C. */
 
-    for (i = 1; i < imax-1; i++){
+    for (int i = 1; i < imax-1; i++){
 
-        j = jmax-1;
+        int j = jmax-1;
 
         pnts[i][j].q[0] = pnts[i][j-2].q[0];
         pnts[i][j].q[1] = pnts[i][j-2].q[1];
@@ -29,9 +27,9 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
     /* Now, apply the inlet boundary condition. */
 
-    for (j = 0; j < jmax; j++){
+    for (int j = 0; j < jmax; j++){
 
-        i = 0;
+        int i = 0;
 
         /* Sepaate the primitives. */
 
@@ -81,9 +79,9 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
     /* Now, apply the wall boundary condition. Look... This boundary condition
      * came from a lot of talks with Azevedo.*/
 
-    for (i = 0; i < imax; i++){
+    for (int i = 0; i < imax; i++){
 
-        j = 0; 
+        int j = 0; 
 
         /* Separate the primitive variables. */
 
@@ -123,9 +121,9 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
     /* Apply the outlet boundary condition. */
 
-    for (j = 0; j < jmax; j++){
+    for (int j = 0; j < jmax; j++){
 
-        i = imax-1;
+        int i = imax-1;
 
         /* Separate the primitives. */
 

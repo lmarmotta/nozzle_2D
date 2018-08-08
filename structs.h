@@ -16,7 +16,7 @@ typedef struct t_define{
 
     /* Properties which come from the input file. */
 
-    int n_max_iter;
+    int n_max_iter, p_rate;
 
     double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv, F_R;
 
@@ -26,7 +26,7 @@ typedef struct t_define{
 
     /* Maximun residue of the equation. */
 
-    double max_RHS;
+    double eps_blow;
 
 } t_define;
 

@@ -15,8 +15,6 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
     /* Separate bounds of the field. */
 
-    int i, j;
-
     int neq = 4;
 
     int imax = p_setup.imax;
@@ -38,8 +36,8 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
     /* Loop through the field and copy the q vector. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
             q_0[i][j][0] = pnts[i][j].q[0];
             q_0[i][j][1] = pnts[i][j].q[1];
@@ -54,8 +52,8 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
     int n_stages = 5;
 
     for (st = 0; st < n_stages; st ++){
-        for (i = 0; i < imax; i++){
-            for (j = 0; j < jmax; j++){
+        for (int i = 0; i < imax; i++){
+            for (int j = 0; j < jmax; j++){
 
                 /* Compute the first step of the RK5. */
 
@@ -84,15 +82,13 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
 void local_time(t_define p_setup, t_points ** pnts){
 
-    int i, j;
-
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
     /* Loop through the points computing the dt. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
             /* Compute the sound velocity. */
 
@@ -115,8 +111,6 @@ void local_time(t_define p_setup, t_points ** pnts){
 
             pnts[i][j].dt = p_setup.CFL / c_ij;
 
-
         }
     }
-
 }

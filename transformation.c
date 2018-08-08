@@ -28,12 +28,10 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
      * internal points respecting the symmetry boundary conditions where jmax-1
      * is the centerline and the values of jmax = jmax - 2.*/
 
-    int i, j; 
-
     /* Internal points. */
 
-    for (i = 1; i < imax-1; i++){
-        for (j = 1; j < jmax-1; j++){
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
 
             pnts[i][j].x_ksi = 0.5 * ( (pnts[i+1][j].x - pnts[i-1][j].x) / dksi );
             pnts[i][j].y_ksi = 0.5 * ( (pnts[i+1][j].y - pnts[i-1][j].y) / dksi );
@@ -46,9 +44,9 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Inlet internal points. */
 
-    for (j = 1; j < jmax-1; j++){
+    for (int j = 1; j < jmax-1; j++){
 
-        i = 0;
+        int i = 0;
 
         pnts[i][j].x_ksi = ( pnts[i+1][j].x - pnts[i][j].x ) / dksi;
         pnts[i][j].y_ksi = ( pnts[i+1][j].y - pnts[i][j].y ) / dksi;
@@ -60,9 +58,9 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Symmetry internal points. */
 
-    for (i = 1; i < imax-1; i++){
+    for (int i = 1; i < imax-1; i++){
 
-        j = jmax-1;
+        int j = jmax-1;
 
         pnts[i][j].x_ksi = 0.5 * ( ( pnts[i+1][j].x - pnts[i-1][j].x ) / dksi );
         pnts[i][j].y_ksi = 0.5 * ( ( pnts[i+1][j].y - pnts[i-1][j].y ) / dksi );
@@ -74,9 +72,9 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Outlet internal points. */
 
-    for (j = 1; j < jmax-1; j++){
+    for (int j = 1; j < jmax-1; j++){
 
-        i = imax-1;
+        int i = imax-1;
 
         pnts[i][j].x_ksi = ( pnts[i][j].x - pnts[i-1][j].x ) / dksi;
         pnts[i][j].y_ksi = ( pnts[i][j].y - pnts[i-1][j].y ) / dksi;
@@ -88,9 +86,9 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Wall internal points. */
 
-    for (i = 1; i < imax-1; i++){
+    for (int i = 1; i < imax-1; i++){
 
-        j = 0;
+        int j = 0;
 
         pnts[i][j].x_ksi = 0.5 * ( (pnts[i+1][j].x - pnts[i-1][j].x) / dksi );
         pnts[i][j].y_ksi = 0.5 * ( (pnts[i+1][j].y - pnts[i-1][j].y) / dksi );
@@ -101,7 +99,7 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Lower left corner point. */
 
-    i = 0; j = 0;
+    int i = 0; int j = 0;
 
     pnts[i][j].x_ksi = ( pnts[i+1][j].x - pnts[i][j].x ) / dksi;
     pnts[i][j].y_ksi = ( pnts[i+1][j].y - pnts[i][j].y ) / dksi;
@@ -141,8 +139,8 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
     /* Now compute the transformation matrix. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
             pnts[i][j].j_1   = pow( (pnts[i][j].x_ksi*pnts[i][j].y_eta 
                                    - pnts[i][j].x_eta*pnts[i][j].y_ksi), -1.0);
@@ -156,8 +154,8 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
     /* Now, compute the proper derivatives which we need to include the
      * formulation itself. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
             pnts[i][j].ksi_x =   pnts[i][j].j_1*pnts[i][j].y_eta;
             pnts[i][j].ksi_y = - pnts[i][j].j_1*pnts[i][j].x_eta;
@@ -167,45 +165,4 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
 
         }
     }
-
 }
-
-/* -------------------------------------------------------------------------- */
-/*
- * This function is only for debug purposes. It tests the ranges of the loops
- * that will be used throughout the code in order to compute all the properties
- * of the field.  
- */
-
-// void test_loop_ranges(T_DEFINE p_setup, T_POINTS ** pnts){
-
-    // int i, j;
-
-    // int imax = p_setup.imax;
-    // int jmax = p_setup.jmax;
-
-    /* Apply value through all nodes. */
-
-    // for (i = 0; i < imax; i++){
-        // for (j = 0; j < jmax; j++){
-            // pnts[i][j].dummy = 1.0;
-        // }
-    // }
-
-    /* Apply value only throgh the WALL. */
-
-    // for (i = 0; i < imax; i++) pnts[i][0].dummy = 100.0;
-
-    /* Apply values on the INLET. */
-
-    // for (j = 0; j < jmax; j++) pnts[0][j].dummy = 100.0;
-
-    /* Apply values on the upper SIDE. */
-
-    // for (i = 0; i < imax; i++) pnts[i][jmax-1].dummy = 100.0;
-
-    /* Apply values on the OUTLET. */
-
-    // for (j = 0; j < jmax; j++) pnts[imax-1][j].dummy = 100.0;
-
-// }

@@ -87,6 +87,16 @@ void read_setup(char * setup_name, t_define * p_setup){
     if (fscanf(fp_file,"%s %lf", buf, &p_setup->F_R) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
+    /* Read the p_rate. */
+
+    if (fscanf(fp_file,"%s %d", buf, &p_setup->p_rate) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the p_rate. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->eps_blow) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
     /* Close the file */
 
     fclose(fp_file);
@@ -202,10 +212,8 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
 
     /* Feed the structs. */
 
-    int i,j;
-
-    for (i = 0; i<(int)irmax[0]; i++){
-        for (j = 0; j<(int)irmax[1]; j++){
+    for (int i = 0; i<(int)irmax[0]; i++){
+        for (int j = 0; j<(int)irmax[1]; j++){
             pnts[i][j].x = x_coord[j][i];
             pnts[i][j].y = y_coord[j][i];
         }

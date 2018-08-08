@@ -27,10 +27,8 @@ void export_fields(t_points ** pnts, t_define p_setup){
     fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"Cov U\" , \"Cov V\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
-    int i, j;
-
-    for (j = 0; j < p_setup.jmax; j++){
-        for (i = 0; i < p_setup.imax; i++){
+    for (int j = 0; j < p_setup.jmax; j++){
+        for (int i = 0; i < p_setup.imax; i++){
             fprintf(f_out,"%lf %lf %lf %lf %lf %lf\n",pnts[i][j].x, 
                                                       pnts[i][j].y,
                                                       pnts[i][j].mach,
@@ -45,8 +43,6 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
 void comp_analysis(t_points ** pnts, t_define p_setup){
 
-    int i, j;
-
     /* Separate field limits. */
 
     int imax = p_setup.imax;
@@ -58,8 +54,8 @@ void comp_analysis(t_points ** pnts, t_define p_setup){
 
     /* Loop and calc. */
 
-    for (i = 0; i < imax; i++){
-        for (j = 0; j < jmax; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
             /* Separate the needed properties. */
 
@@ -85,13 +81,20 @@ void comp_analysis(t_points ** pnts, t_define p_setup){
     }
 }
 
-void dump_iteration(int iter){
+void dump_iteration(int iter, FILE ** res_output, t_define p_setup){
 
-    printf(" -- iter # %d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
-                                                                                                  log10(max_rhs_rho ), 
-                                                                                                  log10(max_rhs_rhou), 
-                                                                                                  log10(max_rhs_rhov), 
-                                                                                                  log10(max_rhs_e));
+    /* Dump residues to the screen. */
+
+    printf(" -- iter: %d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
+                                                                                                 log10(max_rhs_rho ), 
+                                                                                                 log10(max_rhs_rhou), 
+                                                                                                 log10(max_rhs_rhov), 
+                                                                                                 log10(max_rhs_e));
+
+    
+
+    fprintf(*res_output,"%d %lf %lf %lf %lf\n",iter,log10(max_rhs_rho),log10(max_rhs_rhou),log10(max_rhs_rhov),log10(max_rhs_e));
+
+    if (log10(max_rhs_rho)>p_setup.eps_blow) exit(1);
 
 }
-

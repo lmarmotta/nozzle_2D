@@ -15,15 +15,13 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 
-    int i, j;
-
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
     /* Apply a basic initial condition. */
 
-    for (i = 0; i<imax; i++){
-        for (j = 0; j<jmax; j++){
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
 
             pnts[i][j].q[0] = p_setup.i_rho;
             pnts[i][j].q[1] = p_setup.i_rhou;
@@ -41,15 +39,13 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 
-    int i, j;
-
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
     /* Build the basic fluxes without transformation. */
 
-    for (i = 0; i<imax; i++){
-        for (j = 0; j<jmax; j++){
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
 
             /* Limit the scope of these variables. */
 
@@ -109,10 +105,8 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
     /* Compute the RHS for the internal points. */
 
-    int i, j; 
-
-    for (i = 1; i<imax-1; i++){
-        for (j = 1; j<jmax-1; j++){
+    for (int i = 1; i<imax-1; i++){
+        for (int j = 1; j<jmax-1; j++){
 
             double d_Eh0, d_Eh1, d_Eh2, d_Eh3;
             double d_Fh0, d_Fh1, d_Fh2, d_Fh3;
