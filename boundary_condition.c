@@ -83,25 +83,24 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
         int j = 0; 
 
-        /* Separate the primitive variables. */
-
-        double rho = pnts[i][j].q[0]; 
-        double e   = pnts[i][j].q[3]; 
-
         /* Zero out the V boundary condition. */
 
         pnts[i][j].cov_v = 0.0;
 
         /* Now extrapolate the covariant velocity components. */
 
-        double u_jp1 = pnts[i][j+1].q[1]/pnts[i][j+1].q[1];
-        double v_jp1 = pnts[i][j+1].q[2]/pnts[i][j+1].q[1];
+        double u_jp1 = pnts[i][j+1].q[1]/pnts[i][j+1].q[0];
+        double v_jp1 = pnts[i][j+1].q[2]/pnts[i][j+1].q[0];
 
         pnts[i][j].cov_u = pnts[i][j+1].ksi_x*u_jp1 + pnts[i][j+1].ksi_y*v_jp1;
 
         /* Now, compute the pressure in order to reconstruct. */
 
-        double p_jp1 = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u_jp1,2.0) + pow(v_jp1,2.0)) );
+        double e_jp1   = pnts[i][j+1].q[3]; 
+
+        double rho_jp1 = pnts[i][j].q[0]; 
+
+        double p_jp1 = (p_setup.gamma - 1.0)*(e_jp1 - 0.5*rho_jp1*( pow(u_jp1,2.0) + pow(v_jp1,2.0)) );
 
         /* Update the cartesian Q. */
 
