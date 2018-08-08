@@ -5,6 +5,7 @@
 
 #include "cgnslib.h"
 #include "structs.h"
+#include "externs.h"
 
 /*
  * Apply initial condition.
@@ -99,6 +100,13 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
+    /* Initialize the residue. */
+
+    max_rhs_rho  = -1.0;
+    max_rhs_rhou = -1.0;
+    max_rhs_rhov = -1.0;
+    max_rhs_e    = -1.0;
+
     /* Compute the RHS for the internal points. */
 
     int i, j; 
@@ -129,6 +137,13 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
             pnts[i][j].RHS[1] = d_Eh1 + d_Fh1;
             pnts[i][j].RHS[2] = d_Eh2 + d_Fh2;
             pnts[i][j].RHS[3] = d_Eh3 + d_Fh3;
+
+            /* Store the max residue. */
+
+            if ( fabs( pnts[i][j].RHS[0]) > max_rhs_rho )  max_rhs_rho  = fabs(pnts[i][j].RHS[0]);
+            if ( fabs( pnts[i][j].RHS[1]) > max_rhs_rhou)  max_rhs_rhou = fabs(pnts[i][j].RHS[1]);
+            if ( fabs( pnts[i][j].RHS[2]) > max_rhs_rhov)  max_rhs_rhov = fabs(pnts[i][j].RHS[2]);
+            if ( fabs( pnts[i][j].RHS[3]) > max_rhs_e   )  max_rhs_e    = fabs(pnts[i][j].RHS[3]);
 
         }
     }

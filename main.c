@@ -98,12 +98,10 @@ int main(int argc, char * argv[]){
 
         boundary_condition(p_setup, pnts);
 
-        /* Compute residue. */
+        /* Compute and dump residue. */
 
+        dump_iteration(iter);
 
-        /* Prompt the iteration number. */
-
-        printf(" -- > iter: %d | RHS[1] = \n",iter);
     }
     
 

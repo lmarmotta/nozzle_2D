@@ -5,6 +5,7 @@
 
 #include "structs.h"
 #include "cgnslib.h"
+#include "externs.h"
 
 void export_fields(t_points ** pnts, t_define p_setup){
 
@@ -82,5 +83,15 @@ void comp_analysis(t_points ** pnts, t_define p_setup){
             pnts[i][j].mach = U/pnts[i][j].sound_speed;
         }
     }
+}
+
+void dump_iteration(int iter){
+
+    printf(" -- iter # %d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
+                                                                                                  log10(max_rhs_rho ), 
+                                                                                                  log10(max_rhs_rhou), 
+                                                                                                  log10(max_rhs_rhov), 
+                                                                                                  log10(max_rhs_e));
+
 }
 
