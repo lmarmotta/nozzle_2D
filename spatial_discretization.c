@@ -57,6 +57,9 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
             u   = pnts[i][j].q[1] / pnts[i][j].q[0];
             v   = pnts[i][j].q[2] / pnts[i][j].q[0];
             e   = pnts[i][j].q[3];
+
+            /* Compute pressure. */
+
             p   = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
 
             /* Compute the covariant velocity components. */
@@ -141,8 +144,11 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
         }
     }
+}
 
 
+/* This function computes the artificial dissipation. */
 
+void jst_art_dissip(t_define p_setup, t_points ** pnts){
 
 }

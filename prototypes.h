@@ -24,3 +24,4 @@ void local_time(t_define p_setup, t_points ** pnts);
 void rungeKuttaJST(t_define p_setup, t_points ** pnts);
 void dump_iteration(int iter);
 void dump_residue_file(int iter, FILE ** res_output);
+void jst_art_dissip(t_define p_setup, t_points ** pnts);

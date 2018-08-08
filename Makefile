@@ -25,6 +25,7 @@ CC=/home/leonardo/opt/hdf5/bin/h5pcc
 # -Wformat-security: If -Wformat is specified, also warn about uses of format functions that represent possible security problems.
 #
 CFLAGS=-O0 -std=c99 -ggdb -Wall -Wextra -pedantic -Wuninitialized -Winit-self -Wstrict-prototypes -Wformat -Wformat-security 
+# CFLAGS=-O2 -std=c99
 
 #
 # CGNS include path.

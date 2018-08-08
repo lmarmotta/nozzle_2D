@@ -14,7 +14,7 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
     /* Now, apply the symmetry B.C. */
 
-    for (int i = 1; i < imax-1; i++){
+    for (int i = 0; i < imax-1; i++){
 
         int j = jmax-1;
 
@@ -90,11 +90,11 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
         /* Now extrapolate the covariant velocity components. */
 
         double u_jp1 = pnts[i][j+1].q[1]/pnts[i][j+1].q[0];
-        double v_jp1 = pnts[i][j+1].q[2]/pnts[i][j+1].q[0];
+        double v_jp1 = 0.0;
 
         pnts[i][j].cov_u = pnts[i][j+1].ksi_x*u_jp1 + pnts[i][j+1].ksi_y*v_jp1;
 
-        /* Now, compute the pressure in order to reconstruct. */
+        /* Now, compute the energy and pressure in order to reconstruct. */
 
         double e_jp1   = pnts[i][j+1].q[3]; 
 
@@ -111,10 +111,10 @@ void boundary_condition(t_define p_setup, t_points ** pnts){
 
         /* Update the transformed Q_hat. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j].jm1 * pnts[i][j+1].q[0];
-        pnts[i][j].q_hat[1] = pnts[i][j].jm1 * pnts[i][j+1].q[0]*u_jp1;
-        pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j+1].q[0]*v_jp1;
-        pnts[i][j].q_hat[3] = pnts[i][j].jm1 * ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j+1].q[0] * ( pow(u_jp1,2.0) + pow(v_jp1,2.0) );
+        pnts[i][j].q_hat[0] = pnts[i][j+1].jm1 * pnts[i][j+1].q[0];
+        pnts[i][j].q_hat[1] = pnts[i][j+1].jm1 * pnts[i][j+1].q[0]*u_jp1;
+        pnts[i][j].q_hat[2] = pnts[i][j+1].jm1 * pnts[i][j+1].q[0]*v_jp1;
+        pnts[i][j].q_hat[3] = pnts[i][j+1].jm1 * ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j+1].q[0] * ( pow(u_jp1,2.0) + pow(v_jp1,2.0) );
 
     }
 

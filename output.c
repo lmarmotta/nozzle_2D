@@ -99,10 +99,6 @@ void dump_iteration(int iter){
                                                                                                  log10(max_rhs_rhou), 
                                                                                                  log10(max_rhs_rhov), 
                                                                                                  log10(max_rhs_e));
-
-    
-
-
 }
 
 void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){

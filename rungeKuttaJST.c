@@ -9,7 +9,7 @@
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))
 
-/* This function marches the solution in time. */
+/* This function marches the solution in time using RK5. */
 
 void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
@@ -72,9 +72,6 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
 
         compute_rhs(p_setup, pnts);
     }
-
-
-
 }
 
 /* This function computes the local time step. */

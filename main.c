@@ -5,7 +5,7 @@
 
 #include "cgnslib.h"
 #include "structs.h"
-#include "prot.h"
+#include "prototypes.h"
 
 /* 
  * Main function
