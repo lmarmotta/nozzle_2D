@@ -3,7 +3,7 @@ i_rho 0.066
 i_rhou 18.45
 i_rhov 0.000
 i_e 16868.91
-n_max_iter 500
+n_max_iter 50
 CFL 0.01
 BCIN_udir 1.0
 BCIN_vdir 0.0

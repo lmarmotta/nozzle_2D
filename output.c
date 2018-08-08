@@ -24,17 +24,26 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"Cov U\" , \"Cov V\"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
         for (int i = 0; i < p_setup.imax; i++){
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf\n",pnts[i][j].x, 
-                                                      pnts[i][j].y,
-                                                      pnts[i][j].mach,
-                                                      pnts[i][j].pressure,
-                                                      pnts[i][j].cov_u,
-                                                      pnts[i][j].cov_v);
+
+            /* Separate the properties. */
+
+            double x = pnts[i][j].x;
+            double y = pnts[i][j].y;
+
+            double u = pnts[i][j].q[1]/pnts[i][j].q[0];
+            double v = pnts[i][j].q[2]/pnts[i][j].q[0];
+
+            double mach = pnts[i][j].mach;
+            double p = pnts[i][j].pressure;
+
+            /* Dump solution. */
+
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf\n",x, y, mach, p, u, v);
         }
     }
 
