@@ -91,6 +91,10 @@ int main(int argc, char * argv[]){
 
         compute_rhs(p_setup, pnts);
 
+        /* Artificial dissipation.*/
+
+        jst_art_dissip(p_setup, pnts);
+
         /* March in time Jameson ! */
 
         rungeKuttaJST(p_setup, pnts);

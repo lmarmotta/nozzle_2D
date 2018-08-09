@@ -25,3 +25,5 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts);
 void dump_iteration(int iter);
 void dump_residue_file(int iter, FILE ** res_output);
 void jst_art_dissip(t_define p_setup, t_points ** pnts);
+double ** alloc_double_matrix(int imax, int jmax);
+void free_double_matrix(double ** matrix, int imax);
