@@ -52,7 +52,7 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Limit the scope of these variables. */
 
-            double rho, u, v, e, p;
+            double rho, u, v, e;
 
             /* Separate the properties we need. */
 
@@ -63,7 +63,19 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Compute pressure. */
 
-            p   = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
+            pnts[i][j].p = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
+
+            /* Compute the speed of sound. */
+
+            pnts[i][j].a = sqrt( (p_setup.gamma*pnts[i][j].p)/rho );
+
+            /* Compute the Mach number. */
+
+            pnts[i][j].m = sqrt( pow(u,2.0) + pow(v,2.0) )/pnts[i][j].a;
+
+            /* Compute the Mach number. */
+
+            pnts[i][j].t = (e/rho - 0.5*(pow(u,2.0) + pow(v,2)))/p_setup.F_Cv;
 
             /* Compute the covariant velocity components. */
 
@@ -80,16 +92,16 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
             /* Build the E fluxes in curvilinear coordinates. */
 
             pnts[i][j].e_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_u);
-            pnts[i][j].e_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_u + pnts[i][j].ksi_x*p);
-            pnts[i][j].e_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_u + pnts[i][j].ksi_y*p);
-            pnts[i][j].e_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_u*(e + p) - p);
+            pnts[i][j].e_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_u + pnts[i][j].ksi_x*pnts[i][j].p);
+            pnts[i][j].e_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_u + pnts[i][j].ksi_y*pnts[i][j].p);
+            pnts[i][j].e_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_u*(e + pnts[i][j].p) - pnts[i][j].p);
 
             /* Build the F fluxes in curvilinear coordinates. */
 
             pnts[i][j].f_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_v);
-            pnts[i][j].f_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_v + pnts[i][j].eta_x*p);
-            pnts[i][j].f_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_v + pnts[i][j].eta_y*p);
-            pnts[i][j].f_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_v*(e + p) - p);
+            pnts[i][j].f_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_v + pnts[i][j].eta_x*pnts[i][j].p);
+            pnts[i][j].f_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_v + pnts[i][j].eta_y*pnts[i][j].p);
+            pnts[i][j].f_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_v*(e + pnts[i][j].p) - pnts[i][j].p);
 
         }
     }
@@ -109,7 +121,8 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
     max_rhs_rhov = -1.0;
     max_rhs_e    = -1.0;
 
-    /* Compute the RHS for the internal points. */
+    /* Compute the RHS for the internal points. Remenber that the boundaries
+     * are computed by the boundary conditions. */
 
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
@@ -140,10 +153,10 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
             /* Store the max residue. */
 
-            if ( fabs( pnts[i][j].RHS[0]) > max_rhs_rho )  max_rhs_rho  = fabs(pnts[i][j].RHS[0]);
-            if ( fabs( pnts[i][j].RHS[1]) > max_rhs_rhou)  max_rhs_rhou = fabs(pnts[i][j].RHS[1]);
-            if ( fabs( pnts[i][j].RHS[2]) > max_rhs_rhov)  max_rhs_rhov = fabs(pnts[i][j].RHS[2]);
-            if ( fabs( pnts[i][j].RHS[3]) > max_rhs_e   )  max_rhs_e    = fabs(pnts[i][j].RHS[3]);
+            if ( fabs( pnts[i][j].RHS[0]) > max_rhs_rho )  max_rhs_rho  = log10(fabs(pnts[i][j].RHS[0]));
+            if ( fabs( pnts[i][j].RHS[1]) > max_rhs_rhou)  max_rhs_rhou = log10(fabs(pnts[i][j].RHS[1]));
+            if ( fabs( pnts[i][j].RHS[2]) > max_rhs_rhov)  max_rhs_rhov = log10(fabs(pnts[i][j].RHS[2]));
+            if ( fabs( pnts[i][j].RHS[3]) > max_rhs_e   )  max_rhs_e    = log10(fabs(pnts[i][j].RHS[3]));
 
         }
     }
@@ -161,25 +174,6 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
 
     double k2 = 1.0/4.0; double k4 = 1.0/256.0;
 
-    /* Allocate some aux vectors. */
-
-    double ** p =  alloc_double_matrix(imax, jmax);
-
-    /* First, compute the pressure in all points. */
-
-    for (int i = 0; i<imax; i++){
-        for (int j = 0; j<jmax; j++){
-
-            double rho = pnts[i][j].q[0];
-            double u   = pnts[i][j].q[1]/pnts[i][j].q[0];
-            double v   = pnts[i][j].q[2]/pnts[i][j].q[0];
-            double e   = pnts[i][j].q[3];
-
-            p[i][j] = (p_setup.gamma - 1.0) * (e - 0.5*rho*(pow(u,2.0) + pow(v,2.0)));
-
-        }
-    }
-
     /* Compute the v_ij in all internal points. */
 
     double ** v_ij = alloc_double_matrix(imax, jmax);
@@ -187,8 +181,8 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            v_ij[i][j] = abs(p[i+1][j] - 2.0*p[i][j] + p[i-1][j])/
-                         abs(p[i+1][j]) + 2.0*abs(p[i][j]) + abs(p[i-1][j]);
+            v_ij[i][j] = abs(pnts[i+1][j].p - 2.0*pnts[i][j].p + pnts[i-1][j].p)/
+                         abs(pnts[i+1][j].p) + 2.0*abs(pnts[i][j].p) + abs(pnts[i-1][j].p);
         }
     }
 
@@ -330,7 +324,6 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
 
     /* Free everyone. */
 
-    free_double_matrix(p, imax);
     free_double_matrix(v_ij, imax);
     free_double_matrix(eps2_ksi, imax);
     free_double_matrix(aux_eps, imax);

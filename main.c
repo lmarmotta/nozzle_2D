@@ -52,17 +52,27 @@ int main(int argc, char * argv[]){
 
     read_mesh_cgns(argv[2], pnts);
 
-    /* Apply the initial condition. */
+    /* Apply the initial condition conditions. */
 
-    printf("\n-Computing the initial condition.\n");
+    printf("\n-Performing pre-processing computations....\n");
 
     apply_initial_condition(p_setup, pnts);
 
     /* Now compute the proper spatial transformations. */
 
-    printf("\n-Computing the proper transformations.\n");
-
     calc_metric_relations(p_setup, pnts);
+
+    /* Build the fluxes. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Compute the RHS. */
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
 
     /* Apply the initial boundary conditions. */
 
@@ -114,7 +124,6 @@ int main(int argc, char * argv[]){
 
         if (iter == out_save){
             printf("\n Outputing solution. \n\n");
-            comp_analysis(pnts, p_setup);
             export_fields(pnts,p_setup);
             out_save += p_setup.n_save;
         }
@@ -127,8 +136,6 @@ int main(int argc, char * argv[]){
     /* Export post-processor file. */
 
     printf("\n-Output solution.\n");
-
-    comp_analysis(pnts, p_setup);
 
     export_fields(pnts,p_setup);
 

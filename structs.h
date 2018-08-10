@@ -68,7 +68,13 @@ typedef struct t_points{
 
     /* Comprehensive variables. */
 
-    double mach, sound_speed, pressure;
+    double a;  /* Speed of sound. */
+
+    double m;  /* Mach number. */
+
+    double p;  /* Static pressure. */
+
+    double t;  /* Static temperature. */
 
     /* Time step specifics. */
 
