@@ -188,8 +188,8 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
 
     /* Compute the eps2 in ksi direction. */
 
-    double ** eps2_ksi   = alloc_double_matrix(imax, jmax);
-    double ** aux_eps = alloc_double_matrix(imax, jmax);
+    double ** eps2_ksi =  alloc_double_matrix(imax, jmax);
+    double ** aux_eps  =  alloc_double_matrix(imax, jmax);
 
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
@@ -278,7 +278,6 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
     double ** d_ijph = alloc_double_matrix(imax, jmax);
 
     /* Needs to understand the d_ definition in eta. */
-    /* Remember to ask how to deal with boundaries. */
 
     for (int i = 2; i<imax-2; i++){
         for (int j = 2; j<jmax-2; j++){

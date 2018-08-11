@@ -44,10 +44,10 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             double t = pnts[i][j].t;
 
-            double rhs_0 = pnts[i][j].RHS[0];
-            double rhs_1 = pnts[i][j].RHS[1];
-            double rhs_2 = pnts[i][j].RHS[2];
-            double rhs_3 = pnts[i][j].RHS[3];
+            double rhs_0 = log10(pnts[i][j].RHS[0]);
+            double rhs_1 = log10(pnts[i][j].RHS[1]);
+            double rhs_2 = log10(pnts[i][j].RHS[2]);
+            double rhs_3 = log10(pnts[i][j].RHS[3]);
 
             /* Dump solution. */
 

@@ -76,7 +76,7 @@ int main(int argc, char * argv[]){
 
     /* Apply the initial boundary conditions. */
 
-    boundary_condition(p_setup, pnts);
+    boundary_condition_euler(p_setup, pnts);
 
     /* Compute local time step for our mesh. */
 
@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
 
         /* Update Boundary conditions. */
 
-        boundary_condition(p_setup, pnts);
+        boundary_condition_euler(p_setup, pnts);
 
         /* Dump quantities. */
 

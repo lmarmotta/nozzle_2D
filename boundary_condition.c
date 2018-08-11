@@ -5,7 +5,7 @@
 
 #include "structs.h"
 
-void boundary_condition(t_define p_setup, t_points ** pnts){
+void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
     /* Separate bounds of the field. */
 
