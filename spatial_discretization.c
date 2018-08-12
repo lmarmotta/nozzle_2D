@@ -94,14 +94,14 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
             pnts[i][j].e_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_u);
             pnts[i][j].e_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_u + pnts[i][j].ksi_x*pnts[i][j].p);
             pnts[i][j].e_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_u + pnts[i][j].ksi_y*pnts[i][j].p);
-            pnts[i][j].e_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_u*(e + pnts[i][j].p) - pnts[i][j].p);
+            pnts[i][j].e_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_u*(e + pnts[i][j].p));
 
             /* Build the F fluxes in curvilinear coordinates. */
 
             pnts[i][j].f_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_v);
             pnts[i][j].f_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_v + pnts[i][j].eta_x*pnts[i][j].p);
             pnts[i][j].f_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_v + pnts[i][j].eta_y*pnts[i][j].p);
-            pnts[i][j].f_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_v*(e + pnts[i][j].p) - pnts[i][j].p);
+            pnts[i][j].f_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_v*(e + pnts[i][j].p));
 
         }
     }
@@ -116,10 +116,10 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
     /* Initialize the residue. */
 
-    max_rhs_rho  = -1.0;
-    max_rhs_rhou = -1.0;
-    max_rhs_rhov = -1.0;
-    max_rhs_e    = -1.0;
+    max_rhs_rho  = -99999999.0;
+    max_rhs_rhou = -99999999.0;
+    max_rhs_rhov = -99999999.0;
+    max_rhs_e    = -99999999.0;
 
     /* Compute the RHS for the internal points. Remenber that the boundaries
      * are computed by the boundary conditions. */
