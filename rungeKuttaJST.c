@@ -9,6 +9,26 @@
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))
 
+/* Use the explicit euler scheme. */
+
+void explicitEuler(t_define p_setup, t_points ** pnts){
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
+
+            pnts[i][j].q[0] = pnts[i][j].q[0] - pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = pnts[i][j].q[1] - pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = pnts[i][j].q[2] - pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = pnts[i][j].q[3] - pnts[i][j].dt*pnts[i][j].RHS[3];
+
+        }
+    }
+
+}
+
 /* This function marches the solution in time using RK5. */
 
 void rungeKuttaJST(t_define p_setup, t_points ** pnts){
