@@ -12,3 +12,6 @@ extern void build_fluxes(t_define p_setup, t_points ** pnts);
 extern void compute_rhs(t_define p_setup, t_points ** pnts);
 extern double ** alloc_double_matrix(int imax, int jmax);
 extern void free_double_matrix(double ** matrix, int imax);
+extern void jst_art_dissip(t_define p_setup, t_points ** pnts);
+extern void boundary_condition_euler(t_define p_setup, t_points ** pnts);
+extern void local_time(t_define p_setup, t_points ** pnts);

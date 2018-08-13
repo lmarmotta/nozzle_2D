@@ -46,32 +46,175 @@ void rungeKuttaJST(t_define p_setup, t_points ** pnts){
         }
     }
 
-    /* Do the First stage of the RK scheme. */
+    /* ---------------------------------------------------------------------- */
+    /* Do the FIRST stage of the RK scheme. */
 
-    int n_stages = 5;
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
 
-    for (int st = 0; st < n_stages; st ++){
-        for (int i = 0; i < imax; i++){
-            for (int j = 0; j < jmax; j++){
+            pnts[i][j].q[0] = q_0[i][j][0] - alpha[0]*pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = q_0[i][j][1] - alpha[0]*pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = q_0[i][j][2] - alpha[0]*pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = q_0[i][j][3] - alpha[0]*pnts[i][j].dt*pnts[i][j].RHS[3];
 
-                /* Compute the first step of the RK5. */
-
-                pnts[i][j].q[0] = q_0[i][j][0] - alpha[st]*pnts[i][j].dt*pnts[i][j].RHS[0];
-                pnts[i][j].q[1] = q_0[i][j][1] - alpha[st]*pnts[i][j].dt*pnts[i][j].RHS[1];
-                pnts[i][j].q[2] = q_0[i][j][2] - alpha[st]*pnts[i][j].dt*pnts[i][j].RHS[2];
-                pnts[i][j].q[3] = q_0[i][j][3] - alpha[st]*pnts[i][j].dt*pnts[i][j].RHS[3];
-
-            }
         }
-
-        /* Re-Build the fluxes with the new Q. */
-
-        build_fluxes(p_setup, pnts);
-
-        /* Re-Compute the RHS.*/
-
-        compute_rhs(p_setup, pnts);
     }
+
+    /* Re-Build the fluxes with the new Q. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Re-Compute the RHS.*/
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
+
+    /* Update Boundary conditions. */
+
+    boundary_condition_euler(p_setup, pnts);
+
+    /* Compute local time step. */
+
+    local_time(p_setup, pnts);
+
+    /* ---------------------------------------------------------------------- */
+    /* Do the SECOND stage of the RK scheme. */
+
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
+
+            pnts[i][j].q[0] = q_0[i][j][0] - alpha[1]*pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = q_0[i][j][1] - alpha[1]*pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = q_0[i][j][2] - alpha[1]*pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = q_0[i][j][3] - alpha[1]*pnts[i][j].dt*pnts[i][j].RHS[3];
+
+        }
+    }
+
+    /* Re-Build the fluxes with the new Q. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Re-Compute the RHS.*/
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
+
+    /* Update Boundary conditions. */
+
+    boundary_condition_euler(p_setup, pnts);
+
+    /* Compute local time step. */
+
+    local_time(p_setup, pnts);
+
+    /* ---------------------------------------------------------------------- */
+    /* Do the THIRD stage of the RK scheme. */
+
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
+
+            pnts[i][j].q[0] = q_0[i][j][0] - alpha[2]*pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = q_0[i][j][1] - alpha[2]*pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = q_0[i][j][2] - alpha[2]*pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = q_0[i][j][3] - alpha[2]*pnts[i][j].dt*pnts[i][j].RHS[3];
+
+        }
+    }
+
+    /* Re-Build the fluxes with the new Q. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Re-Compute the RHS.*/
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
+
+    /* Update Boundary conditions. */
+
+    boundary_condition_euler(p_setup, pnts);
+
+    /* Compute local time step. */
+
+    local_time(p_setup, pnts);
+
+    /* ---------------------------------------------------------------------- */
+    /* Do the FOURTH stage of the RK scheme. */
+
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
+
+            pnts[i][j].q[0] = q_0[i][j][0] - alpha[3]*pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = q_0[i][j][1] - alpha[3]*pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = q_0[i][j][2] - alpha[3]*pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = q_0[i][j][3] - alpha[3]*pnts[i][j].dt*pnts[i][j].RHS[3];
+
+        }
+    }
+
+    /* Re-Build the fluxes with the new Q. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Re-Compute the RHS.*/
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
+
+    /* Update Boundary conditions. */
+
+    boundary_condition_euler(p_setup, pnts);
+
+    /* Compute local time step. */
+
+    local_time(p_setup, pnts);
+
+    /* ---------------------------------------------------------------------- */
+    /* Do the FIFTH stage of the RK scheme. */
+
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
+
+            pnts[i][j].q[0] = q_0[i][j][0] - alpha[4]*pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q[1] = q_0[i][j][1] - alpha[4]*pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q[2] = q_0[i][j][2] - alpha[4]*pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q[3] = q_0[i][j][3] - alpha[4]*pnts[i][j].dt*pnts[i][j].RHS[3];
+
+        }
+    }
+
+    /* Re-Build the fluxes with the new Q. */
+
+    build_fluxes(p_setup, pnts);
+
+    /* Re-Compute the RHS.*/
+
+    compute_rhs(p_setup, pnts);
+
+    /* Artificial dissipation.*/
+
+    jst_art_dissip(p_setup, pnts);
+
+    /* Update Boundary conditions. */
+
+    boundary_condition_euler(p_setup, pnts);
+
+    /* Compute local time step. */
+
+    local_time(p_setup, pnts);
 }
 
 /* This function computes the local time step. */

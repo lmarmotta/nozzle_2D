@@ -30,6 +30,7 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
             pnts[i][j].q[1] = p_setup.i_rhou;
             pnts[i][j].q[2] = p_setup.i_rhov;
             pnts[i][j].q[3] = p_setup.i_e;
+
         }
     }
 }
@@ -312,11 +313,10 @@ void jst_art_dissip(t_define p_setup, t_points ** pnts){
 
             /* Apply to residue. */
 
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - d[0]; 
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - d[1]; 
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - d[2]; 
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - d[3]; 
-
+            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - pnts[i][j].jm1*d[0]; 
+            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - pnts[i][j].jm1*d[1]; 
+            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - pnts[i][j].jm1*d[2]; 
+            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - pnts[i][j].jm1*d[3]; 
 
         }
     }
