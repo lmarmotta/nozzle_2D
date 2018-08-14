@@ -18,10 +18,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         int j = jmax-1;
 
-        pnts[i][j].q[0] = pnts[i][j-2].q[0];
-        pnts[i][j].q[1] = pnts[i][j-2].q[1];
-        pnts[i][j].q[2] = pnts[i][j-2].q[2];
-        pnts[i][j].q[3] = pnts[i][j-2].q[3];
+        pnts[i][j].q[0] =   pnts[i][j-2].q[0];
+        pnts[i][j].q[1] =   pnts[i][j-2].q[1];
+        pnts[i][j].q[2] = - pnts[i][j-2].q[2];
+        pnts[i][j].q[3] =   pnts[i][j-2].q[3];
 
     }
 

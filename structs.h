@@ -18,7 +18,7 @@ typedef struct t_define{
 
     int n_max_iter, p_rate, n_save;
 
-    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv, F_R;
+    double T_t, P_t, gamma, i_rho, i_rhou, i_rhov, i_e, CFL, F_Cv, F_R, dissp_w;
 
     /* Pressure inlet variables. */
 

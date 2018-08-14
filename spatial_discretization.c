@@ -163,174 +163,51 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
     }
 }
 
+void art_dissip_2nd(t_define p_setup, t_points ** pnts){
 
-/* This function computes the artificial dissipation. */
-
-void jst_art_dissip(t_define p_setup, t_points ** pnts){
-
-    /* Separate bounds and constants.*/
+    /* Separate bounds. */
 
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
-    double k2 = 1.0/4.0; double k4 = 1.0/256.0;
+    /* Allocate the dissip vector. */
 
-    /* Compute the v_ij in all internal points. */
+    double diss_ksi[imax][jmax][4]; 
+    double diss_eta[imax][jmax][4]; 
 
-    double ** v_ij = alloc_double_matrix(imax, jmax);
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            v_ij[i][j] = abs(pnts[i+1][j].p - 2.0*pnts[i][j].p + pnts[i-1][j].p)/
-                         abs(pnts[i+1][j].p) + 2.0*abs(pnts[i][j].p) + abs(pnts[i-1][j].p);
-        }
-    }
-
-    /* Compute the eps2 in ksi direction. */
-
-    double ** eps2_ksi =  alloc_double_matrix(imax, jmax);
-    double ** aux_eps  =  alloc_double_matrix(imax, jmax);
+    /* Compute the internal points. */
 
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            aux_eps[i][j] = k2*max(v_ij[i+1][j],v_ij[i][j]);
-            
+            /* Ksi direction. */
+
+            diss_ksi[i][j][0] = pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0];
+            diss_ksi[i][j][1] = pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1];
+            diss_ksi[i][j][2] = pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2];
+            diss_ksi[i][j][3] = pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3];
+
+            /* Eta direction. */
+
+            diss_eta[i][j][0] = pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0];
+            diss_eta[i][j][1] = pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1];
+            diss_eta[i][j][2] = pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2];
+            diss_eta[i][j][3] = pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3];
+
         }
     }
 
-    /* Now store in the half points. */
+    /* Dow, add to the residue. */
 
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            eps2_ksi[i][j] = (aux_eps[i+1][j] - aux_eps[i-1][j])/2.0;
-        }
-    }
-
-    /* Now compute eps 2 in eta direction. */
-
-    double ** eps2_eta = alloc_double_matrix(imax, jmax);
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            aux_eps[i][j] = k2*max(v_ij[i][j+1],v_ij[i][j]);
+            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - (diss_ksi[i][j][0]*pnts[i][j].RHS[0] + diss_eta[i][j][0]*pnts[i][j].RHS[0]);
+            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - (diss_ksi[i][j][1]*pnts[i][j].RHS[1] + diss_eta[i][j][1]*pnts[i][j].RHS[1]);
+            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - (diss_ksi[i][j][2]*pnts[i][j].RHS[2] + diss_eta[i][j][2]*pnts[i][j].RHS[2]);
+            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - (diss_ksi[i][j][3]*pnts[i][j].RHS[3] + diss_eta[i][j][3]*pnts[i][j].RHS[3]);
 
         }
     }
-
-    /* Now store in the half points. */
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            eps2_eta[i][j] = (aux_eps[i][j+1] - aux_eps[i][j-1])/2.0;
-
-        }
-    }
-
-    /* Now, compute the eps4 in ksi direction. */
-
-    double ** eps4_ksi = alloc_double_matrix(imax, jmax);
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            aux_eps[i][j] = max(0.0, k4 - eps2_ksi[i][j]);
-
-        }
-    }
-
-    /* Now store in the half points. */
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            eps4_ksi[i][j] = (aux_eps[i+1][j] - aux_eps[i+1][j])/2.0;
-
-        }
-    }
-
-    /* Now, compute the eps4 in eta direction. */
-
-    double ** eps4_eta = alloc_double_matrix(imax, jmax);
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            aux_eps[i][j] = max(0.0, k4 - eps2_ksi[i][j]);
-
-        }
-    }
-
-    /* Now store in the half points. */
-
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
-
-            eps4_eta[i][j] = (aux_eps[i][j+1] - aux_eps[i][j+1])/2.0;
-
-        }
-    }
-
-    double ** d_iphj = alloc_double_matrix(imax, jmax);
-    double ** d_ijph = alloc_double_matrix(imax, jmax);
-
-    /* Needs to understand the d_ definition in eta. */
-
-    for (int i = 2; i<imax-2; i++){
-        for (int j = 2; j<jmax-2; j++){
-
-            double dt = pnts[i][j].dt;
-
-            d_iphj[i][j] = (1.0/dt)*( (eps2_ksi[i][j]*pnts[i][j].q[0]) - 
-                    eps4_ksi[i][j]*(pnts[i+2][j].q[0] - 3.0*pnts[i+1][j].q[0] + 3.0*pnts[i][j].q[0] - 3.0*pnts[i-1][j].q[0]) );
-
-            d_ijph[i][j] = (1.0/dt)*( (eps2_eta[i][j]*pnts[i][j].q[0]) - 
-                    eps4_eta[i][j]*(pnts[i][j+2].q[0] - 3.0*pnts[i][j+1].q[0] + 3.0*pnts[i][j].q[0] - 3.0*pnts[i][j-1].q[0]) );
-
-        }
-    }
-
-    /* Apply the artificial dissipation to the residue. */
-
-    for (int i = 2; i<imax-2; i++){
-        for (int j = 2; j<jmax-2; j++){
-
-            double d_ksi = d_iphj[i][j] + d_iphj[i-1][j];
-            double d_eta = d_ijph[i][j] - d_ijph[i][j-1];
-
-            double d[4];
-
-            /* Apply store the dissipation term. */
-
-            d[0] = pnts[i][j].q_hat[0]*d_ksi + pnts[i][j].q_hat[0]*d_eta;
-            d[1] = pnts[i][j].q_hat[1]*d_ksi + pnts[i][j].q_hat[1]*d_eta;
-            d[2] = pnts[i][j].q_hat[2]*d_ksi + pnts[i][j].q_hat[2]*d_eta;
-            d[3] = pnts[i][j].q_hat[3]*d_ksi + pnts[i][j].q_hat[3]*d_eta;
-
-            /* Apply to residue. */
-
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - pnts[i][j].jm1*d[0]; 
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - pnts[i][j].jm1*d[1]; 
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - pnts[i][j].jm1*d[2]; 
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - pnts[i][j].jm1*d[3]; 
-
-        }
-    }
-
-    /* Free everyone. */
-
-    free_double_matrix(v_ij, imax);
-    free_double_matrix(eps2_ksi, imax);
-    free_double_matrix(aux_eps, imax);
-    free_double_matrix(eps2_eta, imax);
-    free_double_matrix(eps4_ksi, imax);
-    free_double_matrix(eps4_eta, imax);
-    free_double_matrix(d_iphj, imax);
-    free_double_matrix(d_ijph, imax);
 
 }
-

@@ -70,10 +70,6 @@ int main(int argc, char * argv[]){
 
     compute_rhs(p_setup, pnts);
 
-    /* Artificial dissipation.*/
-
-    jst_art_dissip(p_setup, pnts);
-
     /* Apply the initial boundary conditions. */
 
     boundary_condition_euler(p_setup, pnts);
@@ -101,13 +97,13 @@ int main(int argc, char * argv[]){
 
         compute_rhs(p_setup, pnts);
 
-        /* Artificial dissipation.*/
+        /* Apply dissipation. */
 
-        jst_art_dissip(p_setup, pnts);
+        art_dissip_2nd(p_setup, pnts);
 
-        /* March in time Jameson ! */
+        /* Marh in time. */
 
-        rungeKuttaJST(p_setup, pnts);
+        explicitEuler(p_setup, pnts);
 
         /* Update Boundary conditions. */
 
