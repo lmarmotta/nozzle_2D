@@ -26,10 +26,28 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
 
-            pnts[i][j].q[0] = p_setup.i_rho;
-            pnts[i][j].q[1] = p_setup.i_rhou;
-            pnts[i][j].q[2] = p_setup.i_rhov;
-            pnts[i][j].q[3] = p_setup.i_e;
+            double P_t = p_setup.BCIN_pt;
+            double T_t = p_setup.BCIN_tt;
+            double e_i = p_setup.F_Cv*T_t;
+
+            pnts[i][j].q[0] = (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
+            pnts[i][j].q[1] = 0.0;
+            pnts[i][j].q[2] = 0.0;
+            pnts[i][j].q[3] = pnts[i][j].q[0]*e_i; 
+
+            /* Separate the properties we need. */
+
+            double rho = pnts[i][j].q[0];
+            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
+            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
+            double e   = pnts[i][j].q[3];
+
+            /* Apply initial condition to transformed space. */
+
+            pnts[i][j].q_hat[0] = pnts[i][j].jm1*rho;
+            pnts[i][j].q_hat[1] = pnts[i][j].jm1*rho*u;
+            pnts[i][j].q_hat[2] = pnts[i][j].jm1*rho*v;
+            pnts[i][j].q_hat[3] = pnts[i][j].jm1*e;
 
         }
     }
@@ -51,16 +69,12 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
 
-            /* Limit the scope of these variables. */
-
-            double rho, u, v, e;
-
             /* Separate the properties we need. */
 
-            rho = pnts[i][j].q[0];
-            u   = pnts[i][j].q[1] / pnts[i][j].q[0];
-            v   = pnts[i][j].q[2] / pnts[i][j].q[0];
-            e   = pnts[i][j].q[3];
+            double rho = pnts[i][j].q[0];
+            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
+            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
+            double e   = pnts[i][j].q[3];
 
             /* Compute pressure. */
 
@@ -76,7 +90,7 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Compute the Mach number. */
 
-            pnts[i][j].t = (e/rho - 0.5*(pow(u,2.0) + pow(v,2)))/p_setup.F_Cv;
+            pnts[i][j].t = ( (e/rho) - 0.5*(pow(u,2.0) + pow(v,2.0)) )/p_setup.F_Cv;
 
             /* Compute the covariant velocity components. */
 
@@ -180,32 +194,35 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
+            double dksi = 1.0;
+            double deta = 1.0;
+
             /* Ksi direction. */
 
-            diss_ksi[i][j][0] = pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0];
-            diss_ksi[i][j][1] = pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1];
-            diss_ksi[i][j][2] = pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2];
-            diss_ksi[i][j][3] = pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3];
+            diss_ksi[i][j][0] = (pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0])/pow(dksi,2.0);
+            diss_ksi[i][j][1] = (pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1])/pow(dksi,2.0);
+            diss_ksi[i][j][2] = (pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2])/pow(dksi,2.0);
+            diss_ksi[i][j][3] = (pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3])/pow(dksi,2.0);
 
             /* Eta direction. */
 
-            diss_eta[i][j][0] = pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0];
-            diss_eta[i][j][1] = pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1];
-            diss_eta[i][j][2] = pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2];
-            diss_eta[i][j][3] = pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3];
+            diss_eta[i][j][0] = (pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0])/pow(deta,2.0);
+            diss_eta[i][j][1] = (pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1])/pow(deta,2.0);
+            diss_eta[i][j][2] = (pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2])/pow(deta,2.0);
+            diss_eta[i][j][3] = (pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3])/pow(deta,2.0);
 
         }
     }
 
-    /* Dow, add to the residue. */
+    /* Now, add to the residue. */
 
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - (diss_ksi[i][j][0]*pnts[i][j].RHS[0] + diss_eta[i][j][0]*pnts[i][j].RHS[0]);
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - (diss_ksi[i][j][1]*pnts[i][j].RHS[1] + diss_eta[i][j][1]*pnts[i][j].RHS[1]);
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - (diss_ksi[i][j][2]*pnts[i][j].RHS[2] + diss_eta[i][j][2]*pnts[i][j].RHS[2]);
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - (diss_ksi[i][j][3]*pnts[i][j].RHS[3] + diss_eta[i][j][3]*pnts[i][j].RHS[3]);
+            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][0]*pnts[i][j].RHS[0] + diss_eta[i][j][0]*pnts[i][j].RHS[0]);
+            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][1]*pnts[i][j].RHS[1] + diss_eta[i][j][1]*pnts[i][j].RHS[1]);
+            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][2]*pnts[i][j].RHS[2] + diss_eta[i][j][2]*pnts[i][j].RHS[2]);
+            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][3]*pnts[i][j].RHS[3] + diss_eta[i][j][3]*pnts[i][j].RHS[3]);
 
         }
     }
