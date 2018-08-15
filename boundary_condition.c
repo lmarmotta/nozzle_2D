@@ -157,7 +157,6 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
             pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[2];
             pnts[i][j].q_hat[3] = pnts[i][j].jm1 * pnts[i][j].q[3];
         }
-
     }
 
     /* Now, apply the symmetry B.C. */

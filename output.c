@@ -7,25 +7,19 @@
 #include "cgnslib.h"
 #include "externs.h"
 
-void export_fields(t_points ** pnts, t_define p_setup){
-
-    /* Open the setup file */
-
-    FILE * f_out = NULL;
-        
-    f_out = fopen("solution.dat","w");
+void export_fields(t_points ** pnts, t_define p_setup, FILE ** f_out){
 
     /* Check the condition of the pointer. */
 
-    if (f_out == NULL){
+    if (*f_out == NULL){
         printf("\nERROR: Output file cannot be opened !\n"); exit(1);
     }
 
     /* Print the header of the tecplot file. */
 
-    fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
-    fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
+    fprintf(*f_out,"TITLE = \" Projeto 01 \"\n");
+    fprintf(*f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
+    fprintf(*f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
         for (int i = 0; i < p_setup.imax; i++){
@@ -46,14 +40,10 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             /* Dump solution. */
 
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf\n",
+            fprintf(*f_out,"%lf %lf %lf %lf %lf %lf %lf\n",
                     x, y, mach, p, u, v, t);
         }
     }
-
-
-
-    fclose(f_out);
 }
 
 void dump_iteration(int iter){
@@ -76,3 +66,25 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
         exit(1);
     }
 }
+
+/* Converts an integer to string. */
+
+char * to_string(int num){
+
+    /* Get the size of the integer. */
+
+    int num_length = floor(log10(abs(num))) + 1;
+
+    /* Allocate the string size. */
+
+    char * string = (char*)calloc(num_length,sizeof(char));
+
+    /* Convert the string. */
+
+    sprintf(string, "%d", num);
+
+    return string;
+
+    free(string);
+}
+
