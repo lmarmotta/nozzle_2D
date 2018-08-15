@@ -28,15 +28,10 @@ void explicitEuler(t_define p_setup, t_points ** pnts){
 
             /* Re-Build the transformed fluxes. */
 
-            double rho = pnts[i][j].q[0];
-            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
-            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
-            double e   = pnts[i][j].q[3];
-
-            pnts[i][j].q_hat[0] = pnts[i][j].jm1*rho;
-            pnts[i][j].q_hat[1] = pnts[i][j].jm1*rho*u;
-            pnts[i][j].q_hat[2] = pnts[i][j].jm1*rho*v;
-            pnts[i][j].q_hat[3] = pnts[i][j].jm1*e;
+            pnts[i][j].q_hat[0] = pnts[i][j].jm1 * pnts[i][j].q[0]; 
+            pnts[i][j].q_hat[1] = pnts[i][j].jm1 * pnts[i][j].q[1];
+            pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[2];
+            pnts[i][j].q_hat[3] = pnts[i][j].jm1 * pnts[i][j].q[3];
 
         }
     }
@@ -51,8 +46,8 @@ void local_time(t_define p_setup, t_points ** pnts){
 
     /* Loop through the points computing the dt. */
 
-    for (int i = 0; i < imax; i++){
-        for (int j = 0; j < jmax; j++){
+    for (int i = 1; i < imax-1; i++){
+        for (int j = 1; j < jmax-1; j++){
 
             /* Compute the sound velocity. */
 
@@ -72,6 +67,8 @@ void local_time(t_define p_setup, t_points ** pnts){
             double c_ij = max(term_1, term_2);
 
             /* Now, compute and store the local dt. */
+
+            pnts[i][j].dt = 0.0;
 
             pnts[i][j].dt = p_setup.CFL / c_ij;
 
