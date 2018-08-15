@@ -121,8 +121,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         if (mach < 1.0){
 
-            /* Compute the exit boundary condition. Here I am considering, for now,
-             * that the flow is exiting subsonic. */
+            /* Compute the exit boundary condition. */
             
             double p = p_setup.BCIN_pt/3.0;
 

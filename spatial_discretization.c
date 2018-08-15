@@ -21,33 +21,24 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
-    /* Apply a basic initial condition. */
+    double P_t = p_setup.BCIN_pt;
+    double T_t = p_setup.BCIN_tt;
+    double e_i = p_setup.F_Cv*T_t;
 
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
-
-            double P_t = p_setup.BCIN_pt;
-            double T_t = p_setup.BCIN_tt;
-            double e_i = p_setup.F_Cv*T_t;
 
             pnts[i][j].q[0] = (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
             pnts[i][j].q[1] = 0.0;
             pnts[i][j].q[2] = 0.0;
             pnts[i][j].q[3] = pnts[i][j].q[0]*e_i; 
 
-            /* Separate the properties we need. */
-
-            double rho = pnts[i][j].q[0];
-            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
-            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
-            double e   = pnts[i][j].q[3];
-
             /* Apply initial condition to transformed space. */
 
-            pnts[i][j].q_hat[0] = pnts[i][j].jm1*rho;
-            pnts[i][j].q_hat[1] = pnts[i][j].jm1*rho*u;
-            pnts[i][j].q_hat[2] = pnts[i][j].jm1*rho*v;
-            pnts[i][j].q_hat[3] = pnts[i][j].jm1*e;
+            pnts[i][j].q_hat[0] = pnts[i][j].jm1 * pnts[i][j].q[0]; 
+            pnts[i][j].q_hat[1] = pnts[i][j].jm1 * pnts[i][j].q[1];
+            pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[2];
+            pnts[i][j].q_hat[3] = pnts[i][j].jm1 * pnts[i][j].q[3];
 
         }
     }
