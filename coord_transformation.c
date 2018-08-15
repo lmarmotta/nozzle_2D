@@ -142,7 +142,7 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
     for (int i = 0; i < imax; i++){
         for (int j = 0; j < jmax; j++){
 
-            pnts[i][j].j_1   = pow( (pnts[i][j].x_ksi*pnts[i][j].y_eta 
+            pnts[i][j].j   = pow( (pnts[i][j].x_ksi*pnts[i][j].y_eta 
                                    - pnts[i][j].x_eta*pnts[i][j].y_ksi), -1.0);
 
             pnts[i][j].jm1 =  pnts[i][j].x_ksi*pnts[i][j].y_eta 
@@ -157,11 +157,11 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
     for (int i = 0; i < imax; i++){
         for (int j = 0; j < jmax; j++){
 
-            pnts[i][j].ksi_x =   pnts[i][j].j_1*pnts[i][j].y_eta;
-            pnts[i][j].ksi_y = - pnts[i][j].j_1*pnts[i][j].x_eta;
+            pnts[i][j].ksi_x =   pnts[i][j].j*pnts[i][j].y_eta;
+            pnts[i][j].ksi_y = - pnts[i][j].j*pnts[i][j].x_eta;
 
-            pnts[i][j].eta_x = - pnts[i][j].j_1*pnts[i][j].y_ksi;
-            pnts[i][j].eta_y =   pnts[i][j].j_1*pnts[i][j].x_ksi;
+            pnts[i][j].eta_x = - pnts[i][j].j*pnts[i][j].y_ksi;
+            pnts[i][j].eta_y =   pnts[i][j].j*pnts[i][j].x_ksi;
 
         }
     }

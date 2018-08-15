@@ -42,7 +42,7 @@ typedef struct t_points{
 
     /* Transformation jacobians. */
 
-    double j_1, jm1;
+    double j, jm1;
 
     double x_ksi, y_ksi;
 
