@@ -129,13 +129,14 @@ int main(int argc, char * argv[]){
     /* Close the residue file. */
 
     fclose(res_output);
-    fclose(solution_file);
 
     /* Export post-processor file. */
 
     printf("\n-Output solution.\n");
 
     export_fields(pnts,p_setup,&solution_file);
+
+    fclose(solution_file);
 
     /* Free the main struct */
 
