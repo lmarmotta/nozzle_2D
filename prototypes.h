@@ -7,7 +7,6 @@
  * Prototypes of the functions used.
  */
 
-void export_fields(t_points ** pnts, t_define p_setup, FILE ** f_out);
 void read_mesh_cgns(char * mesh_file_name, t_points ** pnts);
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax);
 void read_setup(char * setup_name, t_define * p_setup);
@@ -28,3 +27,5 @@ double ** alloc_double_matrix(int imax, int jmax);
 void free_double_matrix(double ** matrix, int imax);
 void explicitEuler(t_define p_setup, t_points ** pnts);
 void art_dissip_2nd(t_define p_setup, t_points ** pnts);
+void export_fields(t_points ** pnts, t_define p_setup);
+void save_for_gif(int num,t_points ** pnts, t_define p_setup);

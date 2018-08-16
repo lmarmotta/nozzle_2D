@@ -82,8 +82,7 @@ int main(int argc, char * argv[]){
 
     printf("\n-Starting iterations.\n\n");
 
-    FILE * res_output    = fopen("residues.dat", "w");
-    FILE * solution_file = fopen("solution.dat", "w");
+    FILE * res_output = fopen("residues.dat", "w");
 
     int out_rate = p_setup.p_rate;
     int out_save = p_setup.n_save;
@@ -121,10 +120,13 @@ int main(int argc, char * argv[]){
 
         if (iter == out_save){
             printf("\n Outputing solution. \n\n");
-            export_fields(pnts,p_setup,&solution_file);
+            if (p_setup.save_gif == 1) save_for_gif(iter, pnts, p_setup); 
+            export_fields(pnts,p_setup);
             out_save += p_setup.n_save;
+            
         }
     }
+
     
     /* Close the residue file. */
 
@@ -134,9 +136,7 @@ int main(int argc, char * argv[]){
 
     printf("\n-Output solution.\n");
 
-    export_fields(pnts,p_setup,&solution_file);
-
-    fclose(solution_file);
+    export_fields(pnts,p_setup);
 
     /* Free the main struct */
 

@@ -7,19 +7,23 @@
 #include "cgnslib.h"
 #include "externs.h"
 
-void export_fields(t_points ** pnts, t_define p_setup, FILE ** f_out){
+void export_fields(t_points ** pnts, t_define p_setup){
+
+    /* Open solution file. */
+
+    FILE * f_out = fopen("solution.dat", "w");
 
     /* Check the condition of the pointer. */
 
-    if (*f_out == NULL){
+    if (f_out == NULL){
         printf("\nERROR: Output file cannot be opened !\n"); exit(1);
     }
 
     /* Print the header of the tecplot file. */
 
-    fprintf(*f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(*f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
-    fprintf(*f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
+    fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
+    fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
         for (int i = 0; i < p_setup.imax; i++){
@@ -40,10 +44,12 @@ void export_fields(t_points ** pnts, t_define p_setup, FILE ** f_out){
 
             /* Dump solution. */
 
-            fprintf(*f_out,"%lf %lf %lf %lf %lf %lf %lf\n",
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf\n",
                     x, y, mach, p, u, v, t);
         }
     }
+
+    fclose(f_out);
 }
 
 void dump_iteration(int iter){
@@ -88,3 +94,72 @@ char * to_string(int num){
     free(string);
 }
 
+/* Save debug files per iter. */
+
+void save_for_gif(int num,t_points ** pnts, t_define p_setup){
+
+    /* Get the length of the string. */
+    
+    int num_length = 0; num_length = floor(log10(abs(num))) + 1;
+
+    /* Allocate a string. */
+
+    char string[num_length];
+
+    /* Convert iteration number string. */
+
+    sprintf(string, "%d", num);
+
+    /* Allocate space for the final file */
+
+    int length_file_char = num_length + 10;
+
+    char final_file[length_file_char];
+
+    /* Initialize the char array. */
+
+    memset(final_file, 0, sizeof final_file);
+
+    strcat(final_file,"gif_file_");
+    strcat(final_file,string);
+    strcat(final_file,".dat");
+
+    /* Open the file with the propwer name. */
+
+    FILE * f_gif = fopen(final_file,"w");
+
+    /* Print the header of the tecplot file. */
+
+    fprintf(f_gif,"TITLE = \" Projeto 01 \"\n");
+    fprintf(f_gif,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
+    fprintf(f_gif,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
+    
+    for (int j = 0; j < p_setup.jmax; j++){
+        for (int i = 0; i < p_setup.imax; i++){
+
+            /* Separate the properties. */
+
+            double x = pnts[i][j].x;
+            double y = pnts[i][j].y;
+
+            double u = pnts[i][j].q[1]/pnts[i][j].q[0];
+            double v = pnts[i][j].q[2]/pnts[i][j].q[0];
+
+            double mach = pnts[i][j].m;
+
+            double p = pnts[i][j].p;
+
+            double t = pnts[i][j].t;
+
+            /* Dump solution. */
+
+            fprintf(f_gif,"%lf %lf %lf %lf %lf %lf %lf\n",
+                    x, y, mach, p, u, v, t);
+        }
+    }
+
+    /* Close the file. */
+
+    fclose(f_gif);
+
+}
