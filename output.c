@@ -22,8 +22,8 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"J\" , \"J1\"\n");
-    fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\"\n");
+    fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d , K=1, DATAPACKING=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
         for (int i = 0; i < p_setup.imax; i++){
@@ -32,6 +32,7 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             double x = pnts[i][j].x;
             double y = pnts[i][j].y;
+            double z = 0.0;
 
             double u = pnts[i][j].q[1]/pnts[i][j].q[0];
             double v = pnts[i][j].q[2]/pnts[i][j].q[0];
@@ -42,13 +43,13 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             double t = pnts[i][j].t;
 
-            double J  = pnts[i][j].J;
-            double J1 = pnts[i][j].J1;
+            double jac  = pnts[i][j].J;
+            double jac1 = pnts[i][j].J1;
 
             /* Dump solution. */
 
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, mach, p, u, v, t, J, J1);
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                    x, y, z, mach, p, u, v, t, jac, jac1);
         }
     }
 
