@@ -35,10 +35,10 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
 
             /* Apply initial condition to transformed space. */
 
-            pnts[i][j].q_hat[0] = pnts[i][j].jm1 * pnts[i][j].q[0]; 
-            pnts[i][j].q_hat[1] = pnts[i][j].jm1 * pnts[i][j].q[1];
-            pnts[i][j].q_hat[2] = pnts[i][j].jm1 * pnts[i][j].q[2];
-            pnts[i][j].q_hat[3] = pnts[i][j].jm1 * pnts[i][j].q[3];
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * pnts[i][j].q[0]; 
+            pnts[i][j].q_hat[1] = pnts[i][j].J1 * pnts[i][j].q[1];
+            pnts[i][j].q_hat[2] = pnts[i][j].J1 * pnts[i][j].q[2];
+            pnts[i][j].q_hat[3] = pnts[i][j].J1 * pnts[i][j].q[3];
 
         }
     }
@@ -90,24 +90,24 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Build the Q fluxes in curvilinear coordinates. */
 
-            pnts[i][j].q_hat[0] = pnts[i][j].jm1*rho;
-            pnts[i][j].q_hat[1] = pnts[i][j].jm1*rho*u;
-            pnts[i][j].q_hat[2] = pnts[i][j].jm1*rho*v;
-            pnts[i][j].q_hat[3] = pnts[i][j].jm1*e;
+            pnts[i][j].q_hat[0] = pnts[i][j].J1*rho;
+            pnts[i][j].q_hat[1] = pnts[i][j].J1*rho*u;
+            pnts[i][j].q_hat[2] = pnts[i][j].J1*rho*v;
+            pnts[i][j].q_hat[3] = pnts[i][j].J1*e;
 
             /* Build the E fluxes in curvilinear coordinates. */
 
-            pnts[i][j].e_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_u);
-            pnts[i][j].e_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_u + pnts[i][j].ksi_x*pnts[i][j].p);
-            pnts[i][j].e_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_u + pnts[i][j].ksi_y*pnts[i][j].p);
-            pnts[i][j].e_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_u*(e + pnts[i][j].p));
+            pnts[i][j].e_hat[0] = pnts[i][j].J1 * (rho*pnts[i][j].cov_u);
+            pnts[i][j].e_hat[1] = pnts[i][j].J1 * (rho*u*pnts[i][j].cov_u + pnts[i][j].ksi_x*pnts[i][j].p);
+            pnts[i][j].e_hat[2] = pnts[i][j].J1 * (rho*v*pnts[i][j].cov_u + pnts[i][j].ksi_y*pnts[i][j].p);
+            pnts[i][j].e_hat[3] = pnts[i][j].J1 * (pnts[i][j].cov_u*(e + pnts[i][j].p));
 
             /* Build the F fluxes in curvilinear coordinates. */
 
-            pnts[i][j].f_hat[0] = pnts[i][j].jm1 * (rho*pnts[i][j].cov_v);
-            pnts[i][j].f_hat[1] = pnts[i][j].jm1 * (rho*u*pnts[i][j].cov_v + pnts[i][j].eta_x*pnts[i][j].p);
-            pnts[i][j].f_hat[2] = pnts[i][j].jm1 * (rho*v*pnts[i][j].cov_v + pnts[i][j].eta_y*pnts[i][j].p);
-            pnts[i][j].f_hat[3] = pnts[i][j].jm1 * (pnts[i][j].cov_v*(e + pnts[i][j].p));
+            pnts[i][j].f_hat[0] = pnts[i][j].J1 * (rho*pnts[i][j].cov_v);
+            pnts[i][j].f_hat[1] = pnts[i][j].J1 * (rho*u*pnts[i][j].cov_v + pnts[i][j].eta_x*pnts[i][j].p);
+            pnts[i][j].f_hat[2] = pnts[i][j].J1 * (rho*v*pnts[i][j].cov_v + pnts[i][j].eta_y*pnts[i][j].p);
+            pnts[i][j].f_hat[3] = pnts[i][j].J1 * (pnts[i][j].cov_v*(e + pnts[i][j].p));
 
         }
     }

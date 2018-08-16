@@ -22,7 +22,7 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"J\" , \"J1\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
@@ -42,10 +42,13 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             double t = pnts[i][j].t;
 
+            double J  = pnts[i][j].J;
+            double J1 = pnts[i][j].J1;
+
             /* Dump solution. */
 
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, mach, p, u, v, t);
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                    x, y, mach, p, u, v, t, J, J1);
         }
     }
 
@@ -67,7 +70,30 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
     fprintf(*res_output,"%10d %lf %lf %lf %lf\n",iter,max_rhs_rho,max_rhs_rhou,max_rhs_rhov,max_rhs_e);
 
+    /* Check rho residue. */
+
     if (log10(max_rhs_rho)>p_setup.eps_blow){
+        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
+        exit(1);
+    }
+
+    /* Check rhou residue. */
+
+    if (log10(max_rhs_rhou)>p_setup.eps_blow){
+        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
+        exit(1);
+    }
+
+    /* Check rhov residue. */
+
+    if (log10(max_rhs_rhov)>p_setup.eps_blow){
+        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
+        exit(1);
+    }
+
+    /* Check e residue. */
+
+    if (log10(max_rhs_rhov)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
@@ -127,6 +153,12 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
     /* Open the file with the propwer name. */
 
     FILE * f_gif = fopen(final_file,"w");
+
+    /* Check the condition of the pointer. */
+
+    if (f_gif == NULL){
+        printf("\nERROR: Output file cannot be opened !\n"); exit(1);
+    }
 
     /* Print the header of the tecplot file. */
 
