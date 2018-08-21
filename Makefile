@@ -24,8 +24,8 @@ CC=/home/leonardo/opt/hdf5/bin/h5pcc
 # -Wstrict-prototypes: Warn if a function is declared or defined without specifying the argument types.
 # -Wformat-security: If -Wformat is specified, also warn about uses of format functions that represent possible security problems.
 #
-# CFLAGS=-O0 -std=c99 -ggdb -Wall -Wextra -pedantic -Wuninitialized -Winit-self -Wstrict-prototypes -Wformat -Wformat-security -Warray-bounds 
-CFLAGS=-O2 -std=c99
+CFLAGS=-O0 -std=c99 -ggdb -Wall -Wextra -pedantic -Wuninitialized -Winit-self -Wstrict-prototypes -Wformat -Wformat-security -Warray-bounds 
+# CFLAGS=-O2 -std=c99
 
 #
 # CGNS include path.

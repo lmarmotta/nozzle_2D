@@ -21,41 +21,19 @@ void explicitEuler(t_define p_setup, t_points ** pnts){
 
             /* March in time. */
 
-            pnts[i][j].q[0] = pnts[i][j].q[0] - pnts[i][j].dt*pnts[i][j].RHS[0];
-            pnts[i][j].q[1] = pnts[i][j].q[1] - pnts[i][j].dt*pnts[i][j].RHS[1];
-            pnts[i][j].q[2] = pnts[i][j].q[2] - pnts[i][j].dt*pnts[i][j].RHS[2];
-            pnts[i][j].q[3] = pnts[i][j].q[3] - pnts[i][j].dt*pnts[i][j].RHS[3];
+            pnts[i][j].q_hat[0] = pnts[i][j].q_hat[0] - pnts[i][j].dt*pnts[i][j].RHS[0];
+            pnts[i][j].q_hat[1] = pnts[i][j].q_hat[1] - pnts[i][j].dt*pnts[i][j].RHS[1];
+            pnts[i][j].q_hat[2] = pnts[i][j].q_hat[2] - pnts[i][j].dt*pnts[i][j].RHS[2];
+            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[3] - pnts[i][j].dt*pnts[i][j].RHS[3];
 
             /* Re-Build the transformed fluxes. */
 
-            pnts[i][j].q_hat[0] = pnts[i][j].J1 * pnts[i][j].q[0]; 
-            pnts[i][j].q_hat[1] = pnts[i][j].J1 * pnts[i][j].q[1];
-            pnts[i][j].q_hat[2] = pnts[i][j].J1 * pnts[i][j].q[2];
-            pnts[i][j].q_hat[3] = pnts[i][j].J1 * pnts[i][j].q[3];
+            pnts[i][j].q[0] = pnts[i][j].J * pnts[i][j].q_hat[0]; 
+            pnts[i][j].q[1] = pnts[i][j].J * pnts[i][j].q_hat[1];
+            pnts[i][j].q[2] = pnts[i][j].J * pnts[i][j].q_hat[2];
+            pnts[i][j].q[3] = pnts[i][j].J * pnts[i][j].q_hat[3];
 
         }
-    }
-
-    /* Deal with the symmetry as well. */
-
-    for (int i = 1; i < imax-1; i++){
-
-        int j = jmax-1;
-
-        /* March in time. */
-
-        pnts[i][j].q[0] = pnts[i][j-2].q[0];
-        pnts[i][j].q[1] = pnts[i][j-2].q[1];
-        pnts[i][j].q[2] = pnts[i][j-2].q[2];
-        pnts[i][j].q[3] = pnts[i][j-2].q[3];
-
-        /* Re-Build the transformed fluxes. */
-
-        pnts[i][j].q_hat[0] = pnts[i][j-2].J1 * pnts[i][j].q[0]; 
-        pnts[i][j].q_hat[1] = pnts[i][j-2].J1 * pnts[i][j].q[1];
-        pnts[i][j].q_hat[2] = pnts[i][j-2].J1 * pnts[i][j].q[2];
-        pnts[i][j].q_hat[3] = pnts[i][j-2].J1 * pnts[i][j].q[3];
-
     }
 }
 
@@ -83,8 +61,6 @@ void local_time(t_define p_setup, t_points ** pnts){
             double c_ij = max(term_1, term_2);
 
             /* Now, compute and store the local dt. */
-
-            pnts[i][j].dt = 0.0;
 
             pnts[i][j].dt = p_setup.CFL / c_ij;
 
