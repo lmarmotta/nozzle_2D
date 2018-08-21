@@ -26,7 +26,7 @@ typedef struct t_define{
 
     /* Maximun residue of the equation. */
 
-    double eps_blow;
+    double eps_blow, eps_ilow;
 
 } t_define;
 

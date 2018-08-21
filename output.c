@@ -83,28 +83,28 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
     /* Check rho residue. */
 
-    if (log10(max_rhs_rho)>p_setup.eps_blow){
+    if (log10(max_rhs_rho)>p_setup.eps_blow || log10(max_rhs_rho)<p_setup.eps_ilow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check rhou residue. */
 
-    if (log10(max_rhs_rhou)>p_setup.eps_blow){
+    if (log10(max_rhs_rhou)>p_setup.eps_blow || log10(max_rhs_rhou)<p_setup.eps_ilow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check rhov residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
+    if (log10(max_rhs_rhov)>p_setup.eps_blow || log10(max_rhs_rhov)<p_setup.eps_ilow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check e residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
+    if (log10(max_rhs_rhov)>p_setup.eps_blow || log10(max_rhs_rhov)<p_setup.eps_ilow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
