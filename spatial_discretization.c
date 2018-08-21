@@ -29,17 +29,10 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
 
-            pnts[i][j].q[0] = (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
-            pnts[i][j].q[1] = 0.0;
-            pnts[i][j].q[2] = 0.0;
-            pnts[i][j].q[3] = pnts[i][j].q[0]*e_i; 
-
-            /* Apply initial condition to transformed space. */
-
-            pnts[i][j].q_hat[0] = pnts[i][j].J1 * pnts[i][j].q[0]; 
-            pnts[i][j].q_hat[1] = pnts[i][j].J1 * pnts[i][j].q[1];
-            pnts[i][j].q_hat[2] = pnts[i][j].J1 * pnts[i][j].q[2];
-            pnts[i][j].q_hat[3] = pnts[i][j].J1 * pnts[i][j].q[3];
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
+            pnts[i][j].q_hat[1] = pnts[i][j].J1 * 0.0;
+            pnts[i][j].q_hat[2] = pnts[i][j].J1 * 0.0;
+            pnts[i][j].q_hat[3] = pnts[i][j].J1 * pnts[i][j].q_hat[0]*e_i; 
 
         }
     }
@@ -63,10 +56,10 @@ void build_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Separate the properties we need. */
 
-            double rho = pnts[i][j].q[0];
-            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
-            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
-            double e   = pnts[i][j].q[3];
+            double rho = pnts[i][j].J * pnts[i][j].q_hat[0];
+            double u   = pnts[i][j].q_hat[1] / pnts[i][j].q_hat[0];
+            double v   = pnts[i][j].q_hat[2] / pnts[i][j].q_hat[0];
+            double e   = pnts[i][j].J * pnts[i][j].q_hat[3];
 
             /* Compute pressure. */
 
@@ -187,17 +180,17 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
 
             /* Ksi direction. */
 
-            diss_ksi[i][j][0] = pnts[i+1][j].q[0] - 2.0 * pnts[i][j].q[0] + pnts[i-1][j].q[0];
-            diss_ksi[i][j][1] = pnts[i+1][j].q[1] - 2.0 * pnts[i][j].q[1] + pnts[i-1][j].q[1];
-            diss_ksi[i][j][2] = pnts[i+1][j].q[2] - 2.0 * pnts[i][j].q[2] + pnts[i-1][j].q[2];
-            diss_ksi[i][j][3] = pnts[i+1][j].q[3] - 2.0 * pnts[i][j].q[3] + pnts[i-1][j].q[3];
+            diss_ksi[i][j][0] = pnts[i][j].J * ( pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0] );
+            diss_ksi[i][j][1] = pnts[i][j].J * ( pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1] );
+            diss_ksi[i][j][2] = pnts[i][j].J * ( pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2] );
+            diss_ksi[i][j][3] = pnts[i][j].J * ( pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3] );
 
             /* Eta direction. */
 
-            diss_eta[i][j][0] = pnts[i][j+1].q[0] - 2.0 * pnts[i][j].q[0] + pnts[i][j-1].q[0];
-            diss_eta[i][j][1] = pnts[i][j+1].q[1] - 2.0 * pnts[i][j].q[1] + pnts[i][j-1].q[1];
-            diss_eta[i][j][2] = pnts[i][j+1].q[2] - 2.0 * pnts[i][j].q[2] + pnts[i][j-1].q[2];
-            diss_eta[i][j][3] = pnts[i][j+1].q[3] - 2.0 * pnts[i][j].q[3] + pnts[i][j-1].q[3];
+            diss_eta[i][j][0] = pnts[i][j].J * ( pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0] );
+            diss_eta[i][j][1] = pnts[i][j].J * ( pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1] );
+            diss_eta[i][j][2] = pnts[i][j].J * ( pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2] );
+            diss_eta[i][j][3] = pnts[i][j].J * ( pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3] );
 
         }
     }

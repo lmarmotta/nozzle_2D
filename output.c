@@ -34,14 +34,14 @@ void export_fields(t_points ** pnts, t_define p_setup){
             double y = pnts[i][j].y;
             double z = 0.0;
 
-            double u = pnts[i][j].q[1]/pnts[i][j].q[0];
-            double v = pnts[i][j].q[2]/pnts[i][j].q[0];
+            double u = pnts[i][j].q_hat[1]/pnts[i][j].q_hat[0];
+            double v = pnts[i][j].q_hat[2]/pnts[i][j].q_hat[0];
 
-            double mach = pnts[i][j].m;
+            double mach = pnts[i][j].J * pnts[i][j].m;
 
-            double p = pnts[i][j].p;
+            double p = pnts[i][j].J * pnts[i][j].p;
 
-            double t = pnts[i][j].t;
+            double t = pnts[i][j].J * pnts[i][j].t;
 
             double jac  = pnts[i][j].J;
             double jac1 = pnts[i][j].J1;
@@ -70,11 +70,8 @@ void dump_iteration(int iter){
 
     /* Dump residues to the screen. */
 
-    printf(" -- iter: %10d | RHS(rho) = %lf | RHS(rhou) = %lf | RHS(rhov) = %lf | RHS(e) = %lf\n", iter, 
-                                                                                                 max_rhs_rho,
-                                                                                                 max_rhs_rhou, 
-                                                                                                 max_rhs_rhov, 
-                                                                                                 max_rhs_e);
+    printf(" -- iter: %10d | RHS: %lf | %lf | %lf | %lf\n", iter, max_rhs_rho,max_rhs_rhou,max_rhs_rhov,max_rhs_e);
+
 }
 
 void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
@@ -185,14 +182,14 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
             double x = pnts[i][j].x;
             double y = pnts[i][j].y;
 
-            double u = pnts[i][j].q[1]/pnts[i][j].q[0];
-            double v = pnts[i][j].q[2]/pnts[i][j].q[0];
+            double u = pnts[i][j].q_hat[1]/pnts[i][j].q_hat[0];
+            double v = pnts[i][j].q_hat[2]/pnts[i][j].q_hat[0];
 
-            double mach = pnts[i][j].m;
+            double mach = pnts[i][j].J * pnts[i][j].m;
 
-            double p = pnts[i][j].p;
+            double p = pnts[i][j].J * pnts[i][j].p;
 
-            double t = pnts[i][j].t;
+            double t = pnts[i][j].J * pnts[i][j].t;
 
             /* Dump solution. */
 

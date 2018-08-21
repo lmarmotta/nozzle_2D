@@ -58,10 +58,6 @@ typedef struct t_points{
 
     double cov_u, cov_v;
 
-    /* Non-transformed. */
-
-    double q[4];
-
     /* Transformed fluxes. */
 
     double q_hat[4], e_hat[4], f_hat[4], RHS[4];

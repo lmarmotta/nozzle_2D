@@ -114,11 +114,6 @@ void initialize_structs(t_define p_setup, t_points ** pnts){
             pnts[i][j].cov_u = -9999.0;
             pnts[i][j].cov_v = -9999.0;
 
-            pnts[i][j].q[0] = -9999.0;
-            pnts[i][j].q[1] = -9999.0;
-            pnts[i][j].q[2] = -9999.0;
-            pnts[i][j].q[3] = -9999.0;
-
             pnts[i][j].q_hat[0] = -9999.0;
             pnts[i][j].q_hat[1] = -9999.0;
             pnts[i][j].q_hat[2] = -9999.0;
