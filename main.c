@@ -48,6 +48,8 @@ int main(int argc, char * argv[]){
 
     alloc_struct_matrix(&pnts,p_setup.imax,p_setup.jmax); 
 
+    initialize_structs(p_setup, pnts);
+
     /* Read the whole mesh and feed the structs. */
 
     read_mesh_cgns(argv[2], pnts);

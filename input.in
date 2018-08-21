@@ -14,6 +14,6 @@ F_Cv 717.50
 F_R 287.0
 p_rate 1
 eps_blow 30.0
-n_save 50
-dissp_w 0.1
+n_save 10
+dissp_w 0.5
 save_gif 1

@@ -29,3 +29,4 @@ void explicitEuler(t_define p_setup, t_points ** pnts);
 void art_dissip_2nd(t_define p_setup, t_points ** pnts);
 void export_fields(t_points ** pnts, t_define p_setup);
 void save_for_gif(int num,t_points ** pnts, t_define p_setup);
+void initialize_structs(t_define p_setup, t_points ** pnts);

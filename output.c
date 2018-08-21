@@ -22,7 +22,7 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d , K=1, DATAPACKING=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
@@ -51,10 +51,15 @@ void export_fields(t_points ** pnts, t_define p_setup){
             double cu = pnts[i][j].cov_u;
             double cv = pnts[i][j].cov_v;
 
+            double rhs_0 = pnts[i][j].RHS[0];
+            double rhs_1 = pnts[i][j].RHS[1];
+            double rhs_2 = pnts[i][j].RHS[2];
+            double rhs_3 = pnts[i][j].RHS[3];
+
             /* Dump solution. */
 
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv);
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                    x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3);
         }
     }
 
