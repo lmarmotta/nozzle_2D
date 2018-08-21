@@ -198,7 +198,7 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
 
     /* Read the zone information. */
 
-    char zonename[33]; cgsize_t isize[2][2],irmin[2],irmax[2];;
+    char zonename[33]; cgsize_t isize[3][3],irmin[2],irmax[2];;
 
     cg_zone_read(cg_file,index_base,index_zone,zonename,isize[0]);
 

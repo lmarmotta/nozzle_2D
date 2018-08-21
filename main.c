@@ -56,11 +56,17 @@ int main(int argc, char * argv[]){
 
     printf("\n-Performing pre-processing computations....\n");
 
-    apply_initial_condition(p_setup, pnts);
-
     /* Now compute the proper spatial transformations. */
 
     calc_metric_relations(p_setup, pnts);
+
+    /* Apply initial condition. */
+
+    apply_initial_condition(p_setup, pnts);
+
+    /* Perform 0 iteration procedure. */
+
+    printf("\n-Performing Zero iter procedures computations....\n");
 
     /* Build the fluxes. */
 
@@ -105,11 +111,15 @@ int main(int argc, char * argv[]){
 
         explicitEuler(p_setup, pnts);
 
+        /* Update the time. */
+
+        local_time(p_setup, pnts);
+
         /* Update Boundary conditions. */
 
         boundary_condition_euler(p_setup, pnts);
 
-        /* Dump quantities. */
+        /* Dump a whole lotta of stuff. */
 
         dump_residue_file(iter, &res_output);
 

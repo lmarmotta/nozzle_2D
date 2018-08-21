@@ -46,18 +46,12 @@ void local_time(t_define p_setup, t_points ** pnts){
 
     /* Loop through the points computing the dt. */
 
-    for (int i = 1; i < imax-1; i++){
-        for (int j = 1; j < jmax-1; j++){
+    for (int i = 0; i < imax; i++){
+        for (int j = 0; j < jmax; j++){
 
-            /* Compute the sound velocity. */
+            /* Get the speed of sound. */
 
-            double rho = pnts[i][j].q[0];
-            double u   = pnts[i][j].q[1] / pnts[i][j].q[0];
-            double v   = pnts[i][j].q[2] / pnts[i][j].q[0];
-
-            double e = pnts[i][j].q[3];
-            double p = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
-            double a =  sqrt(p_setup.gamma*p/pnts[i][j].q[0]);
+            double a = pnts[i][j].a;
 
             /* Compute the characteristic speed. */
 

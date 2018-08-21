@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <float.h>
 
 #include "cgnslib.h"
 #include "structs.h"
@@ -159,10 +160,10 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
             /* Store the max residue. */
 
-            if ( fabs( pnts[i][j].RHS[0]) > max_rhs_rho )  max_rhs_rho  = log10(fabs(pnts[i][j].RHS[0]));
-            if ( fabs( pnts[i][j].RHS[1]) > max_rhs_rhou)  max_rhs_rhou = log10(fabs(pnts[i][j].RHS[1]));
-            if ( fabs( pnts[i][j].RHS[2]) > max_rhs_rhov)  max_rhs_rhov = log10(fabs(pnts[i][j].RHS[2]));
-            if ( fabs( pnts[i][j].RHS[3]) > max_rhs_e   )  max_rhs_e    = log10(fabs(pnts[i][j].RHS[3]));
+            if ( fabs( pnts[i][j].RHS[0]) > max_rhs_rho )  max_rhs_rho  = log10(fabs(pnts[i][j].RHS[0]+DBL_EPSILON));
+            if ( fabs( pnts[i][j].RHS[1]) > max_rhs_rhou)  max_rhs_rhou = log10(fabs(pnts[i][j].RHS[1]+DBL_EPSILON));
+            if ( fabs( pnts[i][j].RHS[2]) > max_rhs_rhov)  max_rhs_rhov = log10(fabs(pnts[i][j].RHS[2]+DBL_EPSILON));
+            if ( fabs( pnts[i][j].RHS[3]) > max_rhs_e   )  max_rhs_e    = log10(fabs(pnts[i][j].RHS[3]+DBL_EPSILON));
 
         }
     }
@@ -185,22 +186,19 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            double dksi = 1.0;
-            double deta = 1.0;
-
             /* Ksi direction. */
 
-            diss_ksi[i][j][0] = (pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0])/pow(dksi,2.0);
-            diss_ksi[i][j][1] = (pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1])/pow(dksi,2.0);
-            diss_ksi[i][j][2] = (pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2])/pow(dksi,2.0);
-            diss_ksi[i][j][3] = (pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3])/pow(dksi,2.0);
+            diss_ksi[i][j][0] = pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0];
+            diss_ksi[i][j][1] = pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1];
+            diss_ksi[i][j][2] = pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2];
+            diss_ksi[i][j][3] = pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3];
 
             /* Eta direction. */
 
-            diss_eta[i][j][0] = (pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0])/pow(deta,2.0);
-            diss_eta[i][j][1] = (pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1])/pow(deta,2.0);
-            diss_eta[i][j][2] = (pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2])/pow(deta,2.0);
-            diss_eta[i][j][3] = (pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3])/pow(deta,2.0);
+            diss_eta[i][j][0] = pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0];
+            diss_eta[i][j][1] = pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1];
+            diss_eta[i][j][2] = pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2];
+            diss_eta[i][j][3] = pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3];
 
         }
     }
@@ -210,12 +208,11 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][0]*pnts[i][j].RHS[0] + diss_eta[i][j][0]*pnts[i][j].RHS[0]);
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][1]*pnts[i][j].RHS[1] + diss_eta[i][j][1]*pnts[i][j].RHS[1]);
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][2]*pnts[i][j].RHS[2] + diss_eta[i][j][2]*pnts[i][j].RHS[2]);
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] + (p_setup.dissp_w/8.0)*(diss_ksi[i][j][3]*pnts[i][j].RHS[3] + diss_eta[i][j][3]*pnts[i][j].RHS[3]);
+            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - pnts[i][j].J1 * (p_setup.dissp_w/8.0)*(diss_ksi[i][j][0]*pnts[i][j].RHS[0] + diss_eta[i][j][0]*pnts[i][j].RHS[0]);
+            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - pnts[i][j].J1 * (p_setup.dissp_w/8.0)*(diss_ksi[i][j][1]*pnts[i][j].RHS[1] + diss_eta[i][j][1]*pnts[i][j].RHS[1]);
+            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - pnts[i][j].J1 * (p_setup.dissp_w/8.0)*(diss_ksi[i][j][2]*pnts[i][j].RHS[2] + diss_eta[i][j][2]*pnts[i][j].RHS[2]);
+            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - pnts[i][j].J1 * (p_setup.dissp_w/8.0)*(diss_ksi[i][j][3]*pnts[i][j].RHS[3] + diss_eta[i][j][3]*pnts[i][j].RHS[3]);
 
         }
     }
-
 }
