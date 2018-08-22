@@ -39,7 +39,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double p = P_t*pow(aux,(p_setup.gamma/(p_setup.gamma-1.0)));
 
-        double rho = pnts[i][j].J * pnts[i][j].q_hat[0];
+        double rho = pnts[i+1][j].J * pnts[i+1][j].q_hat[0];
 
         /* Update the Q. */
 
@@ -99,9 +99,9 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double u_mag = sqrt( pow(u,2.0) + pow(v,2.0) );
 
-        double p = pnts[i][j].J * ( (p_setup.gamma - 1.0)*(pnts[i-1][j].q_hat[3] - 0.5*pnts[i-1][j].q_hat[0]*( pow(u,2.0) + pow(v,2.0)) ) );
+        double p = pnts[i-1][j].J * ( (p_setup.gamma - 1.0)*(pnts[i-1][j].q_hat[3] - 0.5*pnts[i-1][j].q_hat[0]*( pow(u,2.0) + pow(v,2.0)) ) );
 
-        double a = pnts[i][j].J * ( sqrt( (p_setup.gamma*p)/ pnts[i-1][j].q_hat[0]) );
+        double a = pnts[i][j].J * sqrt( (p_setup.gamma*p)/ pnts[i-1][j].q_hat[0] );
 
         double mach = u_mag/a;
 
