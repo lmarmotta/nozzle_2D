@@ -52,7 +52,7 @@ int main(int argc, char * argv[]){
 
     /* Read the whole mesh and feed the structs. */
 
-    read_mesh_cgns(argv[2], pnts);
+    read_mesh_cgns(argv[2], p_setup, pnts);
 
     /* Apply the initial condition conditions. */
 

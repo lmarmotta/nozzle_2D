@@ -175,7 +175,7 @@ void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
     /* Set the reference indexes */
 
     *imax = (int)isize[0][0];
-    *jmax = (int)isize[0][1];
+    *jmax = (int)isize[0][1] + 1; // Symmetry.
 
     /* Close the cgns file index */
 
@@ -187,7 +187,7 @@ void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
  * data structures. 
  */
 
-void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
+void read_mesh_cgns(char * mesh_file_name, t_define p_setup, t_points ** pnts){
 
     /* Open cgns file and return the id */
 
@@ -248,4 +248,17 @@ void read_mesh_cgns(char * mesh_file_name, t_points ** pnts){
     free(x_coord);
     free(y_coord);
 
+    /* Now, manage the symmetry creation. */
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+    for (int i = 0; i<imax; i++){
+
+        int j = jmax - 1;
+
+        pnts[i][j].x =   pnts[i][j-2].x; 
+        pnts[i][j].y = - pnts[i][j-2].y;
+
+    }
 }
