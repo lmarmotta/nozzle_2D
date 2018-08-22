@@ -72,7 +72,7 @@ int main(int argc, char * argv[]){
 
     /* Build the fluxes. */
 
-    build_fluxes(p_setup, pnts);
+    compute_fluxes(p_setup, pnts);
 
     /* Compute the RHS. */
 
@@ -99,7 +99,7 @@ int main(int argc, char * argv[]){
 
         /* Now, build the fluxes. */
 
-        build_fluxes(p_setup, pnts);
+        compute_fluxes(p_setup, pnts);
 
         /* Compute the RHS. */
 

@@ -11,9 +11,7 @@
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))
 
-/*
- * Apply initial condition.
- */
+/* Apply initial condition. */
 
 void apply_initial_condition(t_define p_setup, t_points ** pnts){
 
@@ -32,17 +30,15 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
             pnts[i][j].q_hat[0] = pnts[i][j].J1 * (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
             pnts[i][j].q_hat[1] = pnts[i][j].J1 * 0.0;
             pnts[i][j].q_hat[2] = pnts[i][j].J1 * 0.0;
-            pnts[i][j].q_hat[3] = pnts[i][j].J1 * pnts[i][j].q_hat[0]*e_i; 
+            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*( pnts[i][j].J1*e_i );
 
         }
     }
 }
 
-/*
- * Build transformed fluxes.
- */
+/* Build transformed fluxes. */
 
-void build_fluxes(t_define p_setup, t_points ** pnts){
+void compute_fluxes(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 
