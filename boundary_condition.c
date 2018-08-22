@@ -29,7 +29,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double u = pnts[i+1][j].q_hat[1]/pnts[i+1][j].q_hat[0];
 
-        double v = u*tan(theta);
+        double v = u*tan(theta); // pi
 
         double a_star = sqrt(2.0*p_setup.gamma*( (p_setup.gamma - 1.0)/(p_setup.gamma + 1.0) )*p_setup.F_Cv*T_t);
         
@@ -39,14 +39,12 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double p = P_t*pow(aux,(p_setup.gamma/(p_setup.gamma-1.0)));
 
-        double rho = pnts[i+1][j].J * pnts[i+1][j].q_hat[0];
-
         /* Update the Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j].J1 * ( p/(p_setup.F_R*T) );
-        pnts[i][j].q_hat[1] = pnts[i][j].J1 * rho*u;
-        pnts[i][j].q_hat[2] = pnts[i][j].J1 * rho*v;
-        pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( rho*( (p_setup.F_Cv*T) + 0.5*( pow(u,2.0) + pow(v,2.0) ) ));
+        pnts[i][j].q_hat[0] = pnts[i][j].J1 * (p/(p_setup.F_R*T));
+        pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
+        pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
+        pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*( (p_setup.F_Cv*T) + 0.5*( pow(u,2.0) + pow(v,2.0) ) );
 
     }
 
@@ -66,21 +64,21 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Now, compute the energy and pressure in order to reconstruct. */
 
-        double e_jp1   = pnts[i][j+1].J * pnts[i][j+1].q_hat[3]; 
+        double e_jp1   = pnts[i][j+1].q_hat[3]; 
 
-        double rho_jp1 = pnts[i][j+1].J * pnts[i][j+1].q_hat[0]; 
+        double rho_jp1 = pnts[i][j+1].q_hat[0]; 
 
         double u_jp1 = pnts[i][j+1].q_hat[1]/pnts[i][j+1].q_hat[0];
         double v_jp1 = pnts[i][j+1].q_hat[2]/pnts[i][j+1].q_hat[0];
 
-        double p_jp1  = (p_setup.gamma - 1.0)*(e_jp1 - 0.5*rho_jp1*( pow(u_jp1,2.0) + pow(v_jp1,2.0)) );
+        double p_jp1   = (p_setup.gamma - 1.0)*(e_jp1 - 0.5*rho_jp1*( pow(u_jp1,2.0) + pow(v_jp1,2.0)) );
 
-        /* Update the transformed Q_hat. */
+        /* Update the cartesian Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j+1].J1 * rho_jp1;                                                                          
-        pnts[i][j].q_hat[1] = pnts[i][j+1].J1 * rho_jp1*u;
-        pnts[i][j].q_hat[2] = pnts[i][j+1].J1 * rho_jp1*v;
-        pnts[i][j].q_hat[3] = pnts[i][j+1].J1 * ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 *  rho_jp1 * ( pow(u,2.0) + pow(v,2.0) );
+        pnts[i][j].q_hat[0] = pnts[i][j+1].q_hat[0];
+        pnts[i][j].q_hat[1] = pnts[i][j+1].q_hat[0]*u;
+        pnts[i][j].q_hat[2] = pnts[i][j+1].q_hat[0]*v;
+        pnts[i][j].q_hat[3] = ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q_hat[0] * ( pow(u,2.0) + pow(v,2.0) );
 
     }
 
@@ -99,9 +97,9 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double u_mag = sqrt( pow(u,2.0) + pow(v,2.0) );
 
-        double p = pnts[i-1][j].J * ( (p_setup.gamma - 1.0)*(pnts[i-1][j].q_hat[3] - 0.5*pnts[i-1][j].q_hat[0]*( pow(u,2.0) + pow(v,2.0)) ) );
+        double p = (p_setup.gamma - 1.0)*(pnts[i-1][j].q_hat[3] - 0.5*pnts[i-1][j].q_hat[0]*( pow(u,2.0) + pow(v,2.0)) );
 
-        double a = pnts[i][j].J * sqrt( (p_setup.gamma*p)/ pnts[i-1][j].q_hat[0] );
+        double a = sqrt( (p_setup.gamma*p)/ pnts[i-1][j].q_hat[0]);
 
         double mach = u_mag/a;
 
@@ -109,13 +107,14 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         if (mach < 1.0){
 
-            /* Compute the exit boundary condition. */
+            /* Compute the exit boundary condition. Here I am considering, for now,
+             * that the flow is exiting subsonic. */
             
             double p = p_setup.BCIN_pt/3.0;
 
-            /* Update the transformed Q_hat. */
+            /* Update the cartesian Q. */
 
-            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];                                                                   
+            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];
             pnts[i][j].q_hat[1] = pnts[i-1][j].q_hat[1];
             pnts[i][j].q_hat[2] = pnts[i-1][j].q_hat[2];
             pnts[i][j].q_hat[3] = ( p / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q_hat[0] * ( pow(u,2.0) + pow(v,2.0) );
@@ -124,12 +123,13 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         } else {
 
-            /* Update the transformed Q_hat. */
+            /* Update the cartesian Q. */
 
-            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];  
+            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0]; 
             pnts[i][j].q_hat[1] = pnts[i-1][j].q_hat[1];
             pnts[i][j].q_hat[2] = pnts[i-1][j].q_hat[2];
             pnts[i][j].q_hat[3] = pnts[i-1][j].q_hat[3];
+
         }
     }
 
@@ -139,12 +139,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         int j = jmax-1;
 
-        /* Re-Build the transformed fluxes. */
-
-        pnts[i][j].q_hat[0] =    pnts[i][j-2].q_hat[0]; 
-        pnts[i][j].q_hat[1] =    pnts[i][j-2].q_hat[1];
-        pnts[i][j].q_hat[2] =  - pnts[i][j-2].q_hat[2];
-        pnts[i][j].q_hat[3] =    pnts[i][j-2].q_hat[3];
+        pnts[i][j].q_hat[0] =   pnts[i][j-2].q_hat[0];
+        pnts[i][j].q_hat[1] =   pnts[i][j-2].q_hat[1];
+        pnts[i][j].q_hat[2] = - pnts[i][j-2].q_hat[2];
+        pnts[i][j].q_hat[3] =   pnts[i][j-2].q_hat[3];
 
     }
 }
