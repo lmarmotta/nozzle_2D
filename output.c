@@ -39,9 +39,9 @@ void export_fields(t_points ** pnts, t_define p_setup){
 
             double mach = pnts[i][j].J * pnts[i][j].m;
 
-            double p = pnts[i][j].J * pnts[i][j].p;
+            double p = pnts[i][j].p;
 
-            double t = pnts[i][j].J * pnts[i][j].t;
+            double t = pnts[i][j].t;
 
             double jac  = pnts[i][j].J;
             double jac1 = pnts[i][j].J1;
@@ -51,10 +51,10 @@ void export_fields(t_points ** pnts, t_define p_setup){
             double cu = pnts[i][j].cov_u;
             double cv = pnts[i][j].cov_v;
 
-            double rhs_0 = pnts[i][j].J * pnts[i][j].RHS[0];
-            double rhs_1 = pnts[i][j].J * pnts[i][j].RHS[1];
-            double rhs_2 = pnts[i][j].J * pnts[i][j].RHS[2];
-            double rhs_3 = pnts[i][j].J * pnts[i][j].RHS[3];
+            double rhs_0 = pnts[i][j].RHS[0];
+            double rhs_1 = pnts[i][j].RHS[1];
+            double rhs_2 = pnts[i][j].RHS[2];
+            double rhs_3 = pnts[i][j].RHS[3];
 
             /* Dump solution. */
 
