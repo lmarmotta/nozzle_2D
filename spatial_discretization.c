@@ -15,7 +15,7 @@
  * Build transformed fluxes.
  */
 
-void build_fluxes(t_define p_setup, t_points ** pnts){
+void compute_fluxes(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 
