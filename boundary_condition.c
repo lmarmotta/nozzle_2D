@@ -109,9 +109,9 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double p     = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
 
-        double a = sqrt( (p_setup.gamma*p)/ rho);
+        double a     = sqrt( (p_setup.gamma*p)/ rho);
 
-        double mach = u_mag/a;
+        double mach  = u_mag/a;
 
         /* Separate the subsonic from supersonic. */
 
@@ -120,15 +120,14 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
             /* Compute the exit boundary condition. Here I am considering, for now,
              * that the flow is exiting subsonic. */
             
-            double pp = p_setup.BCIN_pt/3.0;
+            double pp = p_setup.BCIN_pt/10.0;
 
             /* Update the cartesian Q. */
 
             pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];
-            pnts[i][j].q_hat[1] = pnts[i-1][j].q_hat[1];
-            pnts[i][j].q_hat[2] = pnts[i-1][j].q_hat[2];
+            pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
+            pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
             pnts[i][j].q_hat[3] = pnts[i-1][j].J1 * ( ( pp / (p_setup.gamma - 1.0) ) + 0.5 * rho * ( pow(u,2.0) + pow(v,2.0) ) );
-
 
         /* Now, deal with supersonic case. */
 

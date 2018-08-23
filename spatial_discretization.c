@@ -125,10 +125,10 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
 
             /* Store the max residue. */
 
-            if (fabs( pnts[i][j].RHS[0]) > max_rhs_rho ) max_rhs_rho  = log10(fabs(pnts[i][j].RHS[0]+DBL_EPSILON));
-            if (fabs( pnts[i][j].RHS[1]) > max_rhs_rhou) max_rhs_rhou = log10(fabs(pnts[i][j].RHS[1]+DBL_EPSILON));
-            if (fabs( pnts[i][j].RHS[2]) > max_rhs_rhov) max_rhs_rhov = log10(fabs(pnts[i][j].RHS[2]+DBL_EPSILON));
-            if (fabs( pnts[i][j].RHS[3]) > max_rhs_e   ) max_rhs_e    = log10(fabs(pnts[i][j].RHS[3]+DBL_EPSILON));
+            if (fabs( pnts[i][j].RHS[0]) > max_rhs_rho ) max_rhs_rho  = fabs(pnts[i][j].RHS[0]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[1]) > max_rhs_rhou) max_rhs_rhou = fabs(pnts[i][j].RHS[1]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[2]) > max_rhs_rhov) max_rhs_rhov = fabs(pnts[i][j].RHS[2]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[3]) > max_rhs_e   ) max_rhs_e    = fabs(pnts[i][j].RHS[3]+DBL_EPSILON);
 
         }
     }

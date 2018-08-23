@@ -70,7 +70,7 @@ void dump_iteration(int iter){
 
     /* Dump residues to the screen. */
 
-    printf(" -- iter: %10d | RHS: %lf | %lf | %lf | %lf\n", iter, max_rhs_rho,max_rhs_rhou,max_rhs_rhov,max_rhs_e);
+    printf(" -- iter: %10d | RHS: %lf | %lf | %lf | %lf\n",iter, log10(max_rhs_rho), log10(max_rhs_rhou), log10(max_rhs_rhov), log10(max_rhs_e));
 
 }
 
@@ -80,28 +80,28 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
     /* Check rho residue. */
 
-    if (log10(max_rhs_rho)>p_setup.eps_blow || log10(max_rhs_rho)<p_setup.eps_ilow){
+    if (log10(max_rhs_rho)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check rhou residue. */
 
-    if (log10(max_rhs_rhou)>p_setup.eps_blow || log10(max_rhs_rhou)<p_setup.eps_ilow){
+    if (log10(max_rhs_rhou)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check rhov residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow || log10(max_rhs_rhov)<p_setup.eps_ilow){
+    if (log10(max_rhs_rhov)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
 
     /* Check e residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow || log10(max_rhs_rhov)<p_setup.eps_ilow){
+    if (log10(max_rhs_rhov)>p_setup.eps_blow){
         printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
         exit(1);
     }
@@ -171,7 +171,7 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_gif,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_gif,"VARIABLES = \"X\" , \"Y\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\", \"T\"\n");
+    fprintf(f_gif,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\"\n");
     fprintf(f_gif,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
@@ -181,6 +181,7 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
 
             double x = pnts[i][j].x;
             double y = pnts[i][j].y;
+            double z = 0.0;
 
             double u = pnts[i][j].q_hat[1]/pnts[i][j].q_hat[0];
             double v = pnts[i][j].q_hat[2]/pnts[i][j].q_hat[0];
@@ -191,10 +192,24 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
 
             double t = pnts[i][j].t;
 
+            double jac  = pnts[i][j].J;
+            double jac1 = pnts[i][j].J1;
+
+            double dtt  = pnts[i][j].dt;
+
+            double cu = pnts[i][j].cov_u;
+            double cv = pnts[i][j].cov_v;
+
+            double rhs_0 = pnts[i][j].RHS[0];
+            double rhs_1 = pnts[i][j].RHS[1];
+            double rhs_2 = pnts[i][j].RHS[2];
+            double rhs_3 = pnts[i][j].RHS[3];
+
             /* Dump solution. */
 
-            fprintf(f_gif,"%lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, mach, p, u, v, t);
+            fprintf(f_gif,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                    x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3);
+
         }
     }
 
