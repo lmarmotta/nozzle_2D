@@ -5,6 +5,12 @@
 
 #include "structs.h"
 
+/*
+ * This function computes the boundary conditions. Note that the properties
+ * inside the boundary calculations shall be performed with the real properties
+ * which are re-transoformed after during the q_hat reconstruction. 
+ */
+
 void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
     /* Separate bounds of the field. */
@@ -41,7 +47,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Update the Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j].J1 * (p/(p_setup.F_R*T));
+        pnts[i][j].q_hat[0] = pnts[i+1][j].J1 * (p/(p_setup.F_R*T));
         pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
         pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
         pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*( (p_setup.F_Cv*T) + 0.5*( pow(u,2.0) + pow(v,2.0) ) );
@@ -64,9 +70,9 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Now, compute the energy and pressure in order to reconstruct. */
 
-        double e_jp1   = pnts[i][j+1].q_hat[3]; 
+        double e_jp1   = pnts[i][j+1].J * pnts[i][j+1].q_hat[3]; 
 
-        double rho_jp1 = pnts[i][j+1].q_hat[0]; 
+        double rho_jp1 = pnts[i][j+1].J * pnts[i][j+1].q_hat[0]; 
 
         double u_jp1 = pnts[i][j+1].q_hat[1]/pnts[i][j+1].q_hat[0];
         double v_jp1 = pnts[i][j+1].q_hat[2]/pnts[i][j+1].q_hat[0];
@@ -75,10 +81,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Update the cartesian Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j+1].q_hat[0];
-        pnts[i][j].q_hat[1] = pnts[i][j+1].q_hat[0]*u;
-        pnts[i][j].q_hat[2] = pnts[i][j+1].q_hat[0]*v;
-        pnts[i][j].q_hat[3] = ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q_hat[0] * ( pow(u,2.0) + pow(v,2.0) );
+        pnts[i][j].q_hat[0] = pnts[i][j+1].J1 * rho_jp1;
+        pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
+        pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
+        pnts[i][j].q_hat[3] = pnts[i][j+1].J1 * ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * rho_jp1 * ( pow(u,2.0) + pow(v,2.0) );
 
     }
 
@@ -97,9 +103,13 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double u_mag = sqrt( pow(u,2.0) + pow(v,2.0) );
 
-        double p = (p_setup.gamma - 1.0)*(pnts[i-1][j].q_hat[3] - 0.5*pnts[i-1][j].q_hat[0]*( pow(u,2.0) + pow(v,2.0)) );
+        double e     = pnts[i-1][j].J * pnts[i-1][j].q_hat[3];
 
-        double a = sqrt( (p_setup.gamma*p)/ pnts[i-1][j].q_hat[0]);
+        double rho   = pnts[i-1][j].J * pnts[i-1][j].q_hat[0];
+
+        double p     = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
+
+        double a = sqrt( (p_setup.gamma*p)/ rho);
 
         double mach = u_mag/a;
 
@@ -110,14 +120,15 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
             /* Compute the exit boundary condition. Here I am considering, for now,
              * that the flow is exiting subsonic. */
             
-            double p = p_setup.BCIN_pt/3.0;
+            double pp = p_setup.BCIN_pt/3.0;
 
             /* Update the cartesian Q. */
 
             pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];
             pnts[i][j].q_hat[1] = pnts[i-1][j].q_hat[1];
             pnts[i][j].q_hat[2] = pnts[i-1][j].q_hat[2];
-            pnts[i][j].q_hat[3] = ( p / (p_setup.gamma - 1.0) ) + 0.5 * pnts[i][j].q_hat[0] * ( pow(u,2.0) + pow(v,2.0) );
+            pnts[i][j].q_hat[3] = pnts[i-1][j].J1 * ( ( pp / (p_setup.gamma - 1.0) ) + 0.5 * rho * ( pow(u,2.0) + pow(v,2.0) ) );
+
 
         /* Now, deal with supersonic case. */
 

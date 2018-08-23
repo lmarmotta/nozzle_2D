@@ -37,7 +37,7 @@ void export_fields(t_points ** pnts, t_define p_setup){
             double u = pnts[i][j].q_hat[1]/pnts[i][j].q_hat[0];
             double v = pnts[i][j].q_hat[2]/pnts[i][j].q_hat[0];
 
-            double mach = pnts[i][j].J * pnts[i][j].m;
+            double mach = pnts[i][j].m;
 
             double p = pnts[i][j].p;
 
@@ -185,11 +185,11 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
             double u = pnts[i][j].q_hat[1]/pnts[i][j].q_hat[0];
             double v = pnts[i][j].q_hat[2]/pnts[i][j].q_hat[0];
 
-            double mach = pnts[i][j].J * pnts[i][j].m;
+            double mach = pnts[i][j].m;
 
-            double p = pnts[i][j].J * pnts[i][j].p;
+            double p = pnts[i][j].p;
 
-            double t = pnts[i][j].J * pnts[i][j].t;
+            double t = pnts[i][j].t;
 
             /* Dump solution. */
 
