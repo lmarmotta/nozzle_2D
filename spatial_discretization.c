@@ -46,7 +46,7 @@ void compute_fluxes(t_define p_setup, t_points ** pnts){
 
             pnts[i][j].m = sqrt( pow(u,2.0) + pow(v,2.0) )/pnts[i][j].a;
 
-            /* Compute the Mach number. */
+            /* Compute the Temperature. */
 
             pnts[i][j].t = ( (e/rho) - 0.5*(pow(u,2.0) + pow(v,2.0)) )/p_setup.F_Cv;
 

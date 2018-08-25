@@ -47,7 +47,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Update the Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i+1][j].J1 * (p/(p_setup.F_R*T));
+        pnts[i][j].q_hat[0] = pnts[i][j].J1 * (p/(p_setup.F_R*T));
         pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
         pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
         pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*( (p_setup.F_Cv*T) + 0.5*( pow(u,2.0) + pow(v,2.0) ) );
@@ -81,10 +81,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Update the cartesian Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j+1].J1 * rho_jp1;
+        pnts[i][j].q_hat[0] = pnts[i][j].J1 * rho_jp1;
         pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
         pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
-        pnts[i][j].q_hat[3] = pnts[i][j+1].J1 * ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * rho_jp1 * ( pow(u,2.0) + pow(v,2.0) );
+        pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * rho_jp1 * ( pow(u,2.0) + pow(v,2.0) ) );
 
     }
 
@@ -124,10 +124,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
             /* Update the cartesian Q. */
 
-            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0];
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * (pnts[i-1][j].J * pnts[i-1][j].q_hat[0]);
             pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
             pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
-            pnts[i][j].q_hat[3] = pnts[i-1][j].J1 * ( ( pp / (p_setup.gamma - 1.0) ) + 0.5 * rho * ( pow(u,2.0) + pow(v,2.0) ) );
+            pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( ( pp / (p_setup.gamma - 1.0) ) + 0.5 * rho * ( pow(u,2.0) + pow(v,2.0) ) );
 
         /* Now, deal with supersonic case. */
 
@@ -135,10 +135,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
             /* Update the cartesian Q. */
 
-            pnts[i][j].q_hat[0] = pnts[i-1][j].q_hat[0]; 
-            pnts[i][j].q_hat[1] = pnts[i-1][j].q_hat[1];
-            pnts[i][j].q_hat[2] = pnts[i-1][j].q_hat[2];
-            pnts[i][j].q_hat[3] = pnts[i-1][j].q_hat[3];
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * (pnts[i-1][j].J * pnts[i-1][j].q_hat[0]); 
+            pnts[i][j].q_hat[1] = pnts[i][j].J1 * (pnts[i-1][j].J * pnts[i-1][j].q_hat[1]);
+            pnts[i][j].q_hat[2] = pnts[i][j].J1 * (pnts[i-1][j].J * pnts[i-1][j].q_hat[2]);
+            pnts[i][j].q_hat[3] = pnts[i][j].J1 * (pnts[i-1][j].J * pnts[i-1][j].q_hat[3]);
 
         }
     }
@@ -149,10 +149,10 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         int j = jmax-1;
 
-        pnts[i][j].q_hat[0] =   pnts[i][j-2].q_hat[0];
-        pnts[i][j].q_hat[1] =   pnts[i][j-2].q_hat[1];
-        pnts[i][j].q_hat[2] = - pnts[i][j-2].q_hat[2];
-        pnts[i][j].q_hat[3] =   pnts[i][j-2].q_hat[3];
+        pnts[i][j].q_hat[0] =   pnts[i][j].J1 * (pnts[i][j-2].J * pnts[i][j-2].q_hat[0]);
+        pnts[i][j].q_hat[1] =   pnts[i][j].J1 * (pnts[i][j-2].J * pnts[i][j-2].q_hat[1]);
+        pnts[i][j].q_hat[2] = - pnts[i][j].J1 * (pnts[i][j-2].J * pnts[i][j-2].q_hat[2]);
+        pnts[i][j].q_hat[3] =   pnts[i][j].J1 * (pnts[i][j-2].J * pnts[i][j-2].q_hat[3]);
 
     }
 }

@@ -23,10 +23,10 @@ void apply_initial_condition(t_define p_setup, t_points ** pnts){
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
 
-            pnts[i][j].q_hat[0] = pnts[i][j].J1 * (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t);
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * ( (P_t*pow(1.0,(p_setup.gamma/(p_setup.gamma-1.0))))/(p_setup.F_R*T_t) );
             pnts[i][j].q_hat[1] = 0.0;
             pnts[i][j].q_hat[2] = 0.0;
-            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*e_i; 
+            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[0]*e_i;
 
         }
     }

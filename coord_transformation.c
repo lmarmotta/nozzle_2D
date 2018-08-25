@@ -65,8 +65,8 @@ void calc_metric_relations(t_define p_setup, t_points ** pnts){
         pnts[i][j].x_ksi = 0.5 * ( ( pnts[i+1][j].x - pnts[i-1][j].x ) / dksi );
         pnts[i][j].y_ksi = 0.5 * ( ( pnts[i+1][j].y - pnts[i-1][j].y ) / dksi );
 
-        pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / dksi;
-        pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / dksi;
+        pnts[i][j].x_eta = ( pnts[i][j].x - pnts[i][j-1].x ) / deta;
+        pnts[i][j].y_eta = ( pnts[i][j].y - pnts[i][j-1].y ) / deta;
 
     }
 

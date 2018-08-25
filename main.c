@@ -62,29 +62,17 @@ int main(int argc, char * argv[]){
 
     calc_metric_relations(p_setup, pnts);
 
-    /* Apply initial condition. */
-
-    apply_initial_condition(p_setup, pnts);
-
     /* Perform 0 iteration procedure. */
 
     printf("\n-Performing Zero iter procedures computations....\n");
 
-    /* Build the fluxes. */
+    /* Apply initial condition. */
 
-    compute_fluxes(p_setup, pnts);
-
-    /* Compute the RHS. */
-
-    compute_rhs(p_setup, pnts);
+    apply_initial_condition(p_setup, pnts);
 
     /* Apply the initial boundary conditions. */
 
     boundary_condition_euler(p_setup, pnts);
-
-    /* Compute local time step for our mesh. */
-
-    local_time(p_setup, pnts);
 
     /* Start the iterative procedure. */
 
@@ -109,13 +97,13 @@ int main(int argc, char * argv[]){
 
         art_dissip_2nd(p_setup, pnts);
 
-        /* Marh in time. */
-
-        explicitEuler(p_setup, pnts);
-
         /* Update the time. */
 
         local_time(p_setup, pnts);
+
+        /* Marh in time. */
+
+        explicitEuler(p_setup, pnts);
 
         /* Update Boundary conditions. */
 
