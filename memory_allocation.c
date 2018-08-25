@@ -93,53 +93,53 @@ void initialize_structs(t_define p_setup, t_points ** pnts){
     for (int i = 0; i < imax; i++){
         for (int j = 0; j < jmax; j++){
 
-            pnts[i][j].x = -9999.0;
-            pnts[i][j].y = -9999.0;
+            pnts[i][j].x = 0.0;
+            pnts[i][j].y = 0.0;
 
-            pnts[i][j].J  = -9999.0;
-            pnts[i][j].J1 = -9999.0;
+            pnts[i][j].J  = 0.0;
+            pnts[i][j].J1 = 0.0;
 
-            pnts[i][j].x_ksi = -9999.0;
-            pnts[i][j].y_ksi = -9999.0;
+            pnts[i][j].x_ksi = 0.0;
+            pnts[i][j].y_ksi = 0.0;
 
-            pnts[i][j].x_eta = -9999.0;
-            pnts[i][j].y_eta = -9999.0;
+            pnts[i][j].x_eta = 0.0;
+            pnts[i][j].y_eta = 0.0;
 
-            pnts[i][j].ksi_x = -9999.0;
-            pnts[i][j].ksi_y = -9999.0;
+            pnts[i][j].ksi_x = 0.0;
+            pnts[i][j].ksi_y = 0.0;
 
-            pnts[i][j].eta_x = -9999.0;
-            pnts[i][j].eta_y = -9999.0;
+            pnts[i][j].eta_x = 0.0;
+            pnts[i][j].eta_y = 0.0;
 
-            pnts[i][j].cov_u = -9999.0;
-            pnts[i][j].cov_v = -9999.0;
+            pnts[i][j].cov_u = 0.0;
+            pnts[i][j].cov_v = 0.0;
 
-            pnts[i][j].q_hat[0] = -9999.0;
-            pnts[i][j].q_hat[1] = -9999.0;
-            pnts[i][j].q_hat[2] = -9999.0;
-            pnts[i][j].q_hat[3] = -9999.0;
+            pnts[i][j].q_hat[0] = 0.0;
+            pnts[i][j].q_hat[1] = 0.0;
+            pnts[i][j].q_hat[2] = 0.0;
+            pnts[i][j].q_hat[3] = 0.0;
 
-            pnts[i][j].e_hat[0] = -9999.0;
-            pnts[i][j].e_hat[1] = -9999.0;
-            pnts[i][j].e_hat[2] = -9999.0;
-            pnts[i][j].e_hat[3] = -9999.0;
+            pnts[i][j].e_hat[0] = 0.0;
+            pnts[i][j].e_hat[1] = 0.0;
+            pnts[i][j].e_hat[2] = 0.0;
+            pnts[i][j].e_hat[3] = 0.0;
 
-            pnts[i][j].f_hat[0] = -9999.0;
-            pnts[i][j].f_hat[1] = -9999.0;
-            pnts[i][j].f_hat[2] = -9999.0;
-            pnts[i][j].f_hat[3] = -9999.0;
+            pnts[i][j].f_hat[0] = 0.0;
+            pnts[i][j].f_hat[1] = 0.0;
+            pnts[i][j].f_hat[2] = 0.0;
+            pnts[i][j].f_hat[3] = 0.0;
 
-            pnts[i][j].RHS[0] = -9999.0;
-            pnts[i][j].RHS[1] = -9999.0;
-            pnts[i][j].RHS[2] = -9999.0;
-            pnts[i][j].RHS[3] = -9999.0;
+            pnts[i][j].RHS[0] = 0.0;
+            pnts[i][j].RHS[1] = 0.0;
+            pnts[i][j].RHS[2] = 0.0;
+            pnts[i][j].RHS[3] = 0.0;
 
-            pnts[i][j].a = -9999.0;
-            pnts[i][j].m = -9999.0;
-            pnts[i][j].p = -9999.0;
-            pnts[i][j].t = -9999.0;
+            pnts[i][j].a = 0.0;
+            pnts[i][j].m = 0.0;
+            pnts[i][j].p = 0.0;
+            pnts[i][j].t = 0.0;
 
-            pnts[i][j].dt = -9999.0;
+            pnts[i][j].dt = 0.0;
         }
     }
 }

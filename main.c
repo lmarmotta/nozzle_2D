@@ -126,7 +126,6 @@ int main(int argc, char * argv[]){
             
         }
     }
-
     
     /* Close the residue file. */
 

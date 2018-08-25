@@ -62,29 +62,27 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         /* Obtain the Cartesian velocity components. */
 
-        double U_i1 = pnts[i][j+1].cov_u;
-        double V_i1 = 0.0;
+        pnts[i][j].cov_u = pnts[i][j+1].cov_u;
+        pnts[i][j].cov_v = 0.0;
 
-        double u = pnts[i][j].x_ksi*U_i1 + pnts[i][j].x_eta*V_i1;
-        double v = pnts[i][j].y_ksi*U_i1 + pnts[i][j].y_eta*V_i1;
+        double u = pnts[i][j].J1 * (   pnts[i][j].eta_y*pnts[i][j].cov_u - pnts[i][j].ksi_y*pnts[i][j].cov_v);
+        double v = pnts[i][j].J1 * ( - pnts[i][j].eta_x*pnts[i][j].cov_u + pnts[i][j].ksi_x*pnts[i][j].cov_v);
 
-        /* Now, compute the energy and pressure in order to reconstruct. */
+        /* Now, get the proper primitives. */
 
-        double e_jp1   = pnts[i][j+1].J * pnts[i][j+1].q_hat[3]; 
+        double rho  = pnts[i][j+1].J * pnts[i][j+1].q_hat[0];
+        double e    = pnts[i][j+1].J * pnts[i][j+1].q_hat[3];
 
-        double rho_jp1 = pnts[i][j+1].J * pnts[i][j+1].q_hat[0]; 
+        /* Compute the pressure. */
 
-        double u_jp1 = pnts[i][j+1].q_hat[1]/pnts[i][j+1].q_hat[0];
-        double v_jp1 = pnts[i][j+1].q_hat[2]/pnts[i][j+1].q_hat[0];
-
-        double p_jp1   = (p_setup.gamma - 1.0)*(e_jp1 - 0.5*rho_jp1*( pow(u_jp1,2.0) + pow(v_jp1,2.0)) );
+        double p = (p_setup.gamma-1.0) * (e - 0.5*rho*(pow(u,2.0) + pow(v,2.0)));
 
         /* Update the cartesian Q. */
 
-        pnts[i][j].q_hat[0] = pnts[i][j].J1 * rho_jp1;
-        pnts[i][j].q_hat[1] = pnts[i][j].q_hat[0]*u;
-        pnts[i][j].q_hat[2] = pnts[i][j].q_hat[0]*v;
-        pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( ( p_jp1 / (p_setup.gamma - 1.0) ) + 0.5 * rho_jp1 * ( pow(u,2.0) + pow(v,2.0) ) );
+        pnts[i][j].q_hat[0] = pnts[i][j].J1 * rho;
+        pnts[i][j].q_hat[1] = pnts[i][j].J1 * rho*u;
+        pnts[i][j].q_hat[2] = pnts[i][j].J1 * rho*v;
+        pnts[i][j].q_hat[3] = pnts[i][j].J1 * ((p/(p_setup.gamma-1.0)) + 0.5*rho*(pow(u,2.0) + pow(v,2.0)));
 
     }
 
@@ -103,15 +101,9 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
 
         double u_mag = sqrt( pow(u,2.0) + pow(v,2.0) );
 
-        double e     = pnts[i-1][j].J * pnts[i-1][j].q_hat[3];
-
         double rho   = pnts[i-1][j].J * pnts[i-1][j].q_hat[0];
 
-        double p     = (p_setup.gamma - 1.0)*(e - 0.5*rho*( pow(u,2.0) + pow(v,2.0)) );
-
-        double a     = sqrt( (p_setup.gamma*p)/ rho);
-
-        double mach  = u_mag/a;
+        double mach  = u_mag/pnts[i-1][j].a;
 
         /* Separate the subsonic from supersonic. */
 
