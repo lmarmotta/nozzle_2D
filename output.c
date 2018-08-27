@@ -66,11 +66,11 @@ void export_fields(t_points ** pnts, t_define p_setup){
     fclose(f_out);
 }
 
-void dump_iteration(int iter){
+void dump_iteration(int iter, double time){
 
     /* Dump residues to the screen. */
 
-    printf(" -- iter: %10d | RHS: %lf | %lf | %lf | %lf\n",iter, log10(max_rhs_rho), log10(max_rhs_rhou), log10(max_rhs_rhov), log10(max_rhs_e));
+    printf(" -- iter: %10d | RHS: %lf %lf %lf %lf | time/iter: %lf [s]\n",iter, log10(max_rhs_rho), log10(max_rhs_rhou), log10(max_rhs_rhov), log10(max_rhs_e),time);
 
 }
 

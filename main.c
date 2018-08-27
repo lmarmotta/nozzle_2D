@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "cgnslib.h"
 #include "structs.h"
@@ -85,6 +86,13 @@ int main(int argc, char * argv[]){
 
     for (int iter = 1; iter <= p_setup.n_max_iter; iter++){
 
+        /* Time variables. */
+
+        clock_t start, end;
+        double cpu_time_used;
+
+        start = clock();
+
         /* Now, build the fluxes. */
 
         compute_fluxes(p_setup, pnts);
@@ -113,8 +121,14 @@ int main(int argc, char * argv[]){
 
         dump_residue_file(iter, &res_output);
 
+        /* end time. */
+
+        end = clock();
+
+        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
         if (iter == out_rate){
-            dump_iteration(iter);
+            dump_iteration(iter,cpu_time_used);
             out_rate += p_setup.p_rate;
         }
 

@@ -7,7 +7,9 @@
 #include "cgnslib.h"
 #include "structs.h"
 
-/* Allocate the main struct of the code. */
+/* 
+ * Allocate the main struct of the code.
+ */
 
 void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
 
@@ -37,7 +39,9 @@ void alloc_struct_matrix(t_points *** pntss, int imax, int jmax){
     *pntss = pnts;
 }
 
-/* Free the main struct of the code. */
+/* 
+ * Free the main struct of the code.
+ */
 
 void free_struct_matrix(t_points ** pnts, int imax){
 
@@ -46,7 +50,9 @@ void free_struct_matrix(t_points ** pnts, int imax){
     free(pnts);
 }
 
-/* Allocate matrix. */
+/* 
+ * Allocate matrix. 
+ */
 
 double ** alloc_double_matrix(int imax, int jmax){
 
@@ -70,6 +76,10 @@ double ** alloc_double_matrix(int imax, int jmax){
     return matrix;
 }
 
+/*
+ * Free a double matrix.
+ */
+
 void free_double_matrix(double ** matrix, int imax){
 
     for (int i = 0; i<imax; i++){
@@ -79,7 +89,9 @@ void free_double_matrix(double ** matrix, int imax){
     free(matrix);
 }
 
-/* Initialize all values of the struct. */
+/* 
+ * Initialize all values of the struct. 
+ */
 
 void initialize_structs(t_define p_setup, t_points ** pnts){
 

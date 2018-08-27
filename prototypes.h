@@ -21,7 +21,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts);
 void compute_rhs(t_define p_setup, t_points ** pnts);
 void local_time(t_define p_setup, t_points ** pnts);
 void explicitEuler(t_define p_setup, t_points ** pnts);
-void dump_iteration(int iter);
+void dump_iteration(int iter, double time);
 void dump_residue_file(int iter, FILE ** res_output);
 double ** alloc_double_matrix(int imax, int jmax);
 void free_double_matrix(double ** matrix, int imax);
