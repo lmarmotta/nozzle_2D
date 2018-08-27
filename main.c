@@ -70,9 +70,13 @@ int main(int argc, char * argv[]){
 
     apply_initial_condition(p_setup, pnts);
 
-    /* Apply the initial boundary conditions. */
+    /* Initial boundary conditions. */
 
     boundary_condition_euler(p_setup, pnts);
+
+    /* Make things non-dimensional. */
+
+    dim2nondim(p_setup, pnts);
 
     /* Start the iterative procedure. */
 
@@ -118,12 +122,22 @@ int main(int argc, char * argv[]){
             out_rate += p_setup.p_rate;
         }
 
+        /* Check the save and export appropriate files. */
+
         if (iter == out_save){
+
             printf("\n Outputing solution. \n\n");
-            if (p_setup.save_gif == 1) save_for_gif(iter, pnts, p_setup); 
+
+            if (p_setup.save_gif == 1){
+                nondim2dim(p_setup, pnts);
+                save_for_gif(iter, pnts, p_setup); 
+                dim2nondim(p_setup, pnts);
+            } 
+
+            nondim2dim(p_setup, pnts);
             export_fields(pnts,p_setup);
+            dim2nondim(p_setup, pnts);
             out_save += p_setup.n_save;
-            
         }
     }
     

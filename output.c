@@ -76,7 +76,7 @@ void dump_iteration(int iter){
 
 void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
-    fprintf(*res_output,"%10d %lf %lf %lf %lf\n",iter,max_rhs_rho,max_rhs_rhou,max_rhs_rhov,max_rhs_e);
+    fprintf(*res_output,"%10d %lf %lf %lf %lf\n",iter,log10(max_rhs_rho),log10(max_rhs_rhou),log10(max_rhs_rhov),log10(max_rhs_e));
 
     /* Check rho residue. */
 
