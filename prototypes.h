@@ -26,7 +26,7 @@ void dump_residue_file(int iter, FILE ** res_output);
 double ** alloc_double_matrix(int imax, int jmax);
 void free_double_matrix(double ** matrix, int imax);
 void explicitEuler(t_define p_setup, t_points ** pnts);
-void art_dissip_2nd(t_define p_setup, t_points ** pnts);
+void art_dissip(t_define p_setup, t_points ** pnts, int d_typ);
 void export_fields(t_points ** pnts, t_define p_setup);
 void save_for_gif(int num,t_points ** pnts, t_define p_setup);
 void initialize_structs(t_define p_setup, t_points ** pnts);

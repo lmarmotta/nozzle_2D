@@ -103,7 +103,7 @@ int main(int argc, char * argv[]){
 
         /* Apply dissipation. */
 
-        art_dissip_2nd(p_setup, pnts);
+        art_dissip(p_setup, pnts, p_setup.d_typ);
 
         /* Update the time. */
 

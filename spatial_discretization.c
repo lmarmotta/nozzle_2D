@@ -134,7 +134,7 @@ void compute_rhs(t_define p_setup, t_points ** pnts){
     }
 }
 
-void art_dissip_2nd(t_define p_setup, t_points ** pnts){
+void art_dissip(t_define p_setup, t_points ** pnts, int d_typ){
 
     /* Separate bounds. */
 
@@ -148,23 +148,100 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
 
     /* Compute the internal points. */
 
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
+    if (d_typ == 1){
 
-            /* Ksi direction. */
+        for (int i = 1; i<imax-1; i++){
+            for (int j = 1; j<jmax-1; j++){
 
-            diss_ksi[i][j][0] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[0]);
-            diss_ksi[i][j][1] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[1]);
-            diss_ksi[i][j][2] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[2]);
-            diss_ksi[i][j][3] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[3]);
+                /* Ksi direction. */
 
-            /* Eta direction. */
+                diss_ksi[i][j][0] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[0]);
+                diss_ksi[i][j][1] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[1]);
+                diss_ksi[i][j][2] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[2]);
+                diss_ksi[i][j][3] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[3]);
 
-            diss_eta[i][j][0] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[0]);
-            diss_eta[i][j][1] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[1]);
-            diss_eta[i][j][2] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[2]);
-            diss_eta[i][j][3] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[3]);
+                /* Eta direction. */
 
+                diss_eta[i][j][0] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[0]);
+                diss_eta[i][j][1] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[1]);
+                diss_eta[i][j][2] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[2]);
+                diss_eta[i][j][3] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[3]);
+
+            }
+        }
+    }
+
+    /* If properly set, compute the fourth difference artificial dissipation. */
+
+    if (d_typ == 2){
+
+        for (int i = 2; i<imax-2; i++){
+            for (int j = 2; j<jmax-2; j++){
+
+                /* Compute in ksi direction. */
+
+                diss_ksi[i][j][0] =     pnts[i+2][j].J*pnts[i+2][j].q_hat[0] - 
+                                    4.0*pnts[i+1][j].J*pnts[i+1][j].q_hat[0] + 
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[0] - 
+                                    4.0*pnts[i-1][j].J*pnts[i-1][j].q_hat[0] + 
+                                        pnts[i-2][j].J*pnts[i-2][j].q_hat[0];
+
+                diss_ksi[i][j][1] =     pnts[i+2][j].J*pnts[i+2][j].q_hat[1] - 
+                                    4.0*pnts[i+1][j].J*pnts[i+1][j].q_hat[1] + 
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[1] - 
+                                    4.0*pnts[i-1][j].J*pnts[i-1][j].q_hat[1] + 
+                                        pnts[i-2][j].J*pnts[i-2][j].q_hat[1];
+
+                diss_ksi[i][j][2] =     pnts[i+2][j].J*pnts[i+2][j].q_hat[2] - 
+                                    4.0*pnts[i+1][j].J*pnts[i+1][j].q_hat[2] + 
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[2] - 
+                                    4.0*pnts[i-1][j].J*pnts[i-1][j].q_hat[2] + 
+                                        pnts[i-2][j].J*pnts[i-2][j].q_hat[2];
+
+                diss_ksi[i][j][3] =     pnts[i+2][j].J*pnts[i+2][j].q_hat[3] - 
+                                    4.0*pnts[i+1][j].J*pnts[i+1][j].q_hat[3] + 
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[3] - 
+                                    4.0*pnts[i-1][j].J*pnts[i-1][j].q_hat[3] + 
+                                        pnts[i-2][j].J*pnts[i-2][j].q_hat[3];
+
+                /* Compute the eta direction. */
+
+                diss_eta[i][j][0] =     pnts[i][j+2].J*pnts[i][j+2].q_hat[0] - 
+                                    4.0*pnts[i][j+1].J*pnts[i][j+1].q_hat[0] +
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[0] - 
+                                    4.0*pnts[i][j-1].J*pnts[i][j-1].q_hat[0] + 
+                                        pnts[i][j-2].J*pnts[i][j-2].q_hat[0];
+
+                diss_eta[i][j][1] =     pnts[i][j+2].J*pnts[i][j+2].q_hat[1] - 
+                                    4.0*pnts[i][j+1].J*pnts[i][j+1].q_hat[1] +
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[1] - 
+                                    4.0*pnts[i][j-1].J*pnts[i][j-1].q_hat[1] + 
+                                        pnts[i][j-2].J*pnts[i][j-2].q_hat[1];
+
+                diss_eta[i][j][2] =     pnts[i][j+2].J*pnts[i][j+2].q_hat[2] - 
+                                    4.0*pnts[i][j+1].J*pnts[i][j+1].q_hat[2] +
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[2] - 
+                                    4.0*pnts[i][j-1].J*pnts[i][j-1].q_hat[2] + 
+                                        pnts[i][j-2].J*pnts[i][j-2].q_hat[2];
+
+                diss_eta[i][j][3] =     pnts[i][j+2].J*pnts[i][j+2].q_hat[3] - 
+                                    4.0*pnts[i][j+1].J*pnts[i][j+1].q_hat[3] +
+                                        6.0*pnts[i][j].J*pnts[i][j].q_hat[3] - 
+                                    4.0*pnts[i][j-1].J*pnts[i][j-1].q_hat[3] + 
+                                        pnts[i][j-2].J*pnts[i][j-2].q_hat[3];
+
+                /* Remember, the fourth difference has reverse value. */
+
+                diss_ksi[i][j][0] = - diss_ksi[i][j][0];   
+                diss_ksi[i][j][1] = - diss_ksi[i][j][1];  
+                diss_ksi[i][j][2] = - diss_ksi[i][j][2];  
+                diss_ksi[i][j][3] = - diss_ksi[i][j][3];  
+                                                       ;
+                diss_eta[i][j][0] = - diss_eta[i][j][0]; 
+                diss_eta[i][j][1] = - diss_eta[i][j][1];
+                diss_eta[i][j][2] = - diss_eta[i][j][2];
+                diss_eta[i][j][3] = - diss_eta[i][j][3];
+            }
         }
     }
 

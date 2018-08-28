@@ -26,7 +26,17 @@ typedef struct t_define{
 
     /* Maximun residue of the equation. */
 
-    double eps_blow, eps_ilow;
+    double eps_blow;
+
+    /* Artificial dissipation selection. */
+
+    /*
+     * 1: Second difference dissipation.
+     * 2: Fourth order dissipation.
+     * 3: Non-Linear Pullian dissipation.
+     */
+
+    int d_typ;
 
 } t_define;
 
