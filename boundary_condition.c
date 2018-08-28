@@ -112,7 +112,7 @@ void boundary_condition_euler(t_define p_setup, t_points ** pnts){
             /* Compute the exit boundary condition. Here I am considering, for now,
              * that the flow is exiting subsonic. */
             
-            double pp = p_setup.BCIN_pt/10.0;
+            double pp = p_setup.BCIN_pt/3.0;
 
             /* Update the cartesian Q. */
 

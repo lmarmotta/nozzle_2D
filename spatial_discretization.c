@@ -153,17 +153,17 @@ void art_dissip_2nd(t_define p_setup, t_points ** pnts){
 
             /* Ksi direction. */
 
-            diss_ksi[i][j][0] = pnts[i][j].J * ( pnts[i+1][j].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i-1][j].q_hat[0] );
-            diss_ksi[i][j][1] = pnts[i][j].J * ( pnts[i+1][j].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i-1][j].q_hat[1] );
-            diss_ksi[i][j][2] = pnts[i][j].J * ( pnts[i+1][j].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i-1][j].q_hat[2] );
-            diss_ksi[i][j][3] = pnts[i][j].J * ( pnts[i+1][j].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i-1][j].q_hat[3] );
+            diss_ksi[i][j][0] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[0]);
+            diss_ksi[i][j][1] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[1]);
+            diss_ksi[i][j][2] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[2]);
+            diss_ksi[i][j][3] = (pnts[i+1][j].J*pnts[i+1][j].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i-1][j].J*pnts[i-1][j].q_hat[3]);
 
             /* Eta direction. */
 
-            diss_eta[i][j][0] = pnts[i][j].J * ( pnts[i][j+1].q_hat[0] - 2.0 * pnts[i][j].q_hat[0] + pnts[i][j-1].q_hat[0] );
-            diss_eta[i][j][1] = pnts[i][j].J * ( pnts[i][j+1].q_hat[1] - 2.0 * pnts[i][j].q_hat[1] + pnts[i][j-1].q_hat[1] );
-            diss_eta[i][j][2] = pnts[i][j].J * ( pnts[i][j+1].q_hat[2] - 2.0 * pnts[i][j].q_hat[2] + pnts[i][j-1].q_hat[2] );
-            diss_eta[i][j][3] = pnts[i][j].J * ( pnts[i][j+1].q_hat[3] - 2.0 * pnts[i][j].q_hat[3] + pnts[i][j-1].q_hat[3] );
+            diss_eta[i][j][0] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[0]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[0]);
+            diss_eta[i][j][1] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[1]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[1]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[1]);
+            diss_eta[i][j][2] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[2]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[2]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[2]);
+            diss_eta[i][j][3] = (pnts[i][j+1].J*pnts[i][j+1].q_hat[3]) - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[3]) + (pnts[i][j-1].J*pnts[i][j-1].q_hat[3]);
 
         }
     }

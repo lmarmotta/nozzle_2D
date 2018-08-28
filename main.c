@@ -127,6 +127,8 @@ int main(int argc, char * argv[]){
 
         cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
+        /* Dump iter. */
+
         if (iter == out_rate){
             dump_iteration(iter,cpu_time_used);
             out_rate += p_setup.p_rate;
