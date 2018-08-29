@@ -104,7 +104,7 @@ void read_setup(char * setup_name, t_define * p_setup){
 
     /* Read the dissipw. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dissp_w) != 2)
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dissp2) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Read the dissipw. */
@@ -115,6 +115,11 @@ void read_setup(char * setup_name, t_define * p_setup){
     /* Read the dissipw. */
 
     if (fscanf(fp_file,"%s %d", buf, &p_setup->d_typ) != 2)
+    { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
+
+    /* Read the dissipw. */
+
+    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dissp4) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Close the file */
@@ -149,7 +154,8 @@ void dump_setup(t_define p_setup){
     printf("\n--- p_rate     : %d\n",p_setup.p_rate);
     printf("\n--- eps_blow   : %lf\n",p_setup.eps_blow);
     printf("\n--- n_save     : %d\n",p_setup.n_save);
-    printf("\n--- dissp_w    : %lf\n",p_setup.dissp_w);
+    printf("\n--- dissp2     : %lf\n",p_setup.dissp2);
+    printf("\n--- dissp4     : %lf\n",p_setup.dissp4);
     printf("\n--- save_gif   : %d\n",p_setup.save_gif);
     printf("\n--- d_typ      : %d\n",p_setup.d_typ);
 }
