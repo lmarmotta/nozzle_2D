@@ -1,10 +1,13 @@
+# Because of the LAPACK dependency, this code shall be compiled as:
+#
+# gcc -Ddgetrf=dgetrf_ -Ddgetri=dgetri_ m_inversion.c -lblas -llapack 
 #
 # Name of the exec file.
 TARGET=code
 
 #
 # Link flags abreviation.
-LIBS=-lm -lcgns -lhdf5
+LIBS=-lm -lcgns -lhdf5 -lblas -llapack
 
 #
 # Path to hdf5 parallel compiler (needs compilation first).
@@ -24,8 +27,8 @@ CC=/home/leonardo/opt/hdf5/bin/h5pcc
 # -Wstrict-prototypes: Warn if a function is declared or defined without specifying the argument types.
 # -Wformat-security: If -Wformat is specified, also warn about uses of format functions that represent possible security problems.
 #
-CFLAGS=-O0 -std=c99 -ggdb -Wall -Wextra -pedantic -Wuninitialized -Winit-self -Wstrict-prototypes -Wformat -Wformat-security -Warray-bounds 
-# CFLAGS=-O2 -std=c99
+CFLAGS=-O0 -std=c99 -ggdb -Wall -Wextra -pedantic -Wuninitialized -Winit-self -Wstrict-prototypes -Wformat -Wformat-security -Warray-bounds -Ddgetrf=dgetrf_ -Ddgetri=dgetri_ 
+# CFLAGS=-O2 -std=c99 -Ddgetrf=dgetrf_ -Ddgetri=dgetri_
 
 #
 # CGNS include path.

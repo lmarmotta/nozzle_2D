@@ -6,6 +6,7 @@
 
 #include "cgnslib.h"
 #include "structs.h"
+#include "externs.h"
 
 /* 
  * Allocate the main struct of the code.
@@ -154,4 +155,31 @@ void initialize_structs(t_define p_setup, t_points ** pnts){
             pnts[i][j].dt = 0.0;
         }
     }
+}
+
+/* Maps an matrix to an array. Where tam is the dimension in i direction
+ * following the C notation standard. Do not work with this guy thinking in
+ * Fortran cache efficiency. If so, your code will work fast, but it will be
+ * wrong. */
+
+int ind2d(int i, int j, int tam){
+    return (i)*(tam)+j; 
+    
+}
+
+/* Uses LAPACK subroutine to invert a matrix. The matrix shall be passed as an
+ * converted array. */
+
+void inv(double * A, int N){
+
+    int * IPIV = calloc((N+1),sizeof(int));
+    int LWORK = N*N;
+    double * WORK = calloc(LWORK,sizeof(double));
+    int INFO;
+
+    dgetrf_(&N,&N,A,&N,IPIV,&INFO);
+    dgetri_(&N,A,&N,IPIV,WORK,&LWORK,&INFO);
+
+    free(IPIV);
+    free(WORK);
 }

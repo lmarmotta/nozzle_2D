@@ -30,3 +30,8 @@ void art_dissip(t_define p_setup, t_points ** pnts, int d_typ);
 void export_fields(t_points ** pnts, t_define p_setup);
 void save_for_gif(int num,t_points ** pnts, t_define p_setup);
 void initialize_structs(t_define p_setup, t_points ** pnts);
+void compute_jacobian(t_define p_setup, t_points ** pnts);
+int ind2d(int i, int j, int tam);
+void inv(double * A, int N);
+
+

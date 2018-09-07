@@ -86,4 +86,8 @@ typedef struct t_points{
 
     double dt;
 
+    /* Inviscid Jacobians. */
+
+    double A_hat[4][4], B_hat[4][4];
+
 } t_points;
