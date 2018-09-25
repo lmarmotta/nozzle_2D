@@ -23,7 +23,6 @@ void local_time(t_define p_setup, t_points ** pnts);
 void explicitEuler(t_define p_setup, t_points ** pnts);
 void dump_iteration(int iter, double time);
 void dump_residue_file(int iter, FILE ** res_output);
-double ** alloc_double_matrix(int imax, int jmax);
 void free_double_matrix(double ** matrix, int imax);
 void explicitEuler(t_define p_setup, t_points ** pnts);
 void art_dissip(t_define p_setup, t_points ** pnts, int d_typ);
@@ -31,7 +30,15 @@ void export_fields(t_points ** pnts, t_define p_setup);
 void save_for_gif(int num,t_points ** pnts, t_define p_setup);
 void initialize_structs(t_define p_setup, t_points ** pnts);
 void compute_jacobian(t_define p_setup, t_points ** pnts);
-int ind2d(int i, int j, int tam);
-void inv(double * A, int N);
-
+void inv(double ** matrix, int N);
+void blk_tri(double *** main, double *** lower, double *** upper, int size_m, int num_m, double ** XB, double ** X);
+void dmgss(double ** mA, double ** mB, double ** mC, int m, int n, int p);
+void dmuls(double ** mA, double ** mB, double ** mC, int size);
+double *** alloc_dcube(int imax, int jmax, int kmax);
+void free_dcube(double *** cube, int imax, int jmax);
+void free_dmatrix(double ** matrix, int imax);
+void free_vector(double * vector);
+double ** alloc_dmatrix(int imax, int jmax);
+double * alloc_dvector(int imax);
+void free_struct_matrix(t_points ** pnts, int imax);
 

@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "structs.h"
+#include "externs.h"
 
 /* Advance the solution in time using the Beam-Warming Scheme. */
 
