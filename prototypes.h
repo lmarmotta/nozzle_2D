@@ -41,4 +41,4 @@ void free_vector(double * vector);
 double ** alloc_dmatrix(int imax, int jmax);
 double * alloc_dvector(int imax);
 void free_struct_matrix(t_points ** pnts, int imax);
-
+void beam_warming(t_define p_setup, t_points ** pnts);

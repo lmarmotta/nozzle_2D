@@ -93,33 +93,74 @@ int main(int argc, char * argv[]){
 
         start = clock();
 
-        /* Now, build the fluxes. */
+        switch(p_setup.scheme){
 
-        compute_fluxes(p_setup, pnts);
+            /*
+             * Explicit Euler scheme.
+             */
 
-        /* Compute the RHS. */
+            case 1:
 
-        compute_rhs(p_setup, pnts);
+                /* Now, build the fluxes. */
 
-        /* Apply dissipation. */
+                compute_fluxes(p_setup, pnts);
 
-        art_dissip(p_setup, pnts, p_setup.d_typ);
+                /* Compute the RHS. */
 
-        /* Update the time. */
+                compute_rhs(p_setup, pnts);
 
-        local_time(p_setup, pnts);
+                /* Apply dissipation. */
 
-        /* Marh in time. */
+                art_dissip(p_setup, pnts, p_setup.d_typ);
 
-        explicitEuler(p_setup, pnts);
+                /* Update the time. */
 
-        /* Update Boundary conditions. */
+                local_time(p_setup, pnts);
 
-        boundary_condition_euler(p_setup, pnts);
+                /* Marh in time. */
 
-        /* Dump a whole lotta of stuff. */
+                explicitEuler(p_setup, pnts);
 
-        dump_residue_file(iter, &res_output);
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output);
+
+            /*
+             * Beam Warming (Pullian) Implicit scheme. 
+             */
+
+            case 2:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip(p_setup, pnts, p_setup.d_typ);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March in time. */
+
+                beam_warming(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+        }
 
         /* end time. */
 

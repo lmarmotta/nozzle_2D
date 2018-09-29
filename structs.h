@@ -38,6 +38,14 @@ typedef struct t_define{
 
     int d_typ;
 
+    /* Type of numerical scheme:
+     *
+     * scheme = 1 - Explicit Euler with dissip.
+     * scheme = 2 - Pullian implicit scheme.
+     */
+
+    int scheme;
+
 } t_define;
 
 /*
