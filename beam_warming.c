@@ -73,7 +73,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
             for (int ii = 0; ii<nim; ii++)
                 for (int jj = 0; jj<nim; jj++)
-                    m_upper[ii][jj][j] = - (cnts*pnts[i+1][j].A_hat[ii][jj]) / 2.0;
+                    m_upper[ii][jj][j] =   (cnts*pnts[i+1][j].A_hat[ii][jj]) / 2.0;
 
             /* Separate the srhs. */
 
@@ -99,7 +99,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
             for (int ii = 0; ii<nim; ii++)
                 for (int jj = 0; jj<nim; jj++)
-                    m_lower[ii][jj][j] = - (cnts*pnts[i-1][j].B_hat[ii][jj]) / 2.0;
+                    m_lower[ii][jj][j] = - (cnts*pnts[i][j-1].B_hat[ii][jj]) / 2.0;
 
             /* Separate the main diagonal. */
 
@@ -111,7 +111,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
             for (int ii = 0; ii<nim; ii++)
                 for (int jj = 0; jj<nim; jj++)
-                    m_upper[ii][jj][j] = - (cnts*pnts[i+1][j].B_hat[ii][jj]) / 2.0;
+                    m_upper[ii][jj][j] = (cnts*pnts[i][j+1].B_hat[ii][jj]) / 2.0;
 
             /* Separate the srhs. */
 
@@ -129,10 +129,10 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
         for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].q_hat[0] = pnts[i][j].q_hat[0] + du_s[j][0]; 
-            pnts[i][j].q_hat[1] = pnts[i][j].q_hat[1] + du_s[j][1]; 
-            pnts[i][j].q_hat[2] = pnts[i][j].q_hat[2] + du_s[j][2]; 
-            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[3] + du_s[j][3]; 
+            pnts[i][j].q_hat[0] = pnts[i][j].q_hat[0] + du_s[0][j]; 
+            pnts[i][j].q_hat[1] = pnts[i][j].q_hat[1] + du_s[1][j]; 
+            pnts[i][j].q_hat[2] = pnts[i][j].q_hat[2] + du_s[2][j]; 
+            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[3] + du_s[3][j]; 
 
         }
 
