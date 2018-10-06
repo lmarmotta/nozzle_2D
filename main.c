@@ -129,6 +129,10 @@ int main(int argc, char * argv[]){
 
                 dump_residue_file(iter, &res_output);
 
+                /* Break the switch. */
+
+                break;
+
             /*
              * Beam Warming (Pullian) Implicit scheme. 
              */
@@ -142,6 +146,10 @@ int main(int argc, char * argv[]){
                 /* Compute the RHS. */
 
                 compute_rhs(p_setup, pnts);
+
+                /* Compute the Jacobian. */
+
+                compute_jacobian(p_setup, pnts);
 
                 /* Apply dissipation. */
 
@@ -160,6 +168,22 @@ int main(int argc, char * argv[]){
                 boundary_condition_euler(p_setup, pnts);
 
                 /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output);
+
+                /* Break */
+
+                break;
+
+            /*
+             * Default case. 
+             */
+
+            default:
+
+                printf("ERROR: Time marching scheme not availiable.\n");
+                exit(1);
+
         }
 
         /* end time. */

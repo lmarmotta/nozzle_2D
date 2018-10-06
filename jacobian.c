@@ -110,4 +110,72 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
 
         }
     }
+
+    /* Now, remember to make the Jacobian be consistent with general coordinates. */
+
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
+
+            /* Jacobian for x fluxes. */
+
+            /* First line. */
+
+            pnts[i][j].A_hat[0][0] = pnts[i][j].J1 * pnts[i][j].A_hat[0][0]; 
+            pnts[i][j].A_hat[0][1] = pnts[i][j].J1 * pnts[i][j].A_hat[0][1];
+            pnts[i][j].A_hat[0][2] = pnts[i][j].J1 * pnts[i][j].A_hat[0][2];
+            pnts[i][j].A_hat[0][3] = pnts[i][j].J1 * pnts[i][j].A_hat[0][3];
+
+            /* Second line. */
+
+            pnts[i][j].A_hat[1][0] = pnts[i][j].J1 * pnts[i][j].A_hat[1][0]; 
+            pnts[i][j].A_hat[1][1] = pnts[i][j].J1 * pnts[i][j].A_hat[1][1];
+            pnts[i][j].A_hat[1][2] = pnts[i][j].J1 * pnts[i][j].A_hat[1][2];
+            pnts[i][j].A_hat[1][3] = pnts[i][j].J1 * pnts[i][j].A_hat[1][3];
+
+            /* Third line. */
+
+            pnts[i][j].A_hat[2][0] = pnts[i][j].J1 * pnts[i][j].A_hat[2][0];  
+            pnts[i][j].A_hat[2][1] = pnts[i][j].J1 * pnts[i][j].A_hat[2][1]; 
+            pnts[i][j].A_hat[2][2] = pnts[i][j].J1 * pnts[i][j].A_hat[2][2]; 
+            pnts[i][j].A_hat[2][3] = pnts[i][j].J1 * pnts[i][j].A_hat[2][3]; 
+
+            /* Fourth line. */
+
+            pnts[i][j].A_hat[3][0] = pnts[i][j].J1 * pnts[i][j].A_hat[3][0]; 
+            pnts[i][j].A_hat[3][1] = pnts[i][j].J1 * pnts[i][j].A_hat[3][1];
+            pnts[i][j].A_hat[3][2] = pnts[i][j].J1 * pnts[i][j].A_hat[3][2];
+            pnts[i][j].A_hat[3][3] = pnts[i][j].J1 * pnts[i][j].A_hat[3][3];
+
+            /* Jacobian for y fluxes. */
+
+            /* First line. */
+
+            pnts[i][j].B_hat[0][0] = pnts[i][j].J1 * pnts[i][j].B_hat[0][0]; 
+            pnts[i][j].B_hat[0][1] = pnts[i][j].J1 * pnts[i][j].B_hat[0][1];
+            pnts[i][j].B_hat[0][2] = pnts[i][j].J1 * pnts[i][j].B_hat[0][2];
+            pnts[i][j].B_hat[0][3] = pnts[i][j].J1 * pnts[i][j].B_hat[0][3];
+
+            /* Second line. */
+
+            pnts[i][j].B_hat[1][0] = pnts[i][j].J1 * pnts[i][j].B_hat[1][0]; 
+            pnts[i][j].B_hat[1][1] = pnts[i][j].J1 * pnts[i][j].B_hat[1][1];
+            pnts[i][j].B_hat[1][2] = pnts[i][j].J1 * pnts[i][j].B_hat[1][2];
+            pnts[i][j].B_hat[1][3] = pnts[i][j].J1 * pnts[i][j].B_hat[1][3];
+
+            /* Third line. */
+
+            pnts[i][j].B_hat[2][0] = pnts[i][j].J1 *pnts[i][j].B_hat[2][0];  
+            pnts[i][j].B_hat[2][1] = pnts[i][j].J1 *pnts[i][j].B_hat[2][1];  
+            pnts[i][j].B_hat[2][2] = pnts[i][j].J1 *pnts[i][j].B_hat[2][2];  
+            pnts[i][j].B_hat[2][3] = pnts[i][j].J1 *pnts[i][j].B_hat[2][3];  
+
+            /* Fourth line. */
+
+            pnts[i][j].B_hat[3][0] = pnts[i][j].J1 * pnts[i][j].B_hat[3][0];  
+            pnts[i][j].B_hat[3][1] = pnts[i][j].J1 * pnts[i][j].B_hat[3][1]; 
+            pnts[i][j].B_hat[3][2] = pnts[i][j].J1 * pnts[i][j].B_hat[3][2]; 
+            pnts[i][j].B_hat[3][3] = pnts[i][j].J1 * pnts[i][j].B_hat[3][3]; 
+
+        }
+    }
 }

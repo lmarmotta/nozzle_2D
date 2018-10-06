@@ -126,7 +126,7 @@ void read_setup(char * setup_name, t_define * p_setup){
      * scheme = 1 - Explicit with proper art dissip.
      * scheme = 2 - Beam warming implicit. */
 
-    if (fscanf(fp_file,"%s %lf", buf, &p_setup->dissp4) != 2)
+    if (fscanf(fp_file,"%s %d", buf, &p_setup->scheme) != 2)
     { printf("\nERROR: Non-conforming setup file.\n"); exit(1);}
 
     /* Close the file */
