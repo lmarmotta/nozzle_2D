@@ -60,20 +60,44 @@ void beam_warming(t_define p_setup, t_points ** pnts){
             /* Separate the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_lower[ii][jj][j] = - (cnts*pnts[i-1][j].A_hat[ii][jj]) / 2.0;
+
+                    /* Add dissipation to the main diagonal. */
+
+                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (p_setup.dissp2) * pnts[i-1][j].J*pnts[i+1][j].q_hat[ii]; 
+                }
 
             /* Separate the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_main[ii][jj][j] = I[ii][jj];
+
+                    /* Add dissipation to the main diagonal. */
+
+                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
+                }
 
             /* Separate the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_upper[ii][jj][j] =   (cnts*pnts[i+1][j].A_hat[ii][jj]) / 2.0;
+
+                    /* Add dissipation to the main diagonal. */
+
+                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (p_setup.dissp2) * (pnts[i+1][j].J*pnts[i-1][j].q_hat[ii]);
+                }
 
             /* Separate the srhs. */
 
@@ -98,20 +122,44 @@ void beam_warming(t_define p_setup, t_points ** pnts){
             /* Separate the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_lower[ii][jj][j] = - (cnts*pnts[i][j-1].B_hat[ii][jj]) / 2.0;
+
+                    /* Add dissipation. */
+
+                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]);
+                }
 
             /* Separate the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_main[ii][jj][j] = I[ii][jj];
+
+                    /* Add dissipation. */
+
+                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
+                }
 
             /* Separate the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++)
+                for (int jj = 0; jj<nim; jj++){
+
+                    /* Build the operator. */
+
                     m_upper[ii][jj][j] = (cnts*pnts[i][j+1].B_hat[ii][jj]) / 2.0;
+
+                    /* Add dissipation. */
+
+                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]);
+                }
 
             /* Separate the srhs. */
 
