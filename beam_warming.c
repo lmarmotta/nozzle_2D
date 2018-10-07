@@ -177,10 +177,10 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
         for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].q_hat[0] = pnts[i][j].q_hat[0] + du_s[0][j]; 
-            pnts[i][j].q_hat[1] = pnts[i][j].q_hat[1] + du_s[1][j]; 
-            pnts[i][j].q_hat[2] = pnts[i][j].q_hat[2] + du_s[2][j]; 
-            pnts[i][j].q_hat[3] = pnts[i][j].q_hat[3] + du_s[3][j]; 
+            pnts[i][j].q_hat[0] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[0]) + du_s[0][j] ); 
+            pnts[i][j].q_hat[1] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[1]) + du_s[1][j] ); 
+            pnts[i][j].q_hat[2] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[2]) + du_s[2][j] ); 
+            pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[3]) + du_s[3][j] ); 
 
         }
 
