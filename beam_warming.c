@@ -68,7 +68,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation to the main diagonal. */
 
-                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (p_setup.dissp2) * pnts[i-1][j].J*pnts[i+1][j].q_hat[ii]; 
+                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (2.0*p_setup.dissp2) * pnts[i-1][j].J*pnts[i+1][j].q_hat[ii]; 
                 }
 
             /* Separate the main diagonal. */
@@ -82,7 +82,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation to the main diagonal. */
 
-                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
+                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (2.0*p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
                 }
 
             /* Separate the lower diagonal. */
@@ -96,7 +96,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation to the main diagonal. */
 
-                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (p_setup.dissp2) * (pnts[i+1][j].J*pnts[i-1][j].q_hat[ii]);
+                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (2.0*p_setup.dissp2) * (pnts[i+1][j].J*pnts[i-1][j].q_hat[ii]);
                 }
 
             /* Separate the srhs. */
@@ -130,7 +130,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation. */
 
-                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]);
+                    if (ii == jj) m_lower[ii][jj][j] = m_lower[ii][jj][j] + (2.0*p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]);
                 }
 
             /* Separate the main diagonal. */
@@ -144,7 +144,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation. */
 
-                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
+                    if (ii == jj) m_main[ii][jj][j] = m_main[ii][jj][j] - (2.0*p_setup.dissp2) * (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
                 }
 
             /* Separate the lower diagonal. */
@@ -158,7 +158,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Add dissipation. */
 
-                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]);
+                    if (ii == jj) m_upper[ii][jj][j] = m_upper[ii][jj][j] + (2.0*p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]);
                 }
 
             /* Separate the srhs. */
