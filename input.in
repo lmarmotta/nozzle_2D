@@ -15,7 +15,7 @@ F_R 287.0
 p_rate 10
 eps_blow 30.0
 n_save 100
-dissp2 1.0
+dissp2 2.0
 save_gif 1
 d_typ 1
 dissp4 2.5

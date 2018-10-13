@@ -9,6 +9,10 @@
 
 /* Advance the solution in time using the Beam-Warming Scheme. */
 
+/* The definition of the artificial dissipation is not well stablished in the
+ * code. I am sure in need of some internet right now. To check the proper
+ * implementation, of course. */
+
 void beam_warming(t_define p_setup, t_points ** pnts){
 
     /* Select bounds. */
@@ -19,6 +23,10 @@ void beam_warming(t_define p_setup, t_points ** pnts){
     /* Define inner matrices size. */
 
     int nim = 4;
+
+    /* Dissipation. */
+
+    double diss;
 
     /* Define the identity matrix. */
 
@@ -73,9 +81,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     upper_i[ii][jj][i] = (cte_i * pnts[i+1][j].A_hat[ii][jj])/2.0;
 
+                    /* Compose the dissipative term. */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i+1][j].J*pnts[i+1][j].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    upper_i[ii][jj][i] = upper_i[ii][jj][i] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i+1][j].J*pnts[i+1][j].q_hat[ii]));
+                    if (ii == jj) upper_i[ii][jj][i] = upper_i[ii][jj][i] + diss; 
                 }
 
             /* Build the main diagonal. */
@@ -87,9 +99,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     maind_i[ii][jj][i] = I[ii][jj];
 
+                    /* Compose the dissipative term. */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    maind_i[ii][jj][i] = maind_i[ii][jj][i] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+                    if (ii == jj) maind_i[ii][jj][i] = maind_i[ii][jj][i] + diss;
 
                 }
 
@@ -102,9 +118,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     lower_i[ii][jj][i] = - (cte_i * pnts[i-1][j].A_hat[ii][jj])/2.0;
 
+                    /* Compose the dissipative term */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i-1][j].J*pnts[i-1][j].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    lower_i[ii][jj][i] = lower_i[ii][jj][i] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i-1][j].J*pnts[i-1][j].q_hat[ii]));
+                    if (ii == jj) lower_i[ii][jj][i] = lower_i[ii][jj][i] + diss;
                 }
 
             /* Build the B vector using the RHS. */
@@ -150,9 +170,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     upper_j[ii][jj][j] = (cte_i * pnts[i][j+1].B_hat[ii][jj])/2.0;
 
+                    /* Compose the dissipative term. */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    upper_j[ii][jj][j] = upper_j[ii][jj][j] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]));
+                    if (ii == jj) upper_j[ii][jj][j] = upper_j[ii][jj][j] + diss;
                 }
 
             /* Build the main diagonal. */
@@ -164,9 +188,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     maind_j[ii][jj][j] = I[ii][jj];
 
+                    /* Compose the dissipative term. */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    maind_j[ii][jj][j] = maind_j[ii][jj][j] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+                    if (ii == jj) maind_j[ii][jj][j] = maind_j[ii][jj][j] + diss;
 
                 }
 
@@ -179,9 +207,13 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     lower_j[ii][jj][j] = - (cte_i * pnts[i][j-1].B_hat[ii][jj])/2.0;
 
+                    /* Compose the dissipative operator. */
+
+                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]));
+
                     /* Add the dissipative term. */
 
-                    lower_j[ii][jj][j] = lower_j[ii][jj][j] + pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]));
+                    if (ii == jj) lower_j[ii][jj][j] = lower_j[ii][jj][j] + diss;
                 }
 
             /* Build the B vector using the RHS. */
