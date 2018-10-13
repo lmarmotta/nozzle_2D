@@ -9,6 +9,11 @@
 
 /* Advance the solution in time using the Beam-Warming Scheme. */
 
+/*
+ * Check the addition of the artificial dissipation. It shall be added to the
+ * main diagonal of each block or to every element of the matrix ?
+ */
+
 void beam_warming(t_define p_setup, t_points ** pnts){
 
     /* Select bounds. */
@@ -37,14 +42,28 @@ void beam_warming(t_define p_setup, t_points ** pnts){
     /* Allocate the du_s vector. It has to be the same size of the residue. */
 
     double *** DU_S  = alloc_dcube(imax-1, jmax-1, 4);
-    double **  du_si = alloc_dmatrix(imax-1,4);
-    double **  s_rhs = alloc_dmatrix(imax-1,4);
 
-    /* Allocate the three diagonals. */
+    /* Transport vector for the i and j passes. */
 
-    double *** upper = alloc_dcube(4,4,imax-1);
-    double *** maind = alloc_dcube(4,4,imax-1);
-    double *** lower = alloc_dcube(4,4,imax-1);
+    double **  du_si = alloc_dmatrix(4,imax-1);
+    double **  du_sj = alloc_dmatrix(4,jmax-1);
+
+    /* Transport resudue vector for system solve. */
+
+    double **  s_rhsi = alloc_dmatrix(4,imax-1);
+    double **  s_rhsj = alloc_dmatrix(4,jmax-1);
+
+    /* Allocate the three diagonals for the i pass */
+
+    double *** upper_i = alloc_dcube(4,4,imax-1);
+    double *** maind_i = alloc_dcube(4,4,imax-1);
+    double *** lower_i = alloc_dcube(4,4,imax-1);
+
+    /* Allocate the three diagonals for the j pass */
+
+    double *** upper_j = alloc_dcube(4,4,jmax-1);
+    double *** maind_j = alloc_dcube(4,4,jmax-1);
+    double *** lower_j = alloc_dcube(4,4,jmax-1);
 
     /* Now loop through every line of the mesh. */
 
@@ -62,11 +81,11 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    upper[ii][jj][i] = cte_i * (pnts[i+1][j].A_hat[ii][jj])/2.0;
+                    upper_i[ii][jj][i] = cte_i * (pnts[i+1][j].A_hat[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    upper[ii][jj][i] = upper[ii][jj][i] + (p_setup.dissp2) * (pnts[i+1][j].J*pnts[i+1][j].q_hat[0]);
+                    if (ii == jj) upper_i[ii][jj][i] = upper_i[ii][jj][i] + (2.0*p_setup.dissp2) * (pnts[i+1][j].J*pnts[i+1][j].q_hat[ii]);
                 }
 
             /* Build the main diagonal. */
@@ -76,11 +95,11 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    maind[ii][jj][i] = cte_i * (I[ii][jj])/2.0;
+                    maind_i[ii][jj][i] = cte_i * (I[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    maind[ii][jj][i] = maind[ii][jj][i] + (p_setup.dissp2) * - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]);
+                    if (ii == jj) maind_i[ii][jj][i] = maind_i[ii][jj][i] + (2.0*p_setup.dissp2) * - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
                 }
 
             /* Build the lower diagonal. */
@@ -90,42 +109,42 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    lower[ii][jj][i] = cte_i * (pnts[i-1][j].A_hat[ii][jj])/2.0;
+                    lower_i[ii][jj][i] = cte_i * (pnts[i-1][j].A_hat[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    lower[ii][jj][i] = lower[ii][jj][i] + (p_setup.dissp2) * (pnts[i-1][j].J*pnts[i-1][j].q_hat[0]);
+                    if (ii == jj) lower_i[ii][jj][i] = lower_i[ii][jj][i] + (2.0*p_setup.dissp2) * (pnts[i-1][j].J*pnts[i-1][j].q_hat[ii]);
                 }
 
             /* Build the B vector using the RHS. */
 
-            s_rhs[i][0] = pnts[i][j].RHS[0];
-            s_rhs[i][1] = pnts[i][j].RHS[1];
-            s_rhs[i][2] = pnts[i][j].RHS[2];
-            s_rhs[i][3] = pnts[i][j].RHS[3];
+            s_rhsi[0][i]= pnts[i][j].RHS[0];
+            s_rhsi[1][i]= pnts[i][j].RHS[1];
+            s_rhsi[2][i]= pnts[i][j].RHS[2];
+            s_rhsi[3][i]= pnts[i][j].RHS[3];
 
         }
 
         /* Now, solve the system and store the du_s. */
 
-        blk_tri(maind, lower, upper, nim, imax-1, s_rhs, du_si);
+        blk_tri(maind_i, lower_i, upper_i, nim, imax-1, s_rhsi, du_si);
 
         /* Store the final DU_S. */
 
         for (int i = 1; i<imax-1; i++){
 
-            DU_S[i][j][0] = du_si[i][0];
-            DU_S[i][j][1] = du_si[i][1];
-            DU_S[i][j][2] = du_si[i][2];
-            DU_S[i][j][3] = du_si[i][3];
+            DU_S[i][j][0] = du_si[0][i];
+            DU_S[i][j][1] = du_si[1][i];
+            DU_S[i][j][2] = du_si[2][i];
+            DU_S[i][j][3] = du_si[3][i];
 
         }
     }
 
-    /* Do the same thing again but now using the DU_S */
+    /* Now lets do the same in the other direction. */
 
-    for (int j = 1; j<jmax-1; j++){
-        for (int i = 1; i<imax-1; i++){
+    for (int i = 1; i<imax-1; i++){
+        for (int j = 1; j<jmax-1; j++){
 
             /* Estimate the constant. */
 
@@ -138,11 +157,11 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    upper[ii][jj][i] = cte_i * (pnts[i][j+1].B_hat[ii][jj])/2.0;
+                    upper_j[ii][jj][j] = cte_i * (pnts[i][j+1].B_hat[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    upper[ii][jj][i] = upper[ii][jj][i] + (p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[0]);
+                    if (ii == jj) upper_j[ii][jj][j] = upper_j[ii][jj][j] + (2.0*p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]);
                 }
 
             /* Build the main diagonal. */
@@ -152,11 +171,11 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    maind[ii][jj][i] = cte_i * (I[ii][jj])/2.0;
+                    maind_j[ii][jj][j] = cte_i * (I[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    maind[ii][jj][i] = maind[ii][jj][i] + (p_setup.dissp2) * - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[0]);
+                    if (ii == jj) maind_j[ii][jj][j] = maind_j[ii][jj][j] + (2.0*p_setup.dissp2) * - (2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]);
                 }
 
             /* Build the lower diagonal. */
@@ -166,48 +185,49 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    lower[ii][jj][i] = cte_i * (pnts[i][j-1].B_hat[ii][jj])/2.0;
+                    lower_j[ii][jj][j] = cte_i * (pnts[i][j-1].B_hat[ii][jj])/2.0;
 
                     /* Add the dissipative term. */
 
-                    lower[ii][jj][i] = lower[ii][jj][i] + (p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[0]);
+                    if (ii == jj) lower_j[ii][jj][j] = lower_j[ii][jj][j] + (2.0*p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]);
                 }
 
             /* Build the B vector using the RHS. */
 
-            s_rhs[i][0] = DU_S[i][j][0];
-            s_rhs[i][1] = DU_S[i][j][1];
-            s_rhs[i][2] = DU_S[i][j][2];
-            s_rhs[i][3] = DU_S[i][j][3];
+            s_rhsj[0][j] = DU_S[i][j][0];
+            s_rhsj[1][j] = DU_S[i][j][1];
+            s_rhsj[2][j] = DU_S[i][j][2];
+            s_rhsj[3][j] = DU_S[i][j][3];
 
         }
 
         /* Now, solve the system and store the du_s. */
 
-        blk_tri(maind, lower, upper, nim, imax-1, s_rhs, du_si);
+        blk_tri(maind_j, lower_j, upper_j, nim, jmax-1, s_rhsj, du_sj);
 
-        /* Store the final DU_S. */
+        /* Update the solution. */
 
-        for (int i = 1; i<imax-1; i++){
+        for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].q_hat[0] = pnts[i][j].J1 * du_si[i][0];
-            pnts[i][j].q_hat[1] = pnts[i][j].J1 * du_si[i][1];
-            pnts[i][j].q_hat[2] = pnts[i][j].J1 * du_si[i][2];
-            pnts[i][j].q_hat[3] = pnts[i][j].J1 * du_si[i][3];
+           pnts[i][j].q_hat[0] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[0]) + du_sj[0][j] );  
+           pnts[i][j].q_hat[1] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[1]) + du_sj[1][j] );  
+           pnts[i][j].q_hat[2] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[2]) + du_sj[2][j] );  
+           pnts[i][j].q_hat[3] = pnts[i][j].J1 * ( (pnts[i][j].J * pnts[i][j].q_hat[3]) + du_sj[3][j] );  
 
         }
     }
 
-    /* Now, free the space used in the i pass. */
+    /* Free everyone. */
 
-    free_dmatrix(du_si, 4);
-    free_dmatrix(s_rhs, 4);
-    free_dcube(upper, 4, 4);
-    free_dcube(maind, 4, 4);
-    free_dcube(lower, 4, 4);
-
-    /* Do not forget the last vector allocated. */
-
-    free_dcube(DU_S, imax-1, jmax-1);
-
+    free_dcube(upper_i,4,4);
+    free_dcube(maind_i,4,4);
+    free_dcube(lower_i,4,4);
+    free_dcube(upper_j,4,4);
+    free_dcube(maind_j,4,4);
+    free_dcube(lower_j,4,4);
+    free_dmatrix(du_si,4);
+    free_dmatrix(du_sj,4);
+    free_dmatrix(s_rhsi,4);
+    free_dmatrix(s_rhsj,4);
+    free_dcube(DU_S,imax-1, jmax-1);
 }
