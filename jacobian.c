@@ -14,6 +14,10 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
+    /* Size of the jacobian matrices. */
+
+    int nim = 4;
+
     /* Store the jacobians. */
 
     for (int i = 0; i<imax; i++){
@@ -110,4 +114,14 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
 
         }
     }
+
+    /* Now, be consistent with the coordinate transformation. */
+
+    for (int i = 0; i<imax; i++)
+        for (int j = 0; j<jmax; j++)
+            for (int ii = 0; ii<nim; ii++)
+                for (int jj = 0; jj<nim; jj++){
+                    pnts[i][j].A_hat[ii][jj] = pnts[i][j].J1 * pnts[i][j].A_hat[ii][jj]; 
+                    pnts[i][j].B_hat[ii][jj] = pnts[i][j].J1 * pnts[i][j].B_hat[ii][jj]; 
+                }
 }
