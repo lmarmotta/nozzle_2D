@@ -26,7 +26,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
     /* Dissipation. */
 
-    double diss;
+    double diss = 0.0;
 
     /* Define the identity matrix. */
 
@@ -70,7 +70,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
             /* Estimate the constant. */
 
-            double cte_i = pnts[i][j].dt;
+            double cte_i = 0.5*pnts[i][j].dt;
 
             /* Build the upper diagonal. */
 
@@ -83,7 +83,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative term. */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i+1][j].J*pnts[i+1][j].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*pnts[i+1][j].J;
 
                     /* Add the dissipative term. */
 
@@ -101,7 +101,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative term. */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*(-2.0*pnts[i][j].J);
 
                     /* Add the dissipative term. */
 
@@ -120,7 +120,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative term */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i-1][j].J*pnts[i-1][j].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*pnts[i-1][j].J;
 
                     /* Add the dissipative term. */
 
@@ -172,7 +172,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative term. */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j+1].J*pnts[i][j+1].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*pnts[i][j+1].J;
 
                     /* Add the dissipative term. */
 
@@ -190,7 +190,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative term. */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (-2.0 * pnts[i][j].J*pnts[i][j].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*(-2.0*pnts[i][j].J);
 
                     /* Add the dissipative term. */
 
@@ -209,7 +209,7 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
                     /* Compose the dissipative operator. */
 
-                    diss = pnts[i][j].J1 * ((2.0*p_setup.dissp2) * (pnts[i][j-1].J*pnts[i][j-1].q_hat[ii]));
+                    diss = - (2.0*p_setup.dissp2) * pnts[i][j].J1*pnts[i][j-1].J;
 
                     /* Add the dissipative term. */
 

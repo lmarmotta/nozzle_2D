@@ -241,18 +241,18 @@ void art_dissip(t_define p_setup, t_points ** pnts, int d_typ){
 
             }
         }
-    }
 
-    /* Now, add to the residue. */
+        /* Now, add to the residue. */
 
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
+        for (int i = 1; i<imax-1; i++){
+            for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[0] + pnts[i][j].diss_eta[0]) );
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[1] + pnts[i][j].diss_eta[1]) );
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[2] + pnts[i][j].diss_eta[2]) );
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[3] + pnts[i][j].diss_eta[3]) );
+                pnts[i][j].RHS[0] = pnts[i][j].RHS[0] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[0] + pnts[i][j].diss_eta[0]) );
+                pnts[i][j].RHS[1] = pnts[i][j].RHS[1] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[1] + pnts[i][j].diss_eta[1]) );
+                pnts[i][j].RHS[2] = pnts[i][j].RHS[2] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[2] + pnts[i][j].diss_eta[2]) );
+                pnts[i][j].RHS[3] = pnts[i][j].RHS[3] + pnts[i][j].J1 * ( (p_setup.dissp4)*(pnts[i][j].diss_ksi[3] + pnts[i][j].diss_eta[3]) );
 
+            }
         }
     }
 }
