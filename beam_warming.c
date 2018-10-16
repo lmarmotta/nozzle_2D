@@ -129,10 +129,10 @@ void beam_warming(t_define p_setup, t_points ** pnts){
 
             /* Build the B vector using the RHS. */
 
-            s_rhsi[0][i] = - pnts[i][j].dt * pnts[i][j].RHS[0];
-            s_rhsi[1][i] = - pnts[i][j].dt * pnts[i][j].RHS[1];
-            s_rhsi[2][i] = - pnts[i][j].dt * pnts[i][j].RHS[2];
-            s_rhsi[3][i] = - pnts[i][j].dt * pnts[i][j].RHS[3];
+            s_rhsi[0][i] = pnts[i][j].dt * pnts[i][j].RHS[0];
+            s_rhsi[1][i] = pnts[i][j].dt * pnts[i][j].RHS[1];
+            s_rhsi[2][i] = pnts[i][j].dt * pnts[i][j].RHS[2];
+            s_rhsi[3][i] = pnts[i][j].dt * pnts[i][j].RHS[3];
 
         }
 
