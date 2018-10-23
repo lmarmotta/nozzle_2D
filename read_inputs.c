@@ -168,7 +168,9 @@ void dump_setup(t_define p_setup){
 }
 
 /* 
- * This function reads the size of the problem from a *.cgns file. 
+ * This function reads the size of the problem from a *.cgns file.  
+ * The manual used to implement the following 2 procedures can 
+ * https://cgns.github.io/CGNS_docs_current/user/usersguide.3.1.3.pdf
  */
 
 void read_mesh_size(char * mesh_file_name, int * imax, int * jmax){
