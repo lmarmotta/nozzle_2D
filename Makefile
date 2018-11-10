@@ -36,7 +36,7 @@ INCLUDE=/home/leonardo/opt/cgns/include
 
 #
 # CGNS lib path.
-LDFLAGS=/home/leonardo/opt/cgns/lib64
+LDFLAGS=/home/leonardo/opt/cgns/lib
 
 #
 # ----------- DO NOT MODIFY -----------  
