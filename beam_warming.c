@@ -9,10 +9,6 @@
 
 /* Advance the solution in time using the Beam-Warming Scheme. */
 
-/* The definition of the artificial dissipation is not well stablished in the
- * code. I am sure in need of some internet right now. To check the proper
- * implementation, of course. */
-
 void beam_warming(t_define p_setup, t_points ** pnts){
 
     /* Select bounds. */

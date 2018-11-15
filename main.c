@@ -174,6 +174,43 @@ int main(int argc, char * argv[]){
                 /* Break */
 
                 break;
+            /*
+             * Steger-Warming.
+             */
+
+            case 3:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Compute the Jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March in time. */
+
+                steger_warming(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output);
+
+                /* Break */
+
+                break;
 
             /*
              * Default case. 
