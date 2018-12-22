@@ -98,6 +98,14 @@ typedef struct t_points{
 
     double A_hat[4][4], B_hat[4][4];
 
+    /* Split matrices. */
+
+    double T_ksi[4][4], T_eta[4][4];
+
+    /* Inverse of the split matrices. */
+
+    double T1_ksi[4][4], T1_eta[4][4];
+
     /* Artificial dissipation. */
 
     double diss_ksi[4], diss_eta[4];

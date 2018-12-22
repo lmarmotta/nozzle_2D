@@ -196,9 +196,13 @@ int main(int argc, char * argv[]){
 
                 local_time(p_setup, pnts);
 
-                /* March in time. */
+                /* Compute the vectors. */
 
-                steger_warming(p_setup, pnts);
+                sw_residue(p_setup, pnts);
+
+                /* Equations, march ! */
+
+                sw_implicit(p_setup, pnts);
 
                 /* Update Boundary conditions. */
 
