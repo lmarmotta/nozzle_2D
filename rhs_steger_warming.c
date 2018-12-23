@@ -164,14 +164,14 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
     /* Now, with the splited fluxes computed, lets join everything in our residue. For internal points */
 
+    double dbFp_ksi[4];
+    double dfFm_ksi[4];
+
+    double dbGp_eta[4];
+    double dfGm_eta[4];
+
     for (int i = 2; i<imax-2; i++){
         for (int j = 2; j<jmax-2; j++){
-
-            double dbFp_ksi[4], dfFp_ksi[4];
-            double dbFm_ksi[4], dfFm_ksi[4];
-
-            double dbGp_eta[4], dfGp_eta[4];
-            double dbGm_eta[4], dfGm_eta[4];
 
             /* F flux in ksi direction */
 
@@ -214,6 +214,33 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
         int i = 1;
 
+        dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+        dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+        dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+        dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+        dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+        dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+        dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+        dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+        dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+        dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+        dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+        dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+        dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+        dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+        dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+        dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+        /* Build the residues. */
+
+        pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+        pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+        pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+        pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
+
     }
 
     /* Symmetry internal points. */
@@ -221,6 +248,33 @@ void sw_residue(t_define p_setup, t_points ** pnts){
     for (int i = 1; i < imax-1; i++){
 
         int j = jmax-2;
+
+        dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+        dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+        dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+        dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+        dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+        dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+        dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+        dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+        dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+        dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+        dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+        dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+        dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+        dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+        dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+        dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+        /* Build the residues. */
+
+        pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+        pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+        pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+        pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
     }
 
@@ -230,6 +284,33 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
         int i = imax-2;
 
+        dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+        dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+        dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+        dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+        dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+        dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+        dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+        dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+        dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+        dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+        dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+        dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+        dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+        dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+        dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+        dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+        /* Build the residues. */
+
+        pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+        pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+        pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+        pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
+
     }
 
     /* Wall internal points. */
@@ -238,34 +319,157 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
         int j = 1;
 
+        dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+        dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+        dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+        dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+        dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+        dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+        dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+        dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+        dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+        dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+        dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+        dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+        dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+        dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+        dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+        dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+        /* Build the residues. */
+
+        pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+        pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+        pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+        pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
+
     }
 
     /* Lower left corner point. */
 
-    int i = 0; int j = 0;
+    int i = 1; int j = 1;
+
+    dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+    dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+    dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+    dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+    dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+    dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+    dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+    dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+    dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+    dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+    dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+    dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+    dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+    dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+    dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+    dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+    /* Build the residues. */
+
+    pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+    pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+    pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+    pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
     /* Lower right point. */
 
-    i = imax-1; j = 0;
+    i = imax-2; j = 1;
+
+    dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+    dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+    dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+    dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+    dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+    dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+    dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+    dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+    dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+    dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+    dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+    dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+    dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+    dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+    dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+    dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+    /* Build the residues. */
+
+    pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+    pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+    pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+    pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
     /* Upper right point. */
 
-    i = imax-1; j = jmax-1;
+    i = imax-2; j = jmax-2;
+
+    dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+    dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+    dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+    dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+    dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+    dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+    dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+    dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+    dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+    dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+    dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+    dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+    dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+    dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+    dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+    dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+    /* Build the residues. */
+
+    pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+    pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+    pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+    pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
     /* Upper left point. */
 
-    i = 0; j = jmax-1;
+    i = 1; j = jmax-2;
 
-    /* Now transform the fluxes with the jacobian. */
+    dbFp_ksi[0] = pnts[i][j].f_plus[0] - pnts[i-1][j].f_plus[0]; 
+    dbFp_ksi[1] = pnts[i][j].f_plus[1] - pnts[i-1][j].f_plus[1]; 
+    dbFp_ksi[2] = pnts[i][j].f_plus[2] - pnts[i-1][j].f_plus[2]; 
+    dbFp_ksi[3] = pnts[i][j].f_plus[3] - pnts[i-1][j].f_plus[3]; 
+
+    dfFm_ksi[0] = pnts[i+1][j].f_plus[0] - pnts[i][j].f_plus[0]; 
+    dfFm_ksi[1] = pnts[i+1][j].f_plus[1] - pnts[i][j].f_plus[1]; 
+    dfFm_ksi[2] = pnts[i+1][j].f_plus[2] - pnts[i][j].f_plus[2]; 
+    dfFm_ksi[3] = pnts[i+1][j].f_plus[3] - pnts[i][j].f_plus[3]; 
+
+    dbGp_eta[0] = pnts[i][j].g_plus[0] - pnts[i][j-1].g_plus[0];
+    dbGp_eta[1] = pnts[i][j].g_plus[1] - pnts[i][j-1].g_plus[1];
+    dbGp_eta[2] = pnts[i][j].g_plus[2] - pnts[i][j-1].g_plus[2];
+    dbGp_eta[3] = pnts[i][j].g_plus[3] - pnts[i][j-1].g_plus[3];
+
+    dfGm_eta[0] = pnts[i][j+1].g_plus[0] - pnts[i][j].g_plus[0];
+    dfGm_eta[1] = pnts[i][j+1].g_plus[1] - pnts[i][j].g_plus[1];
+    dfGm_eta[2] = pnts[i][j+1].g_plus[2] - pnts[i][j].g_plus[2];
+    dfGm_eta[3] = pnts[i][j+1].g_plus[3] - pnts[i][j].g_plus[3];
+
+    /* Build the residues. */
+
+    pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+    pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+    pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+    pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
 }
-
-void sw_implicit(t_define p_setup, t_points ** pnts){
-
-    /* Separate bounds of the field. */
-
-    int imax = p_setup.imax;
-    int jmax = p_setup.jmax;
-
-}
-
