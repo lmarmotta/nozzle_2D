@@ -161,6 +161,103 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
         }
     }
+
+    /* Now, with the splited fluxes computed, lets join everything in our residue. For internal points */
+
+    for (int i = 2; i<imax-2; i++){
+        for (int j = 2; j<jmax-2; j++){
+
+            double dbFp_ksi[4], dfFp_ksi[4];
+            double dbFm_ksi[4], dfFm_ksi[4];
+
+            double dbGp_eta[4], dfGp_eta[4];
+            double dbGm_eta[4], dfGm_eta[4];
+
+            /* F flux in ksi direction */
+
+            dbFp_ksi[0] = (3.0*pnts[i][j].f_plus[0] - 4.0*pnts[i-1][j].f_plus[0] + pnts[i-2][j].f_plus[0])/2.0;
+            dbFp_ksi[1] = (3.0*pnts[i][j].f_plus[1] - 4.0*pnts[i-1][j].f_plus[1] + pnts[i-2][j].f_plus[1])/2.0;
+            dbFp_ksi[2] = (3.0*pnts[i][j].f_plus[2] - 4.0*pnts[i-1][j].f_plus[2] + pnts[i-2][j].f_plus[2])/2.0;
+            dbFp_ksi[3] = (3.0*pnts[i][j].f_plus[3] - 4.0*pnts[i-1][j].f_plus[3] + pnts[i-2][j].f_plus[3])/2.0;
+
+            dfFm_ksi[0] = (-3.0*pnts[i][j].f_minu[0] + 4.0*pnts[i+1][j].f_minu[0] - pnts[i+2][j].f_minu[0])/2.0; 
+            dfFm_ksi[1] = (-3.0*pnts[i][j].f_minu[1] + 4.0*pnts[i+1][j].f_minu[1] - pnts[i+2][j].f_minu[1])/2.0; 
+            dfFm_ksi[2] = (-3.0*pnts[i][j].f_minu[2] + 4.0*pnts[i+1][j].f_minu[2] - pnts[i+2][j].f_minu[2])/2.0; 
+            dfFm_ksi[3] = (-3.0*pnts[i][j].f_minu[3] + 4.0*pnts[i+1][j].f_minu[3] - pnts[i+2][j].f_minu[3])/2.0; 
+
+            /* G flux in eta direction */
+
+            dbGp_eta[0] = (3.0*pnts[i][j].g_plus[0] - 4.0*pnts[i][j-1].g_plus[0] + pnts[i][j-2].g_plus[0])/2.0;
+            dbGp_eta[1] = (3.0*pnts[i][j].g_plus[1] - 4.0*pnts[i][j-1].g_plus[1] + pnts[i][j-2].g_plus[1])/2.0;
+            dbGp_eta[2] = (3.0*pnts[i][j].g_plus[2] - 4.0*pnts[i][j-1].g_plus[2] + pnts[i][j-2].g_plus[2])/2.0;
+            dbGp_eta[3] = (3.0*pnts[i][j].g_plus[3] - 4.0*pnts[i][j-1].g_plus[3] + pnts[i][j-2].g_plus[3])/2.0;
+
+            dfGm_eta[0] = (-3.0*pnts[i][j].g_minu[0] + 4.0*pnts[i][j+1].g_minu[0] - pnts[i][j+2].g_minu[0])/2.0; 
+            dfGm_eta[1] = (-3.0*pnts[i][j].g_minu[1] + 4.0*pnts[i][j+1].g_minu[1] - pnts[i][j+2].g_minu[1])/2.0; 
+            dfGm_eta[2] = (-3.0*pnts[i][j].g_minu[2] + 4.0*pnts[i][j+1].g_minu[2] - pnts[i][j+2].g_minu[2])/2.0; 
+            dfGm_eta[3] = (-3.0*pnts[i][j].g_minu[3] + 4.0*pnts[i][j+1].g_minu[3] - pnts[i][j+2].g_minu[3])/2.0; 
+
+            /* Build the residues. */
+
+            pnts[i][j].RHS[0] = dbFp_ksi[0] + dfFm_ksi[0] + dbGp_eta[0] + dfGm_eta[0];
+            pnts[i][j].RHS[1] = dbFp_ksi[1] + dfFm_ksi[1] + dbGp_eta[1] + dfGm_eta[1];
+            pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
+            pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
+
+            
+        }
+    }
+
+    /* Do the same for the second inlet internal points. */
+
+    for (int j = 1; j < jmax-1; j++){
+
+        int i = 1;
+
+    }
+
+    /* Symmetry internal points. */
+
+    for (int i = 1; i < imax-1; i++){
+
+        int j = jmax-2;
+
+    }
+
+    /* Outlet internal points. */
+
+    for (int j = 1; j < jmax-1; j++){
+
+        int i = imax-2;
+
+    }
+
+    /* Wall internal points. */
+
+    for (int i = 1; i < imax-1; i++){
+
+        int j = 1;
+
+    }
+
+    /* Lower left corner point. */
+
+    int i = 0; int j = 0;
+
+    /* Lower right point. */
+
+    i = imax-1; j = 0;
+
+    /* Upper right point. */
+
+    i = imax-1; j = jmax-1;
+
+    /* Upper left point. */
+
+    i = 0; j = jmax-1;
+
+    /* Now transform the fluxes with the jacobian. */
+
 }
 
 void sw_implicit(t_define p_setup, t_points ** pnts){
@@ -169,7 +266,6 @@ void sw_implicit(t_define p_setup, t_points ** pnts){
 
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
-
 
 }
 
