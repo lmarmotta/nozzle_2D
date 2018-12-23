@@ -110,4 +110,9 @@ typedef struct t_points{
 
     double diss_ksi[4], diss_eta[4];
 
+    /* Fluxes separated for SW. */
+
+    double f_plus[4], f_minu[4];
+    double g_plus[4], g_minu[4];
+
 } t_points;
