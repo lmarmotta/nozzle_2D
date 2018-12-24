@@ -190,7 +190,7 @@ int main(int argc, char * argv[]){
 
                 /* Now, build the residues. */
 
-                compute_sw_residue(p_setup, pnts);
+                compute_sw_residue_1sto(p_setup, pnts);
 
                 /* Update the time. */
 

@@ -45,3 +45,5 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts);
 void compute_split(t_define p_setup, t_points ** pnts);
 void compute_sw_residue(t_define p_setup, t_points ** pnts);
 void dump_residue_file(int iter, FILE ** res_output, t_define p_setup);
+void compute_sw_residue_1sto(t_define p_setup, t_points ** pnts);
+void compute_sw_residue_2ndo(t_define p_setup, t_points ** pnts);
