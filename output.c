@@ -80,31 +80,31 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
     /* Check rho residue. */
 
-    if (log10(max_rhs_rho)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rho)>p_setup.eps_blow){
+       printf("\n BOOM 0: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check rhou residue. */
+   /* Check rhou residue. */
 
-    if (log10(max_rhs_rhou)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhou)>p_setup.eps_blow){
+       printf("\n BOOM 1: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check rhov residue. */
+   /* Check rhov residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhov)>p_setup.eps_blow){
+       printf("\n BOOM 2: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check e residue. */
+   /* Check e residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhov)>p_setup.eps_blow){
+       printf("\n BOOM 3: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 }
 
 /* Converts an integer to string. */

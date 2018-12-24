@@ -165,6 +165,7 @@ void dump_setup(t_define p_setup){
     printf("\n--- dissp4     : %lf\n",p_setup.dissp4);
     printf("\n--- save_gif   : %d\n",p_setup.save_gif);
     printf("\n--- d_typ      : %d\n",p_setup.d_typ);
+    printf("\n--- scheme     : %d\n",p_setup.scheme);
 }
 
 /* 

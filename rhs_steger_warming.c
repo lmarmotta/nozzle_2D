@@ -73,10 +73,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Do the proper scaling. */
 
-            pnts[i][j].f_plus[0] = (rho/(2.0*p_setup.gamma))*aux[0];
-            pnts[i][j].f_plus[1] = (rho/(2.0*p_setup.gamma))*aux[1];
-            pnts[i][j].f_plus[2] = (rho/(2.0*p_setup.gamma))*aux[2];
-            pnts[i][j].f_plus[3] = (rho/(2.0*p_setup.gamma))*aux[3];
+            pnts[i][j].f_plus[0] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[0];
+            pnts[i][j].f_plus[1] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[1];
+            pnts[i][j].f_plus[2] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[2];
+            pnts[i][j].f_plus[3] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[3];
 
             /* Get the negative F fluxes. */
 
@@ -91,10 +91,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Do the proper scaling. */
 
-            pnts[i][j].f_minu[0] = (rho/(2.0*p_setup.gamma))*aux[0];
-            pnts[i][j].f_minu[1] = (rho/(2.0*p_setup.gamma))*aux[1];
-            pnts[i][j].f_minu[2] = (rho/(2.0*p_setup.gamma))*aux[2];
-            pnts[i][j].f_minu[3] = (rho/(2.0*p_setup.gamma))*aux[3];
+            pnts[i][j].f_minu[0] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[0];
+            pnts[i][j].f_minu[1] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[1];
+            pnts[i][j].f_minu[2] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[2];
+            pnts[i][j].f_minu[3] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[3];
 
             /* Now compute the G positive and negative fluxes. */
 
@@ -136,10 +136,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Do the proper scaling. */
 
-            pnts[i][j].g_plus[0] = (rho/(2.0*p_setup.gamma))*aux[0];
-            pnts[i][j].g_plus[1] = (rho/(2.0*p_setup.gamma))*aux[1];
-            pnts[i][j].g_plus[2] = (rho/(2.0*p_setup.gamma))*aux[2];
-            pnts[i][j].g_plus[3] = (rho/(2.0*p_setup.gamma))*aux[3];
+            pnts[i][j].g_plus[0] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[0];
+            pnts[i][j].g_plus[1] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[1];
+            pnts[i][j].g_plus[2] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[2];
+            pnts[i][j].g_plus[3] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[3];
 
             /* Get the negative F fluxes. */
 
@@ -154,10 +154,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Do the proper scaling. */
 
-            pnts[i][j].g_minu[0] = (rho/(2.0*p_setup.gamma))*aux[0];
-            pnts[i][j].g_minu[1] = (rho/(2.0*p_setup.gamma))*aux[1];
-            pnts[i][j].g_minu[2] = (rho/(2.0*p_setup.gamma))*aux[2];
-            pnts[i][j].g_minu[3] = (rho/(2.0*p_setup.gamma))*aux[3];
+            pnts[i][j].g_minu[0] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[0];
+            pnts[i][j].g_minu[1] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[1];
+            pnts[i][j].g_minu[2] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[2];
+            pnts[i][j].g_minu[3] = pnts[i][j].J1 * (rho/(2.0*p_setup.gamma))*aux[3];
 
         }
     }

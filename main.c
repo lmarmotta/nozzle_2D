@@ -127,7 +127,7 @@ int main(int argc, char * argv[]){
 
                 /* Dump a whole lotta of stuff. */
 
-                dump_residue_file(iter, &res_output);
+                dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break the switch. */
 
@@ -169,7 +169,7 @@ int main(int argc, char * argv[]){
 
                 /* Dump a whole lotta of stuff. */
 
-                dump_residue_file(iter, &res_output);
+                dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break */
 
@@ -179,6 +179,10 @@ int main(int argc, char * argv[]){
              */
 
             case 3:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
 
                 /* Compute the fluxes. */
 
@@ -187,14 +191,6 @@ int main(int argc, char * argv[]){
                 /* Now, build the residues. */
 
                 compute_sw_residue(p_setup, pnts);
-
-                /* Compute the Jacobian. */
-
-                compute_jacobian(p_setup, pnts);
-
-                /* Compute the split matrix. */
-
-                compute_split(p_setup, pnts);
 
                 /* Update the time. */
 
@@ -210,7 +206,7 @@ int main(int argc, char * argv[]){
 
                 /* Dump a whole lotta of stuff. */
 
-                dump_residue_file(iter, &res_output);
+                dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break */
 
