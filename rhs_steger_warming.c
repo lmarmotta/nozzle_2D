@@ -47,10 +47,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Eq. B5 of SW original paper. */
 
-            eig[0] = kt1*u + kt2*v;
-            eig[1] = kt1*u + kt2*v;
-            eig[2] = kt1*u + kt2*v + a*pow(kt1*kt1 + kt2*kt2,0.5);
-            eig[3] = kt1*u + kt2*v - a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[0] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
+            eig[1] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
+            eig[2] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v + a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[3] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v - a*pow(kt1*kt1 + kt2*kt2,0.5);
 
             /* Eq. 4.4 of SW original paper. */
 
@@ -105,17 +105,15 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
             k1 = pnts[i][j].eta_x;
             k2 = pnts[i][j].eta_y;
 
-            a = pnts[i][j].a;
-
             kt1 = k1/(pow(k1*k1 + k2*k2,0.5));
             kt2 = k2/(pow(k1*k1 + k2*k2,0.5));
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
-            eig[0] = kt1*u + kt2*v;
-            eig[1] = kt1*u + kt2*v;
-            eig[2] = kt1*u + kt2*v + a*pow(kt1*kt1 + kt2*kt2,0.5);
-            eig[3] = kt1*u + kt2*v - a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[0] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
+            eig[1] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
+            eig[2] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v + a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[3] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v - a*pow(kt1*kt1 + kt2*kt2,0.5);
 
             eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
             eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
