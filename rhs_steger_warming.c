@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <float.h>
 
 #include "structs.h"
 #include "externs.h"
@@ -10,7 +11,7 @@
 /* Here all the routines needed in order to compute the flow solution 
  * using the steger-warming flux vector splitting. */
 
-void sw_residue(t_define p_setup, t_points ** pnts){
+void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
     /* Separate bounds of the field. */
 
@@ -31,7 +32,6 @@ void sw_residue(t_define p_setup, t_points ** pnts){
             double rho = pnts[i][j].J * pnts[i][j].q_hat[0];
             double u   = pnts[i][j].q_hat[1] / pnts[i][j].q_hat[0];
             double v   = pnts[i][j].q_hat[2] / pnts[i][j].q_hat[0];
-            // double e   = pnts[i][j].J * pnts[i][j].q_hat[3];
 
             /* Separate useful variables. */
 
@@ -161,6 +161,23 @@ void sw_residue(t_define p_setup, t_points ** pnts){
 
         }
     }
+}
+
+/* Computes the steger warming residues. */
+
+void compute_sw_residue(t_define p_setup, t_points ** pnts){
+
+    /* Separate bounds of the field. */
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+    /* Initialize the residue. */
+
+    max_rhs_rho  = -99999999.0;
+    max_rhs_rhou = -99999999.0;
+    max_rhs_rhov = -99999999.0;
+    max_rhs_e    = -99999999.0;
 
     /* Now, with the splited fluxes computed, lets join everything in our residue. For internal points */
 
@@ -472,4 +489,19 @@ void sw_residue(t_define p_setup, t_points ** pnts){
     pnts[i][j].RHS[2] = dbFp_ksi[2] + dfFm_ksi[2] + dbGp_eta[2] + dfGm_eta[2];
     pnts[i][j].RHS[3] = dbFp_ksi[3] + dfFm_ksi[3] + dbGp_eta[3] + dfGm_eta[3];
 
+    /* Collect the maximun residue. */
+
+    for (int i = 1; i<imax-1; i++){
+        for (int j = 1; j<jmax-1; j++){
+
+            /* Store the max residue. */
+
+            if (fabs( pnts[i][j].RHS[0]) > max_rhs_rho ) max_rhs_rho  = fabs(pnts[i][j].RHS[0]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[1]) > max_rhs_rhou) max_rhs_rhou = fabs(pnts[i][j].RHS[1]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[2]) > max_rhs_rhov) max_rhs_rhov = fabs(pnts[i][j].RHS[2]+DBL_EPSILON);
+            if (fabs( pnts[i][j].RHS[3]) > max_rhs_e   ) max_rhs_e    = fabs(pnts[i][j].RHS[3]+DBL_EPSILON);
+        }
+    }
 }
+
+

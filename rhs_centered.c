@@ -4,9 +4,9 @@
 #include <math.h>
 #include <float.h>
 
-#include "cgnslib.h"
 #include "structs.h"
 #include "externs.h"
+#include "prototypes.h"
 
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))

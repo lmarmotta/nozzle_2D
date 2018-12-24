@@ -175,14 +175,18 @@ int main(int argc, char * argv[]){
 
                 break;
             /*
-             * Steger-Warming.
+             * Steger-Warming - Explicit.
              */
 
             case 3:
 
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
                 /* Now, build the residues. */
 
-                sw_residue(p_setup, pnts);
+                compute_sw_residue(p_setup, pnts);
 
                 /* Compute the Jacobian. */
 
@@ -196,13 +200,13 @@ int main(int argc, char * argv[]){
 
                 local_time(p_setup, pnts);
 
+                /* March equations in time. */
+
+                explicitEuler(p_setup, pnts);
+
                 /* Update Boundary conditions. */
 
                 boundary_condition_euler(p_setup, pnts);
-
-                /* Equations, march ! */
-
-                // sw_implicit(p_setup, pnts);
 
                 /* Dump a whole lotta of stuff. */
 
