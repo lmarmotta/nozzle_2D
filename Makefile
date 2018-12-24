@@ -11,7 +11,7 @@ LIBS=-lm -lcgns -lhdf5 -lblas -llapack
 
 #
 # Path to hdf5 parallel compiler (needs compilation first).
-CC=/home/leonardo/opt/hdf5_gnu/bin/h5pcc
+CC=/home/leonardo/opt/hdf5/bin/h5pcc
 
 # 
 # Optimization or debug flags.

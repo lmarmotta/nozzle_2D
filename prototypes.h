@@ -42,3 +42,5 @@ double ** alloc_dmatrix(int imax, int jmax);
 double *** alloc_dcube(int imax, int jmax, int kmax);
 void free_struct_matrix(t_points ** pnts, int imax);
 void beam_warming(t_define p_setup, t_points ** pnts);
+void sw_residue(t_define p_setup, t_points ** pnts);
+void compute_split(t_define p_setup, t_points ** pnts);

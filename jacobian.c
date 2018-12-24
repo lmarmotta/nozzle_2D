@@ -150,7 +150,7 @@ void compute_split(t_define p_setup, t_points ** pnts){
             double rho = pnts[i][j].J * pnts[i][j].q_hat[0];
             double u   = pnts[i][j].q_hat[1] / pnts[i][j].q_hat[0];
             double v   = pnts[i][j].q_hat[2] / pnts[i][j].q_hat[0];
-            double e   = pnts[i][j].J * pnts[i][j].q_hat[3];
+            // double e   = pnts[i][j].J * pnts[i][j].q_hat[3];
 
             /* Compute the original split matrix. */
 

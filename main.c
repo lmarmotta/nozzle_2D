@@ -180,33 +180,29 @@ int main(int argc, char * argv[]){
 
             case 3:
 
-                /* Now, build the fluxes. */
+                /* Now, build the residues. */
 
-                compute_fluxes(p_setup, pnts);
-
-                /* Compute the RHS. */
-
-                compute_rhs(p_setup, pnts);
+                sw_residue(p_setup, pnts);
 
                 /* Compute the Jacobian. */
 
                 compute_jacobian(p_setup, pnts);
 
+                /* Compute the split matrix. */
+
+                compute_split(p_setup, pnts);
+
                 /* Update the time. */
 
                 local_time(p_setup, pnts);
 
-                /* Compute the vectors. */
-
-                sw_residue(p_setup, pnts);
-
-                /* Equations, march ! */
-
-                sw_implicit(p_setup, pnts);
-
                 /* Update Boundary conditions. */
 
                 boundary_condition_euler(p_setup, pnts);
+
+                /* Equations, march ! */
+
+                // sw_implicit(p_setup, pnts);
 
                 /* Dump a whole lotta of stuff. */
 
