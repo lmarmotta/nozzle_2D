@@ -389,3 +389,14 @@ void compute_sw_residue_2ndo(t_define p_setup, t_points ** pnts){
         }
     }
 }
+
+/* Build the implicit operator of the SW scheme. */
+
+void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
+
+    /* Separate bounds of the field. */
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+}

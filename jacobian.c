@@ -129,7 +129,7 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
 
 /* Compute the spliting matrices.. */
 
-void compute_split(t_define p_setup, t_points ** pnts){
+void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
     /* Separate the limits of the mesh. */
 
