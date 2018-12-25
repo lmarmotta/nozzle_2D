@@ -45,12 +45,15 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
-            /* Eq. B5 of SW original paper. */
+            /* I tried to use Eq. B5 of SW original paper to compute the
+             * eigenvalues using the Kt variables. However, in general
+             * curvilinear coordinates they are not working properly while
+             * building the eigenvalues. */
 
-            eig[0] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
-            eig[1] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
-            eig[2] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v + a*pow(kt1*kt1 + kt2*kt2,0.5);
-            eig[3] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v - a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[0] = kt1*pnts[i][j].cov_u;
+            eig[1] = kt1*pnts[i][j].cov_u;
+            eig[2] = kt1*pnts[i][j].cov_u + a*pow(k1*k1 + k2*k2,0.5);
+            eig[3] = kt1*pnts[i][j].cov_u - a*pow(k1*k1 + k2*k2,0.5);
 
             /* Eq. 4.4 of SW original paper. */
 
@@ -110,10 +113,10 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
-            eig[0] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
-            eig[1] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v;
-            eig[2] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v + a*pow(kt1*kt1 + kt2*kt2,0.5);
-            eig[3] = kt1*pnts[i][j].cov_u + kt2*pnts[i][j].cov_v - a*pow(kt1*kt1 + kt2*kt2,0.5);
+            eig[0] = kt2*pnts[i][j].cov_v;
+            eig[1] = kt2*pnts[i][j].cov_v;
+            eig[2] = kt2*pnts[i][j].cov_v + a*pow(k1*k1 + k2*k2,0.5);
+            eig[3] = kt2*pnts[i][j].cov_v - a*pow(k1*k1 + k2*k2,0.5);
 
             eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
             eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
