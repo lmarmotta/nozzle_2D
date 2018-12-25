@@ -106,6 +106,11 @@ typedef struct t_points{
 
     double T1_ksi[4][4], T1_eta[4][4];
 
+    /* Splited jacobians. */
+
+    double A_plus[4][4], A_minu[4][4];
+    double B_plus[4][4], B_minu[4][4];
+
     /* Artificial dissipation. */
 
     double diss_ksi[4], diss_eta[4];
