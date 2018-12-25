@@ -57,7 +57,7 @@ void compute_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Keep it zero for the B.C. */
 
-            if (j == 0) pnts[i][j].cov_v =  0.0;
+            // if (j == 0) pnts[i][j].cov_v =  0.0;
 
             /* Build the Q fluxes in curvilinear coordinates. */
 
