@@ -237,10 +237,6 @@ int main(int argc, char * argv[]){
 
                 compute_sw_impicit_operator(p_setup, pnts);
 
-                /* March equations in time. */
-
-                explicitEuler(p_setup, pnts);
-
                 /* Update Boundary conditions. */
 
                 boundary_condition_euler(p_setup, pnts);
