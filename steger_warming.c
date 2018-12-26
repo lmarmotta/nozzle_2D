@@ -450,35 +450,17 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
             /* Build the upper diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    upper_i[ii][jj][i] = cte_i * pnts[i+1][j].A_minu[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) upper_i[ii][jj][i] = cte_i * pnts[i+1][j].A_minu[ii][jj];
 
             /* Build the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    maind_i[ii][jj][i] = I[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) maind_i[ii][jj][i] = pnts[i][j].J1 * I[ii][jj];
 
             /* Build the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    lower_i[ii][jj][i] = - cte_i * pnts[i-1][j].A_plus[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) lower_i[ii][jj][i] = - cte_i * pnts[i-1][j].A_plus[ii][jj];
 
             /* Build the B vector using the RHS. */
 
@@ -517,35 +499,17 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
             /* Build the upper diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    upper_j[ii][jj][j] = cte_i * pnts[i][j+1].B_minu[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) upper_j[ii][jj][j] = cte_i * pnts[i][j+1].B_minu[ii][jj];
 
             /* Build the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    maind_j[ii][jj][j] = I[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) maind_j[ii][jj][j] = pnts[i][j].J1 * I[ii][jj];
 
             /* Build the lower diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    /* Dissipation free operator. */
-
-                    lower_j[ii][jj][j] = - cte_i * pnts[i][j-1].B_plus[ii][jj];
-
-                }
+            for (int jj = 0; jj<nim; jj++) lower_j[ii][jj][j] = - cte_i * pnts[i][j-1].B_plus[ii][jj];
 
             /* Build the B vector using the RHS. */
 

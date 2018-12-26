@@ -15,10 +15,6 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
-    /* Size of the jacobian matrices. */
-
-    int nim = 4;
-
     /* Store the jacobians. */
 
     for (int i = 0; i<imax; i++){
@@ -118,6 +114,8 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
 
     /* Now, be consistent with the coordinate transformation. */
 
+    int nim = 4;
+
     for (int i = 0; i<imax; i++)
         for (int j = 0; j<jmax; j++)
             for (int ii = 0; ii<nim; ii++)
@@ -137,10 +135,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
-    /* Size of the jacobian matrices. */
-
-    int nim = 4;
-
     /* Store the jacobians. */
 
     for (int i = 0; i<imax; i++){
@@ -151,7 +145,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             double rho = pnts[i][j].J * pnts[i][j].q_hat[0];
             double u   = pnts[i][j].q_hat[1] / pnts[i][j].q_hat[0];
             double v   = pnts[i][j].q_hat[2] / pnts[i][j].q_hat[0];
-            // double e   = pnts[i][j].J * pnts[i][j].q_hat[3];
 
             /* Compute the original split matrix. */
 
@@ -197,7 +190,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
             /* Compute auxiliar variables. */
 
-            a     = pnts[i][j].a;
             alpha = rho/(pow(2.0,0.5)*a);
             beta  = 1.0/(pow(2.0,0.5)*rho*a);
             ktx   = kx/(pow(kx*kx + ky*ky,0.5));
@@ -305,25 +297,10 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
         }
     }
 
-    /* Now, be consistent with the coordinate transformation. */
-
-    for (int i = 0; i<imax; i++)
-        for (int j = 0; j<jmax; j++)
-            for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-
-                    pnts[i][j].T_ksi[ii][jj] = pnts[i][j].J1 * pnts[i][j].T_ksi[ii][jj]; 
-                    pnts[i][j].T_eta[ii][jj] = pnts[i][j].J1 * pnts[i][j].T_eta[ii][jj]; 
-
-                    pnts[i][j].T1_ksi[ii][jj] = pnts[i][j].J1 * pnts[i][j].T1_ksi[ii][jj]; 
-                    pnts[i][j].T1_eta[ii][jj] = pnts[i][j].J1 * pnts[i][j].T1_eta[ii][jj]; 
-
-                }
-
     /* Now, do the multiplications and store the splited jacobians. */
 
-    for (int i = 1; i<imax-1; i++){
-        for (int j = 1; j<jmax-1; j++){
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
 
             /* Separate useful variables. */
 
@@ -399,7 +376,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmuls(aux1,T1,aux2,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].A_plus[ii][jj] = aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_plus[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
 
             /* Multiply the first two parts (store in aux).*/
 
@@ -410,7 +387,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmuls(aux1,T1,aux2,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].A_minu[ii][jj] = aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_minu[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
@@ -426,7 +403,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             eig[1] = kt2*pnts[i][j].cov_v;
             eig[2] = kt2*pnts[i][j].cov_v + a*pow(k1*k1 + k2*k2,0.5);
             eig[3] = kt2*pnts[i][j].cov_v - a*pow(k1*k1 + k2*k2,0.5);
-
 
             /* Eq. 4.4 of SW original paper. */
 
@@ -458,7 +434,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmuls(aux1,T1,aux2,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].B_plus[ii][jj] = aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_plus[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
 
             /* Multiply the first two parts (store in aux).*/
 
@@ -469,7 +445,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmuls(aux1,T1,aux2,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
 
             /* Free the matrices. */
 
