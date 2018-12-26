@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "structs.h"
+#include "prototypes.h"
 
 /* Compute the Jacobian matrices. */
 
@@ -321,7 +322,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
     /* Now, do the multiplications and store the splited jacobians. */
 
-
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
@@ -334,6 +334,8 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
             double kt1 = k1/(pow(k1*k1 + k2*k2,0.5));
             double kt2 = k2/(pow(k1*k1 + k2*k2,0.5));
+
+            double eig[4], eig_p[4], eig_m[4];
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
@@ -376,19 +378,105 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
             double ** T   = alloc_dmatrix(4,4);
             double ** T1  = alloc_dmatrix(4,4);
-            double ** aux = alloc_dmatrix(4,4);
+            double ** aux1 = alloc_dmatrix(4,4);
+            double ** aux2 = alloc_dmatrix(4,4);
 
             /* Copy the T matrices. */
-            /* Multiply the first two parts (store in aux).*/
-            /* Multiply the second two parts (store in the proper struct. */
-            /* Follow the flow to the eta direction. */
+            
+            for (int ii = 0; ii<4; ii++){
+                for (int jj = 0; jj<4; jj++){
+                    T[ii][jj]  = pnts[i][j].T_ksi[ii][jj];
+                    T1[ii][jj] = pnts[i][j].T1_ksi[ii][jj];
+                } 
+            }
 
+            /* Multiply the first two parts (store in aux).*/
+
+            dmuls(T,meig_p,aux1,4);
+
+            /* Multiply the second two parts (store in the proper struct. */
+
+            dmuls(aux1,T1,aux2,4);
+
+            for (int ii = 0; ii<4; ii++)
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_plus[ii][jj] = aux2[ii][jj];
+
+            /* Multiply the first two parts (store in aux).*/
+
+            dmuls(T,meig_m,aux1,4);
+
+            /* Multiply the second two parts (store in the proper struct. */
+
+            dmuls(aux1,T1,aux2,4);
+
+            for (int ii = 0; ii<4; ii++)
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_minu[ii][jj] = aux2[ii][jj];
+
+            /* Compute the auxiliar and the needed variables to compute the fluxes. */
+
+            k1 = pnts[i][j].eta_x;
+            k2 = pnts[i][j].eta_y;
+
+            kt1 = k1/(pow(k1*k1 + k2*k2,0.5));
+            kt2 = k2/(pow(k1*k1 + k2*k2,0.5));
+
+            /* Compute the auxiliar and the needed variables to compute the fluxes. */
+
+            eig[0] = kt2*pnts[i][j].cov_v;
+            eig[1] = kt2*pnts[i][j].cov_v;
+            eig[2] = kt2*pnts[i][j].cov_v + a*pow(k1*k1 + k2*k2,0.5);
+            eig[3] = kt2*pnts[i][j].cov_v - a*pow(k1*k1 + k2*k2,0.5);
+
+
+            /* Eq. 4.4 of SW original paper. */
+
+            eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
+            eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
+            eig_p[2] = (eig[2] + fabs(eig[2])) / 2.0;
+            eig_p[3] = (eig[3] + fabs(eig[3])) / 2.0;
+
+            eig_m[0] = (eig[0] - fabs(eig[0])) / 2.0;
+            eig_m[1] = (eig[1] - fabs(eig[1])) / 2.0;
+            eig_m[2] = (eig[2] - fabs(eig[2])) / 2.0;
+            eig_m[3] = (eig[3] - fabs(eig[3])) / 2.0;
+
+            /* Copy the T matrices. */
+            
+            for (int ii = 0; ii<4; ii++){
+                for (int jj = 0; jj<4; jj++){
+                    T[ii][jj]  = pnts[i][j].T_eta[ii][jj];
+                    T1[ii][jj] = pnts[i][j].T1_eta[ii][jj];
+                } 
+            }
+
+            /* Multiply the first two parts (store in aux).*/
+
+            dmuls(T,meig_p,aux1,4);
+
+            /* Multiply the second two parts (store in the proper struct. */
+
+            dmuls(aux1,T1,aux2,4);
+
+            for (int ii = 0; ii<4; ii++)
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_plus[ii][jj] = aux2[ii][jj];
+
+            /* Multiply the first two parts (store in aux).*/
+
+            dmuls(T,meig_m,aux1,4);
+
+            /* Multiply the second two parts (store in the proper struct. */
+
+            dmuls(aux1,T1,aux2,4);
+
+            for (int ii = 0; ii<4; ii++)
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = aux2[ii][jj];
 
             /* Free the matrices. */
 
             free_dmatrix(T, 4);
             free_dmatrix(T1, 4);
-            free_dmatrix(aux, 4);
+            free_dmatrix(aux1, 4);
+            free_dmatrix(aux2, 4);
             free_dmatrix(meig_p, 4);
             free_dmatrix(meig_m, 4);
         }

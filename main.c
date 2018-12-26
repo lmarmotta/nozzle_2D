@@ -233,6 +233,10 @@ int main(int argc, char * argv[]){
 
                 local_time(p_setup, pnts);
 
+                /* March the equations. */
+
+                compute_sw_impicit_operator(p_setup, pnts);
+
                 /* March equations in time. */
 
                 explicitEuler(p_setup, pnts);
