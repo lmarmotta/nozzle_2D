@@ -233,9 +233,9 @@ int main(int argc, char * argv[]){
 
                 local_time(p_setup, pnts);
 
-                /* March the equations. */
+                /* March equations in time. */
 
-                compute_sw_impicit_operator(p_setup, pnts);
+                explicitEuler(p_setup, pnts);
 
                 /* Update Boundary conditions. */
 
@@ -249,7 +249,7 @@ int main(int argc, char * argv[]){
 
                 break;
             /*
-             * Steger-Warming - Implicit - 2nd order.
+             * Steger-Warming - Implicit - 1st order.
              */
 
             case 5:
@@ -261,10 +261,6 @@ int main(int argc, char * argv[]){
                 /* Compute the fluxes. */
 
                 compute_sw_fluxes(p_setup, pnts);
-
-                /* Now, build the residues. */
-
-                compute_sw_residue_2ndo(p_setup, pnts);
 
                 /* Compute the jacobian. */
 
@@ -278,9 +274,13 @@ int main(int argc, char * argv[]){
 
                 local_time(p_setup, pnts);
 
-                /* March equations in time. */
+                /* Now, build the residues. */
 
-                explicitEuler(p_setup, pnts);
+                compute_sw_residue_1sto(p_setup, pnts);
+
+                /* March the equations. */
+
+                compute_sw_impicit_operator(p_setup, pnts);
 
                 /* Update Boundary conditions. */
 

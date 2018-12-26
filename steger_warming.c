@@ -454,7 +454,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    upper_i[ii][jj][i] = 0.0;
+                    upper_i[ii][jj][i] = cte_i * pnts[i+1][j].A_minu[ii][jj];
 
                 }
 
@@ -465,8 +465,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    maind_i[ii][jj][i] = cte_i*(I[ii][jj] + 
-                            pnts[i][j].A_plus[ii][jj] + pnts[i][j].B_plus[ii][jj]); 
+                    maind_i[ii][jj][i] = I[ii][jj];
 
                 }
 
@@ -477,7 +476,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    lower_i[ii][jj][i] = - cte_i*(pnts[i-1][j].A_plus[ii][jj] - pnts[i][j-1].B_plus[ii][jj]);
+                    lower_i[ii][jj][i] = - cte_i * pnts[i-1][j].A_plus[ii][jj];
 
                 }
 
@@ -522,7 +521,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    upper_j[ii][jj][j] = cte_i*(pnts[i+1][j].A_minu[ii][jj] + pnts[i][j+1].B_minu[ii][jj]);
+                    upper_j[ii][jj][j] = cte_i * pnts[i][j+1].B_minu[ii][jj];
 
                 }
 
@@ -533,8 +532,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    maind_j[ii][jj][j] = I[ii][jj] + 
-                        cte_i*( - pnts[i][j].A_minu[ii][jj] - pnts[i][j].B_minu[ii][jj]);
+                    maind_j[ii][jj][j] = I[ii][jj];
 
                 }
 
@@ -545,7 +543,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
 
                     /* Dissipation free operator. */
 
-                    lower_j[ii][jj][j] = 0.0;
+                    lower_j[ii][jj][j] = - cte_i * pnts[i][j-1].B_plus[ii][jj];
 
                 }
 
