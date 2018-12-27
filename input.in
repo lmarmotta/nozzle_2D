@@ -4,7 +4,7 @@ i_rhou 18.45
 i_rhov 0.000
 i_e 16868.91
 n_max_iter 100000
-CFL 1.5
+CFL 10.0
 BCIN_udir 1.0
 BCIN_vdir 0.0
 BCIN_pt 101362.508

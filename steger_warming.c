@@ -455,7 +455,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
             /* Build the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-            for (int jj = 0; jj<nim; jj++) maind_i[ii][jj][i] = pnts[i][j].J1 * I[ii][jj];
+            for (int jj = 0; jj<nim; jj++) maind_i[ii][jj][i] = I[ii][jj] + cte_i*pnts[i][j].A_plus[ii][jj] - cte_i*pnts[i][j].A_minu[ii][jj];
 
             /* Build the lower diagonal. */
 
@@ -504,7 +504,7 @@ void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts){
             /* Build the main diagonal. */
 
             for (int ii = 0; ii<nim; ii++)
-            for (int jj = 0; jj<nim; jj++) maind_j[ii][jj][j] = pnts[i][j].J1 * I[ii][jj];
+            for (int jj = 0; jj<nim; jj++) maind_j[ii][jj][j] = I[ii][jj] + cte_i*pnts[i][j].B_plus[ii][jj] - cte_i*pnts[i][j].B_minu[ii][jj];
 
             /* Build the lower diagonal. */
 
