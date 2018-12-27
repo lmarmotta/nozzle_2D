@@ -293,6 +293,51 @@ int main(int argc, char * argv[]){
                 /* Break */
 
                 break;
+            /*
+             * Steger-Warming - Implicit - 2nd order.
+             */
+
+            case 6:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
+                /* Compute the jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Split the Jacobians. */
+
+                compute_splited_jacobians(p_setup, pnts);
+
+                /* Now, build the residues. */
+
+                compute_sw_residue_2ndo(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March the equations. */
+
+                compute_sw_impicit_operator(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
 
             /*
              * Default case. 

@@ -105,6 +105,34 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
        printf("\n BOOM 3: The code seens to be diverging. Make it better next time.\n");
        exit(1);
    }
+
+    /* Check rho residue. */
+
+   if (isnan(log10(max_rhs_rho)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check rhou residue. */
+
+   if (isnan(log10(max_rhs_rhou)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check rhov residue. */
+
+   if (isnan(log10(max_rhs_rhov)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check e residue. */
+
+   if (isnan(log10(max_rhs_rhov)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
 }
 
 /* Converts an integer to string. */

@@ -474,41 +474,6 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             for (int ii = 0; ii<4; ii++)
             for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
 
-            /* Check if the jacobians are consistent. */
-
-//            for (int ii = 0; ii<4; ii++){
-//                for (int jj = 0; jj<4; jj++){
-//
-//                    double elem1_A_hat = pnts[i][j].A_hat[ii][jj];
-//                    double elem1_A_pos = pnts[i][j].A_plus[ii][jj];
-//                    double elem1_A_neg = pnts[i][j].A_minu[ii][jj];
-//
-//                    double elem1_B_hat = pnts[i][j].B_hat[ii][jj];
-//                    double elem1_B_pos = pnts[i][j].B_plus[ii][jj];
-//                    double elem1_B_neg = pnts[i][j].B_minu[ii][jj];
-//
-//                    /* Test the jacobians of the ksi direction flux. */
-//
-//                    if (fabs(elem1_A_hat - (elem1_A_pos + elem1_A_neg)) > 2.0*DBL_EPSILON){
-//                        printf("ERROR: Inconsistent Splited Jacobians\n"); 
-//                        printf("pnts[%d][%d].A_hat[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].A_hat[ii][jj]); 
-//                        printf("pnts[%d][%d].A_plus[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].A_plus[ii][jj]); 
-//                        printf("pnts[%d][%d].A_minu[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].A_minu[ii][jj]); 
-//                        exit(1);
-//                    }
-//
-//                    /* Test the jacobians of the eta direction flux. */
-//
-//                    if (fabs(elem1_B_hat - (elem1_B_pos + elem1_B_neg)) > 2.0*DBL_EPSILON){
-//                        printf("ERROR: Inconsistent Splited Jacobians\n"); 
-//                        printf("pnts[%d][%d].B_hat[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].B_hat[ii][jj]); 
-//                        printf("pnts[%d][%d].B_plus[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].B_plus[ii][jj]); 
-//                        printf("pnts[%d][%d].B_minu[%d][%d] = %lf\n",i,j,ii,jj,pnts[i][j].B_minu[ii][jj]); 
-//                        exit(1);
-//                    }
-//                }
-//            }
-
             /* Free the matrices. */
 
             free_dmatrix(T, 4);
