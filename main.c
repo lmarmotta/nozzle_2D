@@ -270,13 +270,13 @@ int main(int argc, char * argv[]){
 
                 compute_splited_jacobians(p_setup, pnts);
 
-                /* Update the time. */
-
-                local_time(p_setup, pnts);
-
                 /* Now, build the residues. */
 
                 compute_sw_residue_1sto(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
 
                 /* March the equations. */
 
