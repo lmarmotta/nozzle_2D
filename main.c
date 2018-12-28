@@ -134,10 +134,48 @@ int main(int argc, char * argv[]){
                 break;
 
             /*
-             * Beam Warming (Pullian) Implicit scheme. 
+             * Explicit Euler scheme - 4th diff dissipation.
              */
 
             case 2:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip_4th(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* Marh in time. */
+
+                explicitEuler(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break the switch. */
+
+                break;
+
+            /*
+             * Beam Warming (Pullian) Implicit scheme. 
+             */
+
+            case 3:
 
                 /* Now, build the fluxes. */
 
@@ -178,7 +216,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Explicit - 1st order.
              */
 
-            case 3:
+            case 4:
                 
                 /* Compute the basic fluxes. */
 
@@ -215,7 +253,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Explicit - 2nd order.
              */
 
-            case 4:
+            case 5:
                 
                 /* Compute the basic fluxes. */
 
@@ -252,7 +290,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 1st order.
              */
 
-            case 5:
+            case 6:
                 
                 /* Compute the basic fluxes. */
 
@@ -297,7 +335,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 2nd order.
              */
 
-            case 6:
+            case 7:
                 
                 /* Compute the basic fluxes. */
 
@@ -345,7 +383,7 @@ int main(int argc, char * argv[]){
 
             default:
 
-                printf("ERROR: Time marching scheme not availiable.\n");
+                printf("ERROR: Scheme not availiable.\n");
                 exit(1);
 
         }
