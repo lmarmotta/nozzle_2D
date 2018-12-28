@@ -48,6 +48,7 @@ void dump_iteration(int iter, double time);
 void save_for_gif(int num,t_points ** pnts, t_define p_setup);
 void dump_residue_file(int iter, FILE ** res_output, t_define p_setup);
 void export_fields(t_points ** pnts, t_define p_setup);
+void export_pressure(t_points ** pnts, t_define p_setup);
 
 /* Centered specifics. */
 

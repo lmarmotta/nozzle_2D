@@ -468,6 +468,8 @@ int main(int argc, char * argv[]){
 
     export_fields(pnts,p_setup);
 
+    export_pressure(pnts, p_setup);
+
     /* Free the main struct */
 
     printf("\n-Free memory.\n");

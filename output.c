@@ -246,3 +246,30 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
     fclose(f_gif);
 
 }
+
+void export_pressure(t_points ** pnts, t_define p_setup){
+
+    /* Open solution file. */
+
+    FILE * f_out = fopen("pressure_com.dat", "w");
+
+    /* Check the condition of the pointer. */
+
+    if (f_out == NULL){
+        printf("\nERROR: Output file cannot be opened !\n"); exit(1);
+    }
+
+    for (int i = 0; i < p_setup.imax; i++){
+
+        int j = p_setup.jmax - 2;
+
+        double p = pnts[i][j].p/p_setup.BCIN_pt;
+        double x = pnts[i][j].x/pnts[p_setup.imax-1][p_setup.jmax-1].x;
+        double y = pnts[i][j].y;
+
+        fprintf(f_out,"%lf,%lf,%lf\n",x,y,p);
+                    
+    }
+
+    fclose(f_out);
+}

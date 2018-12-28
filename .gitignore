@@ -54,3 +54,4 @@ dkms.conf
 *.swp
 *.dat
 code
+*.pdf
