@@ -172,7 +172,7 @@ int main(int argc, char * argv[]){
                 break;
 
             /*
-             * Beam Warming (Pullian) Implicit scheme. 
+             * Beam Warming (Pullian) Implicit 2nd order dissipation.
              */
 
             case 3:
@@ -212,11 +212,53 @@ int main(int argc, char * argv[]){
                 /* Break */
 
                 break;
+
+            /*
+             * Beam Warming (Pullian) Implicit 4th order dissipation.
+             */
+
+            case 4:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Compute the Jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip_4th(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March in time. */
+
+                beam_warming(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
             /*
              * Steger-Warming - Explicit - 1st order.
              */
 
-            case 4:
+            case 5:
                 
                 /* Compute the basic fluxes. */
 
@@ -253,7 +295,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Explicit - 2nd order.
              */
 
-            case 5:
+            case 6:
                 
                 /* Compute the basic fluxes. */
 
@@ -290,7 +332,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 1st order.
              */
 
-            case 6:
+            case 7:
                 
                 /* Compute the basic fluxes. */
 
@@ -335,7 +377,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 2nd order.
              */
 
-            case 7:
+            case 8:
                 
                 /* Compute the basic fluxes. */
 
