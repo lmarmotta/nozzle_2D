@@ -96,7 +96,7 @@ int main(int argc, char * argv[]){
         switch(p_setup.scheme){
 
             /*
-             * Explicit Euler scheme.
+             * Explicit Euler scheme - 2nd diff dissipation.
              */
 
             case 1:
@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
 
                 /* Apply dissipation. */
 
-                art_dissip(p_setup, pnts, p_setup.d_typ);
+                art_dissip_2nd(p_setup, pnts);
 
                 /* Update the time. */
 
@@ -153,7 +153,7 @@ int main(int argc, char * argv[]){
 
                 /* Apply dissipation. */
 
-                art_dissip(p_setup, pnts, p_setup.d_typ);
+                art_dissip_2nd(p_setup, pnts);
 
                 /* Update the time. */
 

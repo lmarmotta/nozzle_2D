@@ -54,7 +54,8 @@ void export_fields(t_points ** pnts, t_define p_setup);
 void compute_fluxes(t_define p_setup, t_points ** pnts);
 void compute_rhs(t_define p_setup, t_points ** pnts);
 void explicitEuler(t_define p_setup, t_points ** pnts);
-void art_dissip(t_define p_setup, t_points ** pnts, int d_typ); /* Note: Separate the dissipation. */
+void art_dissip_2nd(t_define p_setup, t_points ** pnts);
+void art_dissip_nlin(t_define p_setup, t_points ** pnts);
 
 /* Beam Warming specifics. */
 
