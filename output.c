@@ -80,31 +80,59 @@ void dump_residue_file(int iter, FILE ** res_output, t_define p_setup){
 
     /* Check rho residue. */
 
-    if (log10(max_rhs_rho)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rho)>p_setup.eps_blow){
+       printf("\n BOOM 0: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check rhou residue. */
+   /* Check rhou residue. */
 
-    if (log10(max_rhs_rhou)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhou)>p_setup.eps_blow){
+       printf("\n BOOM 1: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check rhov residue. */
+   /* Check rhov residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhov)>p_setup.eps_blow){
+       printf("\n BOOM 2: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
 
-    /* Check e residue. */
+   /* Check e residue. */
 
-    if (log10(max_rhs_rhov)>p_setup.eps_blow){
-        printf("\n BOOM: The code seens to be diverging. Make it better next time.\n");
-        exit(1);
-    }
+   if (log10(max_rhs_rhov)>p_setup.eps_blow){
+       printf("\n BOOM 3: The code seens to be diverging. Make it better next time.\n");
+       exit(1);
+   }
+
+    /* Check rho residue. */
+
+   if (isnan(log10(max_rhs_rho)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check rhou residue. */
+
+   if (isnan(log10(max_rhs_rhou)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check rhov residue. */
+
+   if (isnan(log10(max_rhs_rhov)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
+
+   /* Check e residue. */
+
+   if (isnan(log10(max_rhs_rhov)) == 1){
+       printf("\n BOOM 0: NaN Found.\n");
+       exit(1);
+   }
 }
 
 /* Converts an integer to string. */
@@ -217,4 +245,31 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
 
     fclose(f_gif);
 
+}
+
+void export_pressure(t_points ** pnts, t_define p_setup){
+
+    /* Open solution file. */
+
+    FILE * f_out = fopen("pressure_com.dat", "w");
+
+    /* Check the condition of the pointer. */
+
+    if (f_out == NULL){
+        printf("\nERROR: Output file cannot be opened !\n"); exit(1);
+    }
+
+    for (int i = 0; i < p_setup.imax; i++){
+
+        int j = p_setup.jmax - 2;
+
+        double p = pnts[i][j].p/p_setup.BCIN_pt;
+        double x = pnts[i][j].x/pnts[p_setup.imax-1][p_setup.jmax-1].x;
+        double y = pnts[i][j].y;
+
+        fprintf(f_out,"%lf,%lf,%lf\n",x,y,p);
+                    
+    }
+
+    fclose(f_out);
 }

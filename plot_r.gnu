@@ -13,6 +13,8 @@ set title "Nozzle 2D Residue"
 set style line 1 lt rgb "black" 
 set style line 2 lt rgb "red" 
 
+set grid
+
 plot "residues.dat" u 1:2 with lines title "Continuity Residue"
 
 pause 10; refresh; reread

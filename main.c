@@ -96,7 +96,7 @@ int main(int argc, char * argv[]){
         switch(p_setup.scheme){
 
             /*
-             * Explicit Euler scheme.
+             * Explicit Euler scheme - 2nd diff dissipation.
              */
 
             case 1:
@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
 
                 /* Apply dissipation. */
 
-                art_dissip(p_setup, pnts, p_setup.d_typ);
+                art_dissip_2nd(p_setup, pnts);
 
                 /* Update the time. */
 
@@ -127,17 +127,55 @@ int main(int argc, char * argv[]){
 
                 /* Dump a whole lotta of stuff. */
 
-                dump_residue_file(iter, &res_output);
+                dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break the switch. */
 
                 break;
 
             /*
-             * Beam Warming (Pullian) Implicit scheme. 
+             * Explicit Euler scheme - 4th diff dissipation.
              */
 
             case 2:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip_4th(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* Marh in time. */
+
+                explicitEuler(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break the switch. */
+
+                break;
+
+            /*
+             * Beam Warming (Pullian) Implicit 2nd order dissipation.
+             */
+
+            case 3:
 
                 /* Now, build the fluxes. */
 
@@ -153,7 +191,7 @@ int main(int argc, char * argv[]){
 
                 /* Apply dissipation. */
 
-                art_dissip(p_setup, pnts, p_setup.d_typ);
+                art_dissip_2nd(p_setup, pnts);
 
                 /* Update the time. */
 
@@ -169,7 +207,213 @@ int main(int argc, char * argv[]){
 
                 /* Dump a whole lotta of stuff. */
 
-                dump_residue_file(iter, &res_output);
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
+
+            /*
+             * Beam Warming (Pullian) Implicit 4th order dissipation.
+             */
+
+            case 4:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Compute the Jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip_4th(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March in time. */
+
+                beam_warming(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
+            /*
+             * Steger-Warming - Explicit - 1st order.
+             */
+
+            case 5:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
+                /* Now, build the residues. */
+
+                compute_sw_residue_1sto(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March equations in time. */
+
+                explicitEuler(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
+            /*
+             * Steger-Warming - Explicit - 2nd order.
+             */
+
+            case 6:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
+                /* Now, build the residues. */
+
+                compute_sw_residue_2ndo(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March equations in time. */
+
+                explicitEuler(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
+            /*
+             * Steger-Warming - Implicit - 1st order.
+             */
+
+            case 7:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
+                /* Compute the jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Split the Jacobians. */
+
+                compute_splited_jacobians(p_setup, pnts);
+
+                /* Now, build the residues. */
+
+                compute_sw_residue_1sto(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March the equations. */
+
+                compute_sw_impicit_operator(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break */
+
+                break;
+            /*
+             * Steger-Warming - Implicit - 2nd order.
+             */
+
+            case 8:
+                
+                /* Compute the basic fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the fluxes. */
+
+                compute_sw_fluxes(p_setup, pnts);
+
+                /* Compute the jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Split the Jacobians. */
+
+                compute_splited_jacobians(p_setup, pnts);
+
+                /* Now, build the residues. */
+
+                compute_sw_residue_2ndo(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* March the equations. */
+
+                compute_sw_impicit_operator(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break */
 
@@ -181,7 +425,7 @@ int main(int argc, char * argv[]){
 
             default:
 
-                printf("ERROR: Time marching scheme not availiable.\n");
+                printf("ERROR: Scheme not availiable.\n");
                 exit(1);
 
         }
@@ -223,6 +467,8 @@ int main(int argc, char * argv[]){
     printf("\n-Output solution.\n");
 
     export_fields(pnts,p_setup);
+
+    export_pressure(pnts, p_setup);
 
     /* Free the main struct */
 
