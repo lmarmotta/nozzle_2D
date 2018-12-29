@@ -57,15 +57,15 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
 
             /* Eq. 4.4 of SW original paper. */
 
-            eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
-            eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
-            eig_p[2] = (eig[2] + fabs(eig[2])) / 2.0;
-            eig_p[3] = (eig[3] + fabs(eig[3])) / 2.0;
+            eig_p[0] = eig_split(eig[0],+1);
+            eig_p[1] = eig_split(eig[1],+1);
+            eig_p[2] = eig_split(eig[2],+1);
+            eig_p[3] = eig_split(eig[3],+1);
 
-            eig_m[0] = (eig[0] - fabs(eig[0])) / 2.0;
-            eig_m[1] = (eig[1] - fabs(eig[1])) / 2.0;
-            eig_m[2] = (eig[2] - fabs(eig[2])) / 2.0;
-            eig_m[3] = (eig[3] - fabs(eig[3])) / 2.0;
+            eig_m[0] = eig_split(eig[0],-1);
+            eig_m[1] = eig_split(eig[1],-1);
+            eig_m[2] = eig_split(eig[2],-1);
+            eig_m[3] = eig_split(eig[3],-1);
 
             /* Get the positive F fluxes. */
 
@@ -118,15 +118,15 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts){
             eig[2] = kt2*pnts[i][j].cov_v + a*pow(k1*k1 + k2*k2,0.5);
             eig[3] = kt2*pnts[i][j].cov_v - a*pow(k1*k1 + k2*k2,0.5);
 
-            eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
-            eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
-            eig_p[2] = (eig[2] + fabs(eig[2])) / 2.0;
-            eig_p[3] = (eig[3] + fabs(eig[3])) / 2.0;
+            eig_p[0] = eig_split(eig[0],+1);
+            eig_p[1] = eig_split(eig[1],+1);
+            eig_p[2] = eig_split(eig[2],+1);
+            eig_p[3] = eig_split(eig[3],+1);
 
-            eig_m[0] = (eig[0] - fabs(eig[0])) / 2.0;
-            eig_m[1] = (eig[1] - fabs(eig[1])) / 2.0;
-            eig_m[2] = (eig[2] - fabs(eig[2])) / 2.0;
-            eig_m[3] = (eig[3] - fabs(eig[3])) / 2.0;
+            eig_m[0] = eig_split(eig[0],-1);
+            eig_m[1] = eig_split(eig[1],-1);
+            eig_m[2] = eig_split(eig[2],-1);
+            eig_m[3] = eig_split(eig[3],-1);
 
             /* Get the positive F fluxes. */
 

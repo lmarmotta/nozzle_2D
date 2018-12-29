@@ -71,3 +71,4 @@ void compute_sw_fluxes(t_define p_setup, t_points ** pnts);
 void compute_sw_residue_1sto(t_define p_setup, t_points ** pnts);
 void compute_sw_residue_2ndo(t_define p_setup, t_points ** pnts);
 void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts);
+double eig_split(double eig, int sign);
