@@ -113,18 +113,6 @@ void compute_jacobian(t_define p_setup, t_points ** pnts){
 
         }
     }
-
-    /* Now, be consistent with the coordinate transformation. */
-
-    int nim = 4;
-
-    for (int i = 0; i<imax; i++)
-        for (int j = 0; j<jmax; j++)
-            for (int ii = 0; ii<nim; ii++)
-                for (int jj = 0; jj<nim; jj++){
-                    pnts[i][j].A_hat[ii][jj] = pnts[i][j].J1 * pnts[i][j].A_hat[ii][jj]; 
-                    pnts[i][j].B_hat[ii][jj] = pnts[i][j].J1 * pnts[i][j].B_hat[ii][jj]; 
-                }
 }
 
 
@@ -320,30 +308,15 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
             /* Eq. 4.4 of SW original paper. */
 
-            eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
-            eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
-            eig_p[2] = (eig[2] + fabs(eig[2])) / 2.0;
-            eig_p[3] = (eig[3] + fabs(eig[3])) / 2.0;
+            eig_p[0] = eig_split(eig[0],+1);
+            eig_p[1] = eig_split(eig[1],+1);
+            eig_p[2] = eig_split(eig[2],+1);
+            eig_p[3] = eig_split(eig[3],+1);
 
-            eig_m[0] = (eig[0] - fabs(eig[0])) / 2.0;
-            eig_m[1] = (eig[1] - fabs(eig[1])) / 2.0;
-            eig_m[2] = (eig[2] - fabs(eig[2])) / 2.0;
-            eig_m[3] = (eig[3] - fabs(eig[3])) / 2.0;
-
-            /* Check if the eigenvalues are consistent. */
-
-            for (int ii = 0; ii<4; ii++){
-
-                /* Test the positive eigenvalues. */
-
-                if (fabs(eig[ii] - (eig_p[ii] + eig_m[ii])) > DBL_EPSILON){
-                    printf("ERROR: Inconsistent Splited Eigenvalues\n"); 
-                    printf("eig[%d] = %lf\n",ii,eig[ii]);
-                    printf("eig_p[%d] = %lf\n",ii,eig_p[ii]);
-                    printf("eig_m[%d] = %lf\n",ii,eig_m[ii]);
-                    exit(1);
-                }
-            }
+            eig_m[0] = eig_split(eig[0],-1);
+            eig_m[1] = eig_split(eig[1],-1);
+            eig_m[2] = eig_split(eig[2],-1);
+            eig_m[3] = eig_split(eig[3],-1);
 
             /* Build a matrix with the eigenvalues. */
 
@@ -388,7 +361,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmgss(aux1,T1,aux2,4,4,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].A_plus[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_plus[ii][jj] = aux2[ii][jj];
 
             /* Multiply the first two parts (store in aux).*/
 
@@ -399,7 +372,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmgss(aux1,T1,aux2,4,4,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].A_minu[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].A_minu[ii][jj] = aux2[ii][jj];
 
             /* Compute the auxiliar and the needed variables to compute the fluxes. */
 
@@ -418,30 +391,15 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
 
             /* Eq. 4.4 of SW original paper. */
 
-            eig_p[0] = (eig[0] + fabs(eig[0])) / 2.0;
-            eig_p[1] = (eig[1] + fabs(eig[1])) / 2.0;
-            eig_p[2] = (eig[2] + fabs(eig[2])) / 2.0;
-            eig_p[3] = (eig[3] + fabs(eig[3])) / 2.0;
+            eig_p[0] = eig_split(eig[0],+1);
+            eig_p[1] = eig_split(eig[1],+1);
+            eig_p[2] = eig_split(eig[2],+1);
+            eig_p[3] = eig_split(eig[3],+1);
 
-            eig_m[0] = (eig[0] - fabs(eig[0])) / 2.0;
-            eig_m[1] = (eig[1] - fabs(eig[1])) / 2.0;
-            eig_m[2] = (eig[2] - fabs(eig[2])) / 2.0;
-            eig_m[3] = (eig[3] - fabs(eig[3])) / 2.0;
-
-            /* Check if the eigenvalues are consistent. */
-
-            for (int ii = 0; ii<4; ii++){
-
-                /* Test the positive eigenvalues. */
-
-                if (fabs(eig[ii] - (eig_p[ii] + eig_m[ii])) > DBL_EPSILON){
-                    printf("ERROR: Inconsistent Splited Eigenvalues\n"); 
-                    printf("eig[%d] = %lf\n",ii,eig[ii]);
-                    printf("eig_p[%d] = %lf\n",ii,eig_p[ii]);
-                    printf("eig_m[%d] = %lf\n",ii,eig_m[ii]);
-                    exit(1);
-                }
-            }
+            eig_m[0] = eig_split(eig[0],-1);
+            eig_m[1] = eig_split(eig[1],-1);
+            eig_m[2] = eig_split(eig[2],-1);
+            eig_m[3] = eig_split(eig[3],-1);
 
             /* Copy the T matrices. */
             
@@ -461,7 +419,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmgss(aux1,T1,aux2,4,4,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].B_plus[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_plus[ii][jj] = aux2[ii][jj];
 
             /* Multiply the first two parts (store in aux).*/
 
@@ -472,7 +430,7 @@ void compute_splited_jacobians(t_define p_setup, t_points ** pnts){
             dmgss(aux1,T1,aux2,4,4,4);
 
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = pnts[i][j].J1 * aux2[ii][jj];
+            for (int jj = 0; jj<4; jj++) pnts[i][j].B_minu[ii][jj] = aux2[ii][jj];
 
             /* Free the matrices. */
 

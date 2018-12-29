@@ -8,6 +8,25 @@
 #include "externs.h"
 #include "prototypes.h"
 
+/* Split the eigenvalues */
+
+double eig_split(double eig,int sign){
+
+    double eig_out;
+    double eps = 0.04;
+
+    if (sign == +1){
+        eig_out = (eig + pow(eig*eig + eps*eps,0.5))/2.0;
+    } else if (sign == -1){
+        eig_out = (eig - pow(eig*eig + eps*eps,0.5))/2.0;
+    } else {
+        printf("ERROR: Not a valid eigenvalue sign.\n");
+    }
+
+    return eig_out;
+}
+
+
 /* Here all the routines needed in order to compute the flow solution 
  * using the steger-warming flux vector splitting. */
 
