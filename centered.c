@@ -221,11 +221,11 @@ void art_dissip_4th(t_define p_setup, t_points ** pnts){
         }
     }
 
-    /* Compute the upper surface. */
+    /* Compute the symmetry line. */
 
     for (int i = 2; i<imax-2; i++){
 
-        int j = jmax - 1;
+        int j = jmax - 2;
 
         /* Compute in ksi direction. */
 
@@ -242,6 +242,7 @@ void art_dissip_4th(t_define p_setup, t_points ** pnts){
         pnts[i][j].diss_eta[3] = pnts[i][j].q_hat[3] - 4.0*pnts[i][j-1].q_hat[3] + 6.0*pnts[i][j-2].q_hat[3] - 4.0*pnts[i][j-3].q_hat[3] + pnts[i][j-4].q_hat[3];
 
     }
+
 
     /* Compute the lower surface. */
 
@@ -291,7 +292,7 @@ void art_dissip_4th(t_define p_setup, t_points ** pnts){
 
     for (int j = 2; j<jmax-2; j++){
 
-        int i = imax - 1;
+        int i = imax - 2;
 
         /* Compute in ksi direction. */
 
@@ -308,6 +309,62 @@ void art_dissip_4th(t_define p_setup, t_points ** pnts){
         pnts[i][j].diss_eta[3] = pnts[i][j+2].q_hat[3] - 4.0*pnts[i][j+1].q_hat[3] + 6.0*pnts[i][j].q_hat[3] - 4.0*pnts[i][j-1].q_hat[3] + pnts[i][j-2].q_hat[3];
 
     }
+
+    /* Now, lower left corner. */
+
+    int i = 1; int j = 1;
+
+    pnts[i][j].diss_ksi[0] = pnts[i+4][j].q_hat[0] - 4.0*pnts[i+3][j].q_hat[0] + 6.0*pnts[i+2][j].q_hat[0] - 4.0*pnts[i+1][j].q_hat[0] + pnts[i][j].q_hat[0];
+    pnts[i][j].diss_ksi[1] = pnts[i+4][j].q_hat[1] - 4.0*pnts[i+3][j].q_hat[1] + 6.0*pnts[i+2][j].q_hat[1] - 4.0*pnts[i+1][j].q_hat[1] + pnts[i][j].q_hat[1];
+    pnts[i][j].diss_ksi[2] = pnts[i+4][j].q_hat[2] - 4.0*pnts[i+3][j].q_hat[2] + 6.0*pnts[i+2][j].q_hat[2] - 4.0*pnts[i+1][j].q_hat[2] + pnts[i][j].q_hat[2];
+    pnts[i][j].diss_ksi[3] = pnts[i+4][j].q_hat[3] - 4.0*pnts[i+3][j].q_hat[3] + 6.0*pnts[i+2][j].q_hat[3] - 4.0*pnts[i+1][j].q_hat[3] + pnts[i][j].q_hat[3];
+
+    pnts[i][j].diss_eta[0] = pnts[i][j+4].q_hat[0] - 4.0*pnts[i][j+3].q_hat[0] + 6.0*pnts[i][j+2].q_hat[0] - 4.0*pnts[i][j+1].q_hat[0] + pnts[i][j].q_hat[0];
+    pnts[i][j].diss_eta[1] = pnts[i][j+4].q_hat[1] - 4.0*pnts[i][j+3].q_hat[1] + 6.0*pnts[i][j+2].q_hat[1] - 4.0*pnts[i][j+1].q_hat[1] + pnts[i][j].q_hat[1];
+    pnts[i][j].diss_eta[2] = pnts[i][j+4].q_hat[2] - 4.0*pnts[i][j+3].q_hat[2] + 6.0*pnts[i][j+2].q_hat[2] - 4.0*pnts[i][j+1].q_hat[2] + pnts[i][j].q_hat[2];
+    pnts[i][j].diss_eta[3] = pnts[i][j+4].q_hat[3] - 4.0*pnts[i][j+3].q_hat[3] + 6.0*pnts[i][j+2].q_hat[3] - 4.0*pnts[i][j+1].q_hat[3] + pnts[i][j].q_hat[3];
+
+    /* Upper left corner. */
+
+    i = 1; j = jmax - 2;
+
+    pnts[i][j].diss_ksi[0] = pnts[i+4][j].q_hat[0] - 4.0*pnts[i+3][j].q_hat[0] + 6.0*pnts[i+2][j].q_hat[0] - 4.0*pnts[i+1][j].q_hat[0] + pnts[i][j].q_hat[0];
+    pnts[i][j].diss_ksi[1] = pnts[i+4][j].q_hat[1] - 4.0*pnts[i+3][j].q_hat[1] + 6.0*pnts[i+2][j].q_hat[1] - 4.0*pnts[i+1][j].q_hat[1] + pnts[i][j].q_hat[1];
+    pnts[i][j].diss_ksi[2] = pnts[i+4][j].q_hat[2] - 4.0*pnts[i+3][j].q_hat[2] + 6.0*pnts[i+2][j].q_hat[2] - 4.0*pnts[i+1][j].q_hat[2] + pnts[i][j].q_hat[2];
+    pnts[i][j].diss_ksi[3] = pnts[i+4][j].q_hat[3] - 4.0*pnts[i+3][j].q_hat[3] + 6.0*pnts[i+2][j].q_hat[3] - 4.0*pnts[i+1][j].q_hat[3] + pnts[i][j].q_hat[3];
+
+    pnts[i][j].diss_eta[0] = pnts[i][j].q_hat[0] - 4.0*pnts[i][j-1].q_hat[0] + 6.0*pnts[i][j-2].q_hat[0] - 4.0*pnts[i][j-3].q_hat[0] + pnts[i][j-4].q_hat[0];
+    pnts[i][j].diss_eta[1] = pnts[i][j].q_hat[1] - 4.0*pnts[i][j-1].q_hat[1] + 6.0*pnts[i][j-2].q_hat[1] - 4.0*pnts[i][j-3].q_hat[1] + pnts[i][j-4].q_hat[1];
+    pnts[i][j].diss_eta[2] = pnts[i][j].q_hat[2] - 4.0*pnts[i][j-1].q_hat[2] + 6.0*pnts[i][j-2].q_hat[2] - 4.0*pnts[i][j-3].q_hat[2] + pnts[i][j-4].q_hat[2];
+    pnts[i][j].diss_eta[3] = pnts[i][j].q_hat[3] - 4.0*pnts[i][j-1].q_hat[3] + 6.0*pnts[i][j-2].q_hat[3] - 4.0*pnts[i][j-3].q_hat[3] + pnts[i][j-4].q_hat[3];
+
+    /* Lower right corner. */
+
+    i = imax - 2; j = 1;
+
+    pnts[i][j].diss_ksi[0] = pnts[i][j].q_hat[0] - 4.0*pnts[i-1][j].q_hat[0] + 6.0*pnts[i-2][j].q_hat[0] - 4.0*pnts[i-3][j].q_hat[0] + pnts[i-4][j].q_hat[0];
+    pnts[i][j].diss_ksi[1] = pnts[i][j].q_hat[1] - 4.0*pnts[i-1][j].q_hat[1] + 6.0*pnts[i-2][j].q_hat[1] - 4.0*pnts[i-3][j].q_hat[1] + pnts[i-4][j].q_hat[1];
+    pnts[i][j].diss_ksi[2] = pnts[i][j].q_hat[2] - 4.0*pnts[i-1][j].q_hat[2] + 6.0*pnts[i-2][j].q_hat[2] - 4.0*pnts[i-3][j].q_hat[2] + pnts[i-4][j].q_hat[2];
+    pnts[i][j].diss_ksi[3] = pnts[i][j].q_hat[3] - 4.0*pnts[i-1][j].q_hat[3] + 6.0*pnts[i-2][j].q_hat[3] - 4.0*pnts[i-3][j].q_hat[3] + pnts[i-4][j].q_hat[3];
+
+    pnts[i][j].diss_eta[0] = pnts[i][j+4].q_hat[0] - 4.0*pnts[i][j+3].q_hat[0] + 6.0*pnts[i][j+2].q_hat[0] - 4.0*pnts[i][j+1].q_hat[0] + pnts[i][j].q_hat[0];
+    pnts[i][j].diss_eta[1] = pnts[i][j+4].q_hat[1] - 4.0*pnts[i][j+3].q_hat[1] + 6.0*pnts[i][j+2].q_hat[1] - 4.0*pnts[i][j+1].q_hat[1] + pnts[i][j].q_hat[1];
+    pnts[i][j].diss_eta[2] = pnts[i][j+4].q_hat[2] - 4.0*pnts[i][j+3].q_hat[2] + 6.0*pnts[i][j+2].q_hat[2] - 4.0*pnts[i][j+1].q_hat[2] + pnts[i][j].q_hat[2];
+    pnts[i][j].diss_eta[3] = pnts[i][j+4].q_hat[3] - 4.0*pnts[i][j+3].q_hat[3] + 6.0*pnts[i][j+2].q_hat[3] - 4.0*pnts[i][j+1].q_hat[3] + pnts[i][j].q_hat[3];
+
+    /* Upper right corner. */
+
+    i = imax - 2; j = jmax -2;
+
+    pnts[i][j].diss_ksi[0] = pnts[i][j].q_hat[0] - 4.0*pnts[i-1][j].q_hat[0] + 6.0*pnts[i-2][j].q_hat[0] - 4.0*pnts[i-3][j].q_hat[0] + pnts[i-4][j].q_hat[0];
+    pnts[i][j].diss_ksi[1] = pnts[i][j].q_hat[1] - 4.0*pnts[i-1][j].q_hat[1] + 6.0*pnts[i-2][j].q_hat[1] - 4.0*pnts[i-3][j].q_hat[1] + pnts[i-4][j].q_hat[1];
+    pnts[i][j].diss_ksi[2] = pnts[i][j].q_hat[2] - 4.0*pnts[i-1][j].q_hat[2] + 6.0*pnts[i-2][j].q_hat[2] - 4.0*pnts[i-3][j].q_hat[2] + pnts[i-4][j].q_hat[2];
+    pnts[i][j].diss_ksi[3] = pnts[i][j].q_hat[3] - 4.0*pnts[i-1][j].q_hat[3] + 6.0*pnts[i-2][j].q_hat[3] - 4.0*pnts[i-3][j].q_hat[3] + pnts[i-4][j].q_hat[3];
+
+    pnts[i][j].diss_eta[0] = pnts[i][j].q_hat[0] - 4.0*pnts[i][j-1].q_hat[0] + 6.0*pnts[i][j-2].q_hat[0] - 4.0*pnts[i][j-3].q_hat[0] + pnts[i][j-4].q_hat[0];
+    pnts[i][j].diss_eta[1] = pnts[i][j].q_hat[1] - 4.0*pnts[i][j-1].q_hat[1] + 6.0*pnts[i][j-2].q_hat[1] - 4.0*pnts[i][j-3].q_hat[1] + pnts[i][j-4].q_hat[1];
+    pnts[i][j].diss_eta[2] = pnts[i][j].q_hat[2] - 4.0*pnts[i][j-1].q_hat[2] + 6.0*pnts[i][j-2].q_hat[2] - 4.0*pnts[i][j-3].q_hat[2] + pnts[i][j-4].q_hat[2];
+    pnts[i][j].diss_eta[3] = pnts[i][j].q_hat[3] - 4.0*pnts[i][j-1].q_hat[3] + 6.0*pnts[i][j-2].q_hat[3] - 4.0*pnts[i][j-3].q_hat[3] + pnts[i][j-4].q_hat[3];
 
     /* Makes it coordinate transformed. */
 
