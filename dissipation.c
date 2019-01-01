@@ -395,7 +395,7 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
             double eta_x2 = pnts[i][j].eta_x*pnts[i][j].eta_x;
             double eta_y2 = pnts[i][j].eta_y*pnts[i][j].eta_y;
 
-            sig[i][j] = modU + a*pow(ksi_x2 + ksi_y2, 2.0) + modV + a*pow(eta_x2 + eta_y2, 2.0);
+            sig[i][j] = modU + a*pow(ksi_x2 + ksi_y2, 0.5) + modV + a*pow(eta_x2 + eta_y2, 0.5);
         }
     }
 
@@ -438,7 +438,7 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
                 q[3] = pnts[i][j+1].J*pnts[i+1][j].q_hat[n];
                 q[4] = pnts[i][j+2].J*pnts[i+2][j].q_hat[n];
 
-                pnts[i][j].diss_ksi[n] = p_setup.dissp2*nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
+                pnts[i][j].diss_ksi[n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
             }
 
             free(q);
@@ -477,7 +477,7 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
                 q[3] = pnts[i][j+1].J*pnts[i][j+1].q_hat[n];
                 q[4] = pnts[i][j+2].J*pnts[i][j+2].q_hat[n];
 
-                pnts[i][j].diss_eta[n] = p_setup.dissp2*nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
+                pnts[i][j].diss_eta[n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
             }
 
             free(q);
@@ -489,10 +489,10 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
     for (int i = 1; i<imax-1; i++){
         for (int j = 1; j<jmax-1; j++){
 
-            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] + pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[0] + pnts[i][j].diss_eta[0]);
-            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] + pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[1] + pnts[i][j].diss_eta[1]);
-            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] + pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[2] + pnts[i][j].diss_eta[2]);
-            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] + pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[3] + pnts[i][j].diss_eta[3]);
+            pnts[i][j].RHS[0] = pnts[i][j].RHS[0] - pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[0] + pnts[i][j].diss_eta[0]);
+            pnts[i][j].RHS[1] = pnts[i][j].RHS[1] - pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[1] + pnts[i][j].diss_eta[1]);
+            pnts[i][j].RHS[2] = pnts[i][j].RHS[2] - pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[2] + pnts[i][j].diss_eta[2]);
+            pnts[i][j].RHS[3] = pnts[i][j].RHS[3] - pnts[i][j].J1 * p_setup.dissp2 * (pnts[i][j].diss_ksi[3] + pnts[i][j].diss_eta[3]);
 
         }
     }
