@@ -184,10 +184,9 @@ int main(int argc, char * argv[]){
 
                 compute_rhs(p_setup, pnts);
 
-                /* Apply dissipation. */
+                /* Apply the dissipation. */
 
-                // non_lim_diss(p_setup, pnts);
-                printf("Not implemented !\n");
+                art_dissip_nli(p_setup, pnts);
 
                 /* Update the time. */
 
