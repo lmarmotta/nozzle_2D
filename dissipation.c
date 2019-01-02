@@ -381,8 +381,8 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
     double ** sig = alloc_dmatrix(imax,jmax);
 
-    for (int i = 0; i<imax; i++){
-        for (int j = 0; j<jmax; j++){ 
+    for (int i = 2; i<imax-2; i++){
+        for (int j = 2; j<jmax-2; j++){ 
 
             double a = pnts[i][j].a;
 
@@ -409,8 +409,8 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
     /* Start storing the tau. */
 
-    for (int i = 1; i<imax-1; i++)
-    for (int j = 1; j<jmax-1; j++) tau_s[i][j] = tau(pnts[i+1][j].p, pnts[i][j].p, pnts[i-1][j].p); 
+    for (int i = 2; i<imax-2; i++)
+    for (int j = 2; j<jmax-2; j++) tau_s[i][j] = tau(pnts[i+1][j].p, pnts[i][j].p, pnts[i-1][j].p); 
 
     /* Finalize the operator build in ksi. */
 
@@ -419,10 +419,10 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
             double sigf  = sig[i+1][j];
             double sig_v = sig[i][j];
-            double jacf = pnts[i+1][j].J1;
-            double jac  = pnts[i][j].J1;
-            double e2_v   = e2(tau_s[i+1][j], tau_s[i][j], tau_s[i-1][j], pnts[i][j].dt);
-            double e4_v   = e4(e2_v, pnts[i][j].dt); 
+            double jacf  = pnts[i+1][j].J1;
+            double jac   = pnts[i][j].J1;
+            double e2_v  = e2(tau_s[i+1][j], tau_s[i][j], tau_s[i-1][j], pnts[i][j].dt);
+            double e4_v  = e4(e2_v, pnts[i][j].dt); 
 
             /*
              * q[0] = q(i-2)
@@ -436,13 +436,13 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
             for (int n = 0; n<4; n++){
 
-                q[0] = pnts[i][j-2].J*pnts[i-2][j].q_hat[n];
-                q[1] = pnts[i][j-1].J*pnts[i-1][j].q_hat[n];
+                q[0] = pnts[i-2][j].J*pnts[i-2][j].q_hat[n];
+                q[1] = pnts[i-1][j].J*pnts[i-1][j].q_hat[n];
 
                 q[2] = pnts[i][j].J*pnts[i][j].q_hat[n];
 
-                q[3] = pnts[i][j+1].J*pnts[i+1][j].q_hat[n];
-                q[4] = pnts[i][j+2].J*pnts[i+2][j].q_hat[n];
+                q[3] = pnts[i+1][j].J*pnts[i+1][j].q_hat[n];
+                q[4] = pnts[i+2][j].J*pnts[i+2][j].q_hat[n];
 
                 nlim[i][j][n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
             }
