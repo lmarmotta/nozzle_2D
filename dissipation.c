@@ -403,6 +403,12 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
     double ** tau_s = alloc_dmatrix(imax,jmax);
 
+    /* Since the dissipation is operated, we have to store. */
+
+    double *** nlim = alloc_dcube(imax, jmax, 4);
+
+    /* Start storing the tau. */
+
     for (int i = 1; i<imax-1; i++)
     for (int j = 1; j<jmax-1; j++) tau_s[i][j] = tau(pnts[i+1][j].p, pnts[i][j].p, pnts[i-1][j].p); 
 
@@ -438,12 +444,18 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
                 q[3] = pnts[i][j+1].J*pnts[i+1][j].q_hat[n];
                 q[4] = pnts[i][j+2].J*pnts[i+2][j].q_hat[n];
 
-                pnts[i][j].diss_ksi[n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
+                nlim[i][j][n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
             }
 
             free(q);
         }
     }
+
+    /* Finalize the operator build in ksi. */
+
+    for (int i = 2; i<imax-2; i++)
+        for (int j = 2; j<jmax-2; j++)
+            for (int n = 0; n<4; n++) pnts[i][j].diss_ksi[n] = nlim[i][j][n] - nlim[i-1][j][n];
 
     /* Finalize the operator build in eta. */
 
@@ -477,12 +489,18 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
                 q[3] = pnts[i][j+1].J*pnts[i][j+1].q_hat[n];
                 q[4] = pnts[i][j+2].J*pnts[i][j+2].q_hat[n];
 
-                pnts[i][j].diss_eta[n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
+                nlim[i][j][n] = nlim_op(sigf, sig_v, jacf, jac, e2_v, e4_v, q);
             }
 
             free(q);
         }
     }
+
+    /* Finalize the operator build in eta. */
+
+    for (int i = 2; i<imax-2; i++)
+        for (int j = 2; j<jmax-2; j++)
+            for (int n = 0; n<4; n++) pnts[i][j].diss_eta[n] = nlim[i][j][n] - nlim[i][j-1][n];
 
     /* Now, add to the residue. */
 
@@ -499,4 +517,5 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
 
     free_dmatrix(sig, imax);
     free_dmatrix(tau_s, imax);
+    free_dcube(nlim, imax, jmax);
 }
