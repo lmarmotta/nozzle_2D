@@ -284,7 +284,7 @@ double tau(double pf, double p, double pb){
 
     double tau_out = 0.0;
 
-    tau_out = fabs(pf - 2.0*p + pb)/fabs(pf + 2.0*p + pb);
+    tau_out = fabs(pf - 2.0*p + pb)/(fabs(pf) + fabs(2.0*p) + fabs(pb));
 
     return tau_out;
 }
@@ -293,13 +293,13 @@ double tau(double pf, double p, double pb){
  * Non linear dissipation eps2
  */
 
-double e2(double tauf, double tau, double taub, double dt){
+double e2(double tauf, double tau, double taub){
 
     double e2_out = 0.0;
 
     double k2 = 1.0/4.0;
 
-    e2_out = k2*dt*max(tauf,max(tau,taub));
+    e2_out = k2*max(tauf,max(tau,taub));
 
     return e2_out;
 }
@@ -344,7 +344,7 @@ double nlim_op(double sigf, double sig, double jacf, double jac, double e2, doub
 }
 
 /*
- * Build the dissipation.
+ * Build the dissipation. Cheer up, It will work !
  */
 
 void art_dissip_nli(t_define p_setup, t_points ** pnts){
@@ -421,7 +421,7 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
             double sig_v = sig[i][j];
             double jacf  = pnts[i+1][j].J1;
             double jac   = pnts[i][j].J1;
-            double e2_v  = e2(tau_s[i+1][j], tau_s[i][j], tau_s[i-1][j], pnts[i][j].dt);
+            double e2_v  = e2(tau_s[i+1][j], tau_s[i][j], tau_s[i-1][j]);
             double e4_v  = e4(e2_v, pnts[i][j].dt); 
 
             /*
@@ -462,12 +462,12 @@ void art_dissip_nli(t_define p_setup, t_points ** pnts){
     for (int i = 2; i<imax-2; i++){
         for (int j = 2; j<jmax-2; j++){ 
 
-            double sigf = sig[i][j+1];
+            double sigf  = sig[i][j+1];
             double sig_v = sig[i][j];
-            double jacf = pnts[i][j+1].J1;
-            double jac  = pnts[i][j].J1;
-            double e2_v = e2(tau_s[i][j+1], tau_s[i][j], tau_s[i][j-1], pnts[i][j].dt);
-            double e4_v = e4(e2_v, pnts[i][j].dt); 
+            double jacf  = pnts[i][j+1].J1;
+            double jac   = pnts[i][j].J1;
+            double e2_v  = e2(tau_s[i][j+1], tau_s[i][j], tau_s[i][j-1]);
+            double e4_v  = e4(e2_v, pnts[i][j].dt); 
 
             /*
              * q[0] = q(i-2)
