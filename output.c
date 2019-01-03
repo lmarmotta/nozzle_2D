@@ -22,7 +22,7 @@ void export_fields(t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_out,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\"\n");
+    fprintf(f_out,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\" , \"diss_ksi\" , \"diss_eta\"\n");
     fprintf(f_out,"ZONE T =\"Zone-one\", I= %d ,J= %d , K=1, DATAPACKING=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
@@ -56,10 +56,13 @@ void export_fields(t_points ** pnts, t_define p_setup){
             double rhs_2 = pnts[i][j].RHS[2];
             double rhs_3 = pnts[i][j].RHS[3];
 
+            double art_ksi = pnts[i][j].diss_ksi[0];
+            double art_eta = pnts[i][j].diss_eta[0];
+
             /* Dump solution. */
 
-            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3);
+            fprintf(f_out,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3, art_ksi, art_eta);
         }
     }
 
@@ -199,7 +202,7 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
     /* Print the header of the tecplot file. */
 
     fprintf(f_gif,"TITLE = \" Projeto 01 \"\n");
-    fprintf(f_gif,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\"\n");
+    fprintf(f_gif,"VARIABLES = \"X\" , \"Y\" , \"Z\" , \"Mach number\" , \"Pressure\" , \"u\" , \"v\" , \"T\" , \"jac\" , \"jac1\", \"dt\" , \"cov_u\" , \"cov_v\" , \"rhs_0\" , \"rhs_1\" , \"rhs_2\" , \"rhs_3\" , \"diss_ksi\" , \"diss_eta\"\n");
     fprintf(f_gif,"ZONE T =\"Zone-one\", I= %d ,J= %d F=POINT\n",p_setup.imax,p_setup.jmax);
     
     for (int j = 0; j < p_setup.jmax; j++){
@@ -233,10 +236,13 @@ void save_for_gif(int num,t_points ** pnts, t_define p_setup){
             double rhs_2 = pnts[i][j].RHS[2];
             double rhs_3 = pnts[i][j].RHS[3];
 
+            double art_ksi = pnts[i][j].diss_ksi[0];
+            double art_eta = pnts[i][j].diss_eta[0];
+
             /* Dump solution. */
 
-            fprintf(f_gif,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
-                    x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3);
+            fprintf(f_gif,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",
+                x, y, z, mach, p, u, v, t, jac, jac1, dtt, cu, cv, rhs_0, rhs_1, rhs_2, rhs_3, art_ksi, art_eta);
 
         }
     }

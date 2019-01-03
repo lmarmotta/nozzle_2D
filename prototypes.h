@@ -57,7 +57,11 @@ void compute_rhs(t_define p_setup, t_points ** pnts);
 void explicitEuler(t_define p_setup, t_points ** pnts);
 void art_dissip_2nd(t_define p_setup, t_points ** pnts);
 void art_dissip_4th(t_define p_setup, t_points ** pnts);
-void art_dissip_nlin(t_define p_setup, t_points ** pnts);
+double nlim_op(double sigf, double sig, double jacf, double jac, double e2, double e4, double * q);
+double e4(double e2, double dt);
+double e2(double tauf, double tau, double taub);
+double tau(double pf, double p, double pb);
+void art_dissip_nli(t_define p_setup, t_points ** pnts);
 
 /* Beam Warming specifics. */
 

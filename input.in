@@ -4,7 +4,7 @@ i_rhou 18.45
 i_rhov 0.000
 i_e 16868.91
 n_max_iter 10000
-CFL 0.1
+CFL 0.10
 BCIN_udir 1.0
 BCIN_vdir 0.0
 BCIN_pt 101362.508
@@ -14,9 +14,9 @@ F_Cv 717.50
 F_R 287.0
 p_rate 1
 eps_blow 30.0
-n_save 50
-dissp2 5.0
+n_save 25
+dissp2 10.0
 save_gif 1
 d_typ 1
-dissp4 2.5
-scheme 5
+dissp4 5.0
+scheme 3
