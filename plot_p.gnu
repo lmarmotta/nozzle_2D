@@ -18,7 +18,8 @@ set ytics font "Times-Roman, 15"
 set xlabel "X" center font "Times-Roman, 16" 
 set ylabel "P/Pt" center font "Times-Roman, 16" 
 
-set yrange [0.35:0.65]
+set yrange [0.2:1.20]
+set xrange [-2.5:1.50]
 
 set border lw 2
 
