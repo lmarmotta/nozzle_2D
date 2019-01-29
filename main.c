@@ -291,53 +291,11 @@ int main(int argc, char * argv[]){
                 /* Break */
 
                 break;
-
-            /*
-             * Beam Warming (Pullian) Implicit non-linear dissipation.
-             */
-
-            case 6:
-
-                /* Now, build the fluxes. */
-
-                compute_fluxes(p_setup, pnts);
-
-                /* Compute the RHS. */
-
-                compute_rhs(p_setup, pnts);
-
-                /* Compute the Jacobian. */
-
-                compute_jacobian(p_setup, pnts);
-
-                /* Apply dissipation. */
-
-                art_dissip_nli(p_setup, pnts);
-
-                /* Update the time. */
-
-                local_time(p_setup, pnts);
-
-                /* March in time. */
-
-                beam_warming(p_setup, pnts);
-
-                /* Update Boundary conditions. */
-
-                boundary_condition_euler(p_setup, pnts);
-
-                /* Dump a whole lotta of stuff. */
-
-                dump_residue_file(iter, &res_output, p_setup);
-
-                /* Break */
-
-                break;
             /*
              * Steger-Warming - Explicit - 1st order.
              */
 
-            case 7:
+            case 6:
                 
                 /* Compute the basic fluxes. */
 
@@ -374,7 +332,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Explicit - 2nd order.
              */
 
-            case 8:
+            case 7:
                 
                 /* Compute the basic fluxes. */
 
@@ -411,7 +369,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 1st order.
              */
 
-            case 9:
+            case 8:
                 
                 /* Compute the basic fluxes. */
 
@@ -456,7 +414,7 @@ int main(int argc, char * argv[]){
              * Steger-Warming - Implicit - 2nd order.
              */
 
-            case 10:
+            case 9:
                 
                 /* Compute the basic fluxes. */
 
@@ -495,6 +453,43 @@ int main(int argc, char * argv[]){
                 dump_residue_file(iter, &res_output, p_setup);
 
                 /* Break */
+
+                break;
+            /*
+             * Explicit Pullian Chaussee scheme - 1st order
+             */
+
+            case 10:
+
+                /* Now, build the fluxes. */
+
+                compute_fluxes(p_setup, pnts);
+
+                /* Compute the RHS. */
+
+                compute_rhs(p_setup, pnts);
+
+                /* Apply dissipation. */
+
+                art_dissip_2nd(p_setup, pnts);
+
+                /* Update the time. */
+
+                local_time(p_setup, pnts);
+
+                /* Marh in time. */
+
+                explicitEuler(p_setup, pnts);
+
+                /* Update Boundary conditions. */
+
+                boundary_condition_euler(p_setup, pnts);
+
+                /* Dump a whole lotta of stuff. */
+
+                dump_residue_file(iter, &res_output, p_setup);
+
+                /* Break the switch. */
 
                 break;
 
