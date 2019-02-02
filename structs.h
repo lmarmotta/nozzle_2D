@@ -120,4 +120,8 @@ typedef struct t_points{
     double f_plus[4], f_minu[4];
     double g_plus[4], g_minu[4];
 
+    /* Pullian and Chaussee matrices. */
+
+    double nh[4][4], nhi[4][4];
+
 } t_points;
