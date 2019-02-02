@@ -81,4 +81,88 @@ void compute_pc_matrices(t_define p_setup, t_points ** pnts){
 
         }
     }
+
+    /* Compute the diagonal eigenvalue matrices. */
+
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
+
+            /* Bizu vars. */
+
+            U = pnts[i][j].cov_u;
+            V = pnts[i][j].cov_u;
+
+            a = pnts[i][j].a;
+
+            ksix = pnts[i][j].ksi_x;
+            ksiy = pnts[i][j].ksi_y;
+
+            etax = pnts[i][j].eta_x;
+            etay = pnts[i][j].eta_y;
+
+            /* Ksi direction. */
+
+            pnts[i][j].lambda_ksi[0][0] = U;
+            pnts[i][j].lambda_ksi[0][1] = 0.0; 
+            pnts[i][j].lambda_ksi[0][2] = 0.0; 
+            pnts[i][j].lambda_ksi[0][3] = 0.0; 
+
+            pnts[i][j].lambda_ksi[1][0] = 0.0; 
+            pnts[i][j].lambda_ksi[1][1] = U;
+            pnts[i][j].lambda_ksi[1][2] = 0.0; 
+            pnts[i][j].lambda_ksi[1][3] = 0.0; 
+
+            pnts[i][j].lambda_ksi[2][0] = 0.0; 
+            pnts[i][j].lambda_ksi[2][1] = 0.0; 
+            pnts[i][j].lambda_ksi[2][2] = U + a*pow(pow(ksix,2) + pow(ksiy,2.0),0.5);
+            pnts[i][j].lambda_ksi[2][3] = 0.0; 
+
+            pnts[i][j].lambda_ksi[3][0] = 0.0; 
+            pnts[i][j].lambda_ksi[3][1] = 0.0; 
+            pnts[i][j].lambda_ksi[3][2] = 0.0; 
+            pnts[i][j].lambda_ksi[3][3] = U - a*pow(pow(ksix,2) + pow(ksiy,2.0),0.5);
+
+            /* Eta direction. */
+
+            pnts[i][j].lambda_eta[0][0] = V;
+            pnts[i][j].lambda_eta[0][1] = 0.0; 
+            pnts[i][j].lambda_eta[0][2] = 0.0; 
+            pnts[i][j].lambda_eta[0][3] = 0.0; 
+
+            pnts[i][j].lambda_eta[1][0] = 0.0; 
+            pnts[i][j].lambda_eta[1][1] = V;
+            pnts[i][j].lambda_eta[1][2] = 0.0; 
+            pnts[i][j].lambda_eta[1][3] = 0.0; 
+
+            pnts[i][j].lambda_eta[2][0] = 0.0; 
+            pnts[i][j].lambda_eta[2][1] = 0.0; 
+            pnts[i][j].lambda_eta[2][2] = V + a*pow(pow(etax,2) + pow(etay,2.0),0.5);
+            pnts[i][j].lambda_eta[2][3] = 0.0; 
+
+            pnts[i][j].lambda_eta[3][0] = 0.0; 
+            pnts[i][j].lambda_eta[3][1] = 0.0; 
+            pnts[i][j].lambda_eta[3][2] = 0.0; 
+            pnts[i][j].lambda_eta[3][3] = V - a*pow(pow(etax,2) + pow(etay,2.0),0.5);
+
+
+        }
+    }
+
+}
+
+/* Compute the pullian chausse implicit operator. */
+
+void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
+
+    /* Separate bounds of the field. */
+
+    int imax = p_setup.imax;
+    int jmax = p_setup.jmax;
+
+    /* Loop through internal points and compute the needed stuff.*/
+
+    for (int i = 0; i<imax; i++){
+        for (int j = 0; j<jmax; j++){
+        }
+    }
 }

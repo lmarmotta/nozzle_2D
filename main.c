@@ -456,7 +456,7 @@ int main(int argc, char * argv[]){
 
                 break;
             /*
-             * Explicit Pullian Chaussee scheme - 1st order
+             * Implicit Pullian Chaussee scheme - 1st order
              */
 
             case 10:
@@ -473,13 +473,25 @@ int main(int argc, char * argv[]){
 
                 art_dissip_2nd(p_setup, pnts);
 
+                /* Compute the jacobian. */
+
+                compute_jacobian(p_setup, pnts);
+
+                /* Split the Jacobians. */
+
+                compute_splited_jacobians(p_setup, pnts);
+
+                /* Compute the matrix. */
+
+                compute_pc_matrices(p_setup, pnts);
+
                 /* Update the time. */
 
                 local_time(p_setup, pnts);
 
                 /* Marh in time. */
 
-                explicitEuler(p_setup, pnts);
+                imp_pullian_chaussee(p_setup, pnts);
 
                 /* Update Boundary conditions. */
 
