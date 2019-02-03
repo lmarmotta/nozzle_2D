@@ -1,0 +1,19 @@
+\begin{thebibliography}{1}
+
+\bibitem{AZEVEDO}
+João Luiz~F. Azevedo.
+\newblock Proposta do projeto 4 - cc299, Dezembro 2016.
+
+\bibitem{YEE_NASATM_1983}
+A.~Harten H.~C.~Yee, R. F.~Warming.
+\newblock Implicit total variation diminishing (tvd) schemes for steady-state
+  calculations.
+\newblock Technical Memo TM-84342, NASA, 1983.
+
+\bibitem{YEE_JCP_1985}
+Warming~R.F. Yee, H.C. and A~Harten.
+\newblock Implicit total variation diminishing (tvd) schemes for steady-state
+  calculations.
+\newblock {\em Journal of Computational Physics}, 57:327--360, 1985.
+
+\end{thebibliography}
