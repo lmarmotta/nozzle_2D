@@ -124,6 +124,8 @@ typedef struct t_points{
 
     double nh[4][4], nhi[4][4];
 
+    double Y1[4][4];
+
     /* Lambda matrices. */
 
     double lambda_ksi[4][4], lambda_eta[4][4];

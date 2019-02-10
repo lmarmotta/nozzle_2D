@@ -144,10 +144,8 @@ void compute_pc_matrices(t_define p_setup, t_points ** pnts){
             pnts[i][j].lambda_eta[3][2] = 0.0; 
             pnts[i][j].lambda_eta[3][3] = V - a*pow(pow(etax,2) + pow(etay,2.0),0.5);
 
-
         }
     }
-
 }
 
 /* Compute the pullian chausse implicit operator. */
@@ -159,10 +157,42 @@ void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
     int imax = p_setup.imax;
     int jmax = p_setup.jmax;
 
-    /* Loop through internal points and compute the needed stuff.*/
+    /* Auxiliar matrices. */
+
+    double ** aux1 = alloc_dmatrix(4, 4);
+    double ** aux2 = alloc_dmatrix(4, 4);
+    double ** aux3 = alloc_dmatrix(4, 4);
+
+    /* Multiply the operators and obtain the Y1. */
 
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
+
+            /* Copy the residue. */
+
+            for (ii = 0; ii<4; ii++)
+            for (jj = 0; jj<4; jj++) aux1[ii][jj] = pnts[i][j].RHS[ii][jj];
+
+            /* Copy the T1 matrix. */
+
+            for (ii = 0; ii<4; ii++)
+            for (jj = 0; jj<4; jj++) aux2[ii][jj] = T1_ksi[4][4];
+
+            /* Multiply the matrix. */
+
+            dmuls(aux2, aux1, aux3, 4);
+
+            /* Store Y1 in ksi direction. */
+
+            for (ii = 0; ii<4; ii++)
+            for (jj = 0; jj<4; jj++) pnts[i][j].Y1[ii][jj] = aux3[ii][jj];
+
         }
     }
+
+    /* Free the matrices. */
+
+    free_dmatrix(aux1, 4);
+    free_dmatrix(aux2, 4);
+    free_dmatrix(aux3, 4);
 }
