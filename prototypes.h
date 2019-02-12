@@ -76,3 +76,8 @@ void compute_sw_residue_1sto(t_define p_setup, t_points ** pnts);
 void compute_sw_residue_2ndo(t_define p_setup, t_points ** pnts);
 void compute_sw_impicit_operator(t_define p_setup, t_points ** pnts);
 double eig_split(double eig, int sign);
+
+/* Pullian and Chaussee specifics. */
+void imp_pullian_chaussee(t_define p_setup, t_points ** pnts);
+void compute_pc_matrices(t_define p_setup, t_points ** pnts);
+
