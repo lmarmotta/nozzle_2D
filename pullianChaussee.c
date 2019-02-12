@@ -171,7 +171,7 @@ void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
             /* Copy the residue. */
 
             for (ii = 0; ii<4; ii++)
-            for (jj = 0; jj<4; jj++) aux1[ii][jj] = pnts[i][j].RHS[ii][jj];
+            for (jj = 0; jj<4; jj++) aux1[ii][jj] = pnts[i][j].RHS[ii];
 
             /* Copy the T1 matrix. */
 
@@ -190,9 +190,62 @@ void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
         }
     }
 
+    /* Identity matrix. */
+
+    double I[4][4];
+
+    I[0][0] = 1.0; I[0][1] = 0.0; I[0][2] = 0.0; I[0][3] = 0.0; 
+    I[1][0] = 0.0; I[1][1] = 1.0; I[1][2] = 0.0; I[1][3] = 0.0; 
+    I[2][0] = 0.0; I[2][1] = 0.0; I[2][2] = 1.0; I[2][3] = 0.0; 
+    I[3][0] = 0.0; I[3][1] = 0.0; I[3][2] = 0.0; I[3][3] = 1.0; 
+
+    /* Now, solve the system for the first direction. */
+
+    double *** X1  = alloc_dcube(imax-1, jmax-1, 4);
+    double *** Y1c = alloc_dcube(imax-1, jmax-1, 4);
+
+    /* Auxiliar. */
+
+    double *** upper_j = alloc_dcube(4,4,jmax-1);
+    double *** maind_j = alloc_dcube(4,4,jmax-1);
+    double *** lower_j = alloc_dcube(4,4,jmax-1);
+
+    for (int j = 0; j<jmax; j++){
+        for (int i = 0; i<imax; i++){
+
+            /* Estimate the constant. */
+
+            double cte_i = pnts[i][j].dt;
+
+            /* Build the three diagonals. */
+
+            for (int ii = 0; ii<nim; ii++){
+                for (int jj = 0; jj<nim; jj++){
+
+                    upper_j[ii][jj][i] = cte_i * pnts[i+1][j].lambda_ksi[ii][jj];
+
+                    main_j[ii][jj][i] = I[ii][jj];
+
+                    lower_j[ii][jj][i] = cte_i * pnts[i-1][j].lambda_ksi[ii][jj];
+
+                }
+            }
+
+            /* Build the B vector using the RHS. */
+
+            s_rhsi[0][i] = pnts[i][j].RHS[0];
+            s_rhsi[1][i] = pnts[i][j].RHS[1];
+            s_rhsi[2][i] = pnts[i][j].RHS[2];
+            s_rhsi[3][i] = pnts[i][j].RHS[3];
+        }
+    }
+
+
     /* Free the matrices. */
 
     free_dmatrix(aux1, 4);
     free_dmatrix(aux2, 4);
     free_dmatrix(aux3, 4);
+    free_dmatrix(X1,  imax-1, jmax-1);
+    free_dmatrix(Y1c, imax-1, jmax-1);
 }
