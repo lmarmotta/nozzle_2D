@@ -455,55 +455,55 @@ int main(int argc, char * argv[]){
                 /* Break */
 
                 break;
-            /*
-             * Implicit Pullian Chaussee scheme - 1st order
-             */
-
-            case 10:
-
-                /* Now, build the fluxes. */
-
-                compute_fluxes(p_setup, pnts);
-
-                /* Compute the RHS. */
-
-                compute_rhs(p_setup, pnts);
-
-                /* Apply dissipation. */
-
-                art_dissip_2nd(p_setup, pnts);
-
-                /* Compute the jacobian. */
-
-                compute_jacobian(p_setup, pnts);
-
-                /* Split the Jacobians. */
-
-                compute_splited_jacobians(p_setup, pnts);
-
-                /* Compute the matrix. */
-
-                compute_pc_matrices(p_setup, pnts);
-
-                /* Update the time. */
-
-                local_time(p_setup, pnts);
-
-                /* Marh in time. */
-
-                imp_pullian_chaussee(p_setup, pnts);
-
-                /* Update Boundary conditions. */
-
-                boundary_condition_euler(p_setup, pnts);
-
-                /* Dump a whole lotta of stuff. */
-
-                dump_residue_file(iter, &res_output, p_setup);
-
-                /* Break the switch. */
-
-                break;
+//            /*
+//             * Implicit Pullian Chaussee scheme - 1st order
+//             */
+//
+//            case 10:
+//
+//                /* Now, build the fluxes. */
+//
+//                compute_fluxes(p_setup, pnts);
+//
+//                /* Compute the RHS. */
+//
+//                compute_rhs(p_setup, pnts);
+//
+//                /* Apply dissipation. */
+//
+//                art_dissip_2nd(p_setup, pnts);
+//
+//                /* Compute the jacobian. */
+//
+//                compute_jacobian(p_setup, pnts);
+//
+//                /* Split the Jacobians. */
+//
+//                compute_splited_jacobians(p_setup, pnts);
+//
+//                /* Compute the matrix. */
+//
+//                compute_pc_matrices(p_setup, pnts);
+//
+//                /* Update the time. */
+//
+//                local_time(p_setup, pnts);
+//
+//                /* Marh in time. */
+//
+//                imp_pullian_chaussee(p_setup, pnts);
+//
+//                /* Update Boundary conditions. */
+//
+//                boundary_condition_euler(p_setup, pnts);
+//
+//                /* Dump a whole lotta of stuff. */
+//
+//                dump_residue_file(iter, &res_output, p_setup);
+//
+//                /* Break the switch. */
+//
+//                break;
 
             /*
              * Default case. 

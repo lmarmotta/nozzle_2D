@@ -160,32 +160,14 @@ void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
     /* Auxiliar matrices. */
 
     double ** aux1 = alloc_dmatrix(4, 4);
-    double ** aux2 = alloc_dmatrix(4, 4);
-    double ** aux3 = alloc_dmatrix(4, 4);
 
     /* Multiply the operators and obtain the Y1. */
 
     for (int i = 0; i<imax; i++){
         for (int j = 0; j<jmax; j++){
 
-            /* Copy the residue. */
-
             for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) aux1[ii][jj] = pnts[i][j].RHS[ii];
-
-            /* Copy the T1 matrix. */
-
-            for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) aux2[ii][jj] = pnts[i][j].T1_ksi[4][4];
-
-            /* Multiply the matrix. */
-
-            dmuls(aux2, aux1, aux3, 4);
-
-            /* Store Y1 in ksi direction. */
-
-            for (int ii = 0; ii<4; ii++)
-            for (int jj = 0; jj<4; jj++) pnts[i][j].Y1[ii][jj] = aux3[ii][jj];
+            for (int jj = 0; jj<4; jj++) aux1[ii][jj] = pnts[i][j].T1_ksi[4][4];
 
         }
     }
@@ -198,9 +180,5 @@ void imp_pullian_chaussee(t_define p_setup, t_points ** pnts){
     I[1][0] = 0.0; I[1][1] = 1.0; I[1][2] = 0.0; I[1][3] = 0.0; 
     I[2][0] = 0.0; I[2][1] = 0.0; I[2][2] = 1.0; I[2][3] = 0.0; 
     I[3][0] = 0.0; I[3][1] = 0.0; I[3][2] = 0.0; I[3][3] = 1.0; 
-
-    free_dmatrix(aux1, 4);
-    free_dmatrix(aux2, 4);
-    free_dmatrix(aux3, 4);
 
 }
