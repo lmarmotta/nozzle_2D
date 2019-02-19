@@ -270,7 +270,7 @@ void export_pressure(t_points ** pnts, t_define p_setup){
         int j = p_setup.jmax - 2;
 
         double p = pnts[i][j].p/p_setup.BCIN_pt;
-        double x = pnts[i][j].x;
+        double x = pnts[i][j].x/115.823997;
         double y = pnts[i][j].y;
 
         fprintf(f_out,"%lf,%lf,%lf\n",x,y,p);
