@@ -55,3 +55,10 @@ dkms.conf
 *.dat
 code
 *.pdf
+
+# Latex specifics.
+*.aux
+*.bbl
+*.blg
+*.log
+*.toc
