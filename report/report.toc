@@ -1,7 +1,0 @@
-\babel@toc {brazilian}{}
-\contentsline {section}{\numberline {1}Esquema de Harten - Formula\IeC {\c c}\IeC {\~a}o}{1}{section.1}
-\contentsline {section}{\numberline {2}Resultados e discuss\IeC {\~o}es}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Malhas usadas}{5}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Desempenho computacional e num\IeC {\'e}rico}{5}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Contornos}{7}{subsection.2.3}
-\contentsline {section}{\numberline {3}Conclus\IeC {\~o}es}{9}{section.3}

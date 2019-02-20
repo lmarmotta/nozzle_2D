@@ -56,9 +56,3 @@ dkms.conf
 code
 *.pdf
 
-# Latex specifics.
-*.aux
-*.bbl
-*.blg
-*.log
-*.toc
